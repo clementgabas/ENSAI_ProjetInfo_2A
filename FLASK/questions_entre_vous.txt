@@ -1,2 +1,5 @@
 https://www.youtube.com/watch?v=MwZwr5Tvyxo --> lien vers une série de vidéos qui montre comment utiliser Flask pour 
 réaliser un webservice
+
+installation --> https://flask.palletsprojects.com/en/1.1.x/installation/   
+nota : j'ai déjà créé le fichier venv donc normalement tu peux passer l'étape "py -3 -m venv venv".
