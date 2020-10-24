@@ -1,10 +1,10 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import  AbstractView
+from View.abstractView import AbstractView
 
 #Création du menu ami.
 
-class menu_Ami(AbstractView):
+class Menu_Ami(AbstractView):
     def __init__(self):
         self.questions = [
             {
@@ -35,6 +35,6 @@ class menu_Ami(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Ami1 = menu_Ami()
+menu_Ami1 = Menu_Ami()
 
 #Comment
