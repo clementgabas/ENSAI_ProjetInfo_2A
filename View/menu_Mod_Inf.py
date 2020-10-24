@@ -1,10 +1,10 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import  AbstractView
+from View.abstractView import AbstractView
 
 #Création du menu de mofidification des informations.
 
-class menu_Modif_Inf(AbstractView):
+class Menu_Modif_Inf(AbstractView):
     def __init__(self):
         self.questions = [
             {
@@ -35,4 +35,4 @@ class menu_Modif_Inf(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Modif1 = menu_Modif_Inf()
+menu_Modif1 = Menu_Modif_Inf()

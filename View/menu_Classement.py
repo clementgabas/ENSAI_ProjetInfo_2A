@@ -1,10 +1,10 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import  AbstractView
+from View.abstractView import AbstractView
 
 #Création du menu des classements.
 
-class menu_Classement(AbstractView):
+class Menu_Classement(AbstractView):
     def __init__(self):
         self.questions = [
             {
@@ -38,4 +38,4 @@ class menu_Classement(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Classement1 = menu_Classement()
+menu_Classement1 = Menu_Classement()
