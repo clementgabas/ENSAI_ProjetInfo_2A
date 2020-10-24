@@ -1,6 +1,8 @@
 from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def home():
@@ -8,6 +10,7 @@ def home():
 
 @app.route('/friends')
 def friends():
+
     return render_template('Pages/friends.html')
 
 if __name__ == '__main__':
