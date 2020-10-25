@@ -1,10 +1,10 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import  AbstractView
+from View.abstractView import AbstractView
 
 #Création du menu pour les utilisateurs connectés
 
-class menu_User_Co(AbstractView):
+class Menu_User_Co(AbstractView):
     def __init__(self):
         self.questions = [
             {
@@ -36,4 +36,4 @@ class menu_User_Co(AbstractView):
                 print("Déconnexion réussie")
                 break
 
-menu_User_Co1 = menu_User_Co()
+menu_User_Co1 = Menu_User_Co()

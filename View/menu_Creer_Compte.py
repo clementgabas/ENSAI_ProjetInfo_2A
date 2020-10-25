@@ -1,9 +1,9 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import  AbstractView
+from View.abstractView import AbstractView
 #Création du menu Créer compte
 
-class menu_Creer_Compte(AbstractView):
+class Menu_Creer_Compte(AbstractView):
     def display_info(self):
         print("Bienvue sur le menu de création de compte")
     def make_choice(self):
@@ -33,7 +33,7 @@ class menu_Creer_Compte(AbstractView):
                 break
 
 
-menu_Creer_Compte1  = menu_Creer_Compte()
+menu_Creer_Compte1  = Menu_Creer_Compte()
 
 # Les réponses des utilisateurs sont stockés dans : menu_Creer_Compte1.reponse["Identifiant"] et (menu_Creer_Compte1.reponse["Password"]) il faudra ensuite les comparer aux id et mdp stockés en base avant
 #de permttre l'authentification.

@@ -1,29 +1,33 @@
 # Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
-import menu_Creer_Compte as MCC
-import menu_Connexion as MC
-import menu_Choix_Jeu as MCJ
-#Création du menu_Principal
+from View.abstractView import AbstractView
+import View.menu_Creer_Compte as MCC
+import View.menu_Connexion as MC
+import View.menu_Choix_Jeu as MCJ
 
-class menu_Principal(AbstractView):
+
+# Création du menu_Principal
+
+class Menu_Principal(AbstractView):
     def __init__(self):
         self.questions = [
             {
-                'type' : 'list',
-                'name' : 'Accueil',
-                'message' : "Que souhaitez-vous faire ?",
-                          'choices' : [
-                              'Me connecter',
-                              'Jouer en tant qu\'anonyme',
-                              'Créer un compte utilisateur',
-                              inquirer.Separator(),
-                              'Quitter l\'application',
-                          ]
+                'type': 'list',
+                'name': 'Accueil',
+                'message': "Que souhaitez-vous faire ?",
+                'choices': [
+                    'Me connecter',
+                    'Jouer en tant qu\'anonyme',
+                    'Créer un compte utilisateur',
+                    inquirer.Separator(),
+                    'Quitter l\'application',
+                ]
             },
         ]
+
     def display_info(self):
         print("Bienvenue sur le menu principal")
+
     def make_choice(self):
         while True:
             self.reponse = inquirer.prompt(self.questions)
@@ -37,5 +41,6 @@ class menu_Principal(AbstractView):
                 print("Cya")
                 break
 
-Menu_P1 = menu_Principal()
+
+Menu_P1 = Menu_Principal()
 Menu_P1.make_choice()

@@ -1,10 +1,10 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import  AbstractView
+from View.abstractView import AbstractView
 
 #Création du menu profil
 
-class menu_Profil(AbstractView):
+class Menu_Profil(AbstractView):
     def __init__(self):
         self.questions = [
             {
@@ -41,4 +41,4 @@ class menu_Profil(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Profil1 = menu_Profil()
+menu_Profil1 = Menu_Profil()

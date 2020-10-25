@@ -1,10 +1,10 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
+from View.abstractView import AbstractView
 
 #Création du menu de connexion
 
-class menu_Connexion(AbstractView):
+class Menu_Connexion(AbstractView):
     def display_info(self):
         print("Bienvenue sur le menu de connexion")
     def make_choice(self):
@@ -29,7 +29,7 @@ class menu_Connexion(AbstractView):
                 break
             else:
                 print("Identifiant ou mot de passe incorrect. Veuillez réessayer")
-menu_Connexion1 = menu_Connexion()
+menu_Connexion1 = Menu_Connexion()
 
 
 # Les réponses des utilisateurs sont stockés dans : menu_Connexion1.reponse["Identifiant"] et (menu_Connexion1.reponse["Password"]) il faudra ensuite les comparer aux id et mdp stockés en base avant
