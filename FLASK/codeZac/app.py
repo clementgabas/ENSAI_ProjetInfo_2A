@@ -8,8 +8,6 @@ import os as os
 from flask import Flask, render_template, url_for, flash, redirect
 from forms import FormulaireInscription, FormulaireConnection
 
-os.chdir("C:/Users/Zacharie/Documents/Projet-Info-2020/FLASK/code")
-
 app = Flask(__name__)
 
 #la clé secrète permet de protéger l'application
@@ -36,7 +34,7 @@ def ranking():
 
 @app.route("/api/inscription", methods=['GET', 'POST'])
 def register():
-    form = RegistrationForm()
+    form = FormulaireInscription()
     if form.validate_on_submit():
         flash(f'Compte créé pour {form.username.data}!', 'success')
         return redirect(url_for('accueil'))
@@ -45,9 +43,9 @@ def register():
 
 @app.route("/api/connection", methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
+    form = FormulaireConnection()
     if form.validate_on_submit():
-        if form.email.data == 'admin' and form.password.data == 'password':
+        if form.username.data == 'admin' and form.password.data == 'password':
             flash('Connection établie', 'success')
             return redirect(url_for('home'))
         else:
