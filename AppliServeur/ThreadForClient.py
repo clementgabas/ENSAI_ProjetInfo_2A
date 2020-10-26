@@ -1,5 +1,5 @@
 #Classe ThreadForClient qui permet la gestion de plusieurs clients en simultanné pr le serveur via les threads.
-
+from datetime import datetime
 import threading
 
 
@@ -11,5 +11,5 @@ class ThreadForClient(threading.Thread):
     def run(self):
         data = self.conn.recv(1024)
         data = data.decode("utf8")
-        print(data)
+        print(str(datetime.now()) + data)
 
