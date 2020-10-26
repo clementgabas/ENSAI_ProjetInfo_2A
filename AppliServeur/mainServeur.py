@@ -3,6 +3,7 @@ import socket
 import threading
 from datetime import datetime
 from ThreadForClient import ThreadForClient
+from Connexion_Service.AuthentificationService import authentification
 
 HOST, PORT = ('', 5566)
 
@@ -15,6 +16,10 @@ while True:
     conn, address = sock.accept()
     data = conn.recv(1024)
     data = data.decode("utf8")
+
+    if data == "Demande d'authentification":
+        pass
+    else:
     print(f"[{str(datetime.now())}]:" + data)
 
     my_thread = ThreadForClient(conn)
