@@ -41,6 +41,6 @@ class Menu_Principal(AbstractView):
                 print("Cya")
                 break
 
-
-Menu_P1 = Menu_Principal()
-Menu_P1.make_choice()
+if __name__ == "__main__": 
+    Menu_P1 = Menu_Principal()
+    Menu_P1.make_choice()
