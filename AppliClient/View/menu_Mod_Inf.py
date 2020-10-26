@@ -1,6 +1,6 @@
 #Importation des modules
 import PyInquirer as inquirer
-from AppliClient.View.abstractView import AbstractView
+from abstractView import AbstractView
 
 #Création du menu de mofidification des informations.
 

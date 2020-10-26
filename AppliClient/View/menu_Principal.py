@@ -1,9 +1,9 @@
 # Importation des modules
 import PyInquirer as inquirer
-from AppliClient.View.abstractView import AbstractView
-import AppliClient.View.menu_Creer_Compte as MCC
-import AppliClient.View.menu_Connexion as MC
-import AppliClient.View.menu_Choix_Jeu as MCJ
+from abstractView import AbstractView
+import menu_Creer_Compte as MCC
+import menu_Connexion as MC
+import menu_Choix_Jeu as MCJ
 
 
 # Création du menu_Principal

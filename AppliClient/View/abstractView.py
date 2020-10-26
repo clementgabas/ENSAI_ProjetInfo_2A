@@ -9,3 +9,4 @@ class AbstractView(ABC):
         pass
     def make_choice(self):
         pass
+
