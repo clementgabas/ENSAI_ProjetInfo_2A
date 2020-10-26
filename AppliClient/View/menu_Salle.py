@@ -1,6 +1,6 @@
 #Importation des modules
 import PyInquirer as inquirer
-from View.abstractView import AbstractView
+from AppliClient.View.abstractView import AbstractView
 
 #Création du menu des classements.
 
