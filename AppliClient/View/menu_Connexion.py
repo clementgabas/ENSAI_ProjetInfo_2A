@@ -27,7 +27,9 @@ class Menu_Connexion(AbstractView):
 
             identifiant, mdp = menu_Connexion1.reponse["Identifiant"], menu_Connexion1.reponse["Password"]
 
-            #fonction de connexion
+            #on envoit au serveur id et mdp et on lui demande si on peut se connecter.
+            #si le serveur répond conenxion = True, on se connecte
+            #sinon, on réessaye
 
             #if connexion :
                 #Co = MUC.Menu_User_Co()
