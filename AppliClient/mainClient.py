@@ -27,12 +27,6 @@ try:
 
     MenuP1 = Menu_Principal()
     MenuP1.make_choice()
-
-
-    #data = "Données qu'on envoit au serveur"
-    #data = data.encode("utf8")
-    #sock.sendall(data)
-
 except:
     print(f"[{str(datetime.now())}]: Connexion au serveur échouée.")
 finally:

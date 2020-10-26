@@ -15,7 +15,7 @@ class Menu_Principal(AbstractView):
             {
                 'type': 'list',
                 'name': 'Accueil',
-                'message': "Bienvenue dans le menu principal de l'application. \n Que souhaitez-vous faire ?",
+                'message': "Bienvenue dans l'application. \n Que souhaitez-vous faire ?",
                 'choices': [
                     'Me connecter',
                     'Jouer en tant qu\'anonyme',
@@ -32,15 +32,26 @@ class Menu_Principal(AbstractView):
     def make_choice(self):
         while True:
             self.reponse = inquirer.prompt(self.questions)
+
             if self.reponse["Accueil"] == "Me connecter":
-                MC.menu_Connexion1.make_choice()
+                Co = MC.Menu_Connexion()
+                return Co.make_choice()
+
             elif self.reponse["Accueil"] == "Jouer en tant qu\'anonyme":
-                MCJ.menu_Choix_Jeu_Anonyme1.make_choice()
+                #jsp si il faut mettre la classe choix_mode_jeu_conencte ou choix_mode_jeu_anonyme..
+                #Jeu = MCJ.Menu_Choix_Mode_Jeu_Connecte()
+                #return Jeu.make_choice()
+                pass
+
             elif self.reponse["Accueil"] == "Créer un compte utilisateur":
-                MCC.menu_Creer_Compte1.make_choice()
+                CrCompte = MCC.Menu_Creer_Compte()
+                return CrCompte.make_choice()
+
             elif self.reponse["Accueil"] == "Quitter l\'application":
-                print(f"[{str(datetime.now())}]: Cya! Merci et à bientôt!")
-                break
+                return print(f"[{str(datetime.now())}]: Cya! Merci et à bientôt!")
+            else:
+                print("réponse invalide dans le menu_Principal.Menu_Principal.make_choice() ... Boucle break")
+            break
 
 if __name__ == "__main__": 
     Menu_P1 = Menu_Principal()

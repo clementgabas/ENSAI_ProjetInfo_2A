@@ -33,8 +33,6 @@ class menu_Choix_Mode_Jeu_Connecte(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Choix_Mode_Jeu_Connecte1 = menu_Choix_Mode_Jeu_Connecte()
-
 class menu_Choix_Mode_Jeu_Anonyme(AbstractView):
     def __init__(self):
         self.questions = [
@@ -63,4 +61,5 @@ class menu_Choix_Mode_Jeu_Anonyme(AbstractView):
 
 
 if __name__ == "__main__": 
+    menu_Choix_Mode_Jeu_Connecte1 = menu_Choix_Mode_Jeu_Connecte()
     menu_Choix_Mode_Jeu_Anonyme1 = menu_Choix_Mode_Jeu_Anonyme()
