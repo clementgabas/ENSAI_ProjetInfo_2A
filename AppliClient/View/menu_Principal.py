@@ -15,7 +15,7 @@ class Menu_Principal(AbstractView):
             {
                 'type': 'list',
                 'name': 'Accueil',
-                'message': "Bienvenue dans le menu principal de l'applicaition. \n Que souhaitez-vous faire ?",
+                'message': "Bienvenue dans le menu principal de l'application. \n Que souhaitez-vous faire ?",
                 'choices': [
                     'Me connecter',
                     'Jouer en tant qu\'anonyme',
@@ -27,7 +27,7 @@ class Menu_Principal(AbstractView):
         ]
 
     def display_info(self):
-        print(f"{str(datetime.now())} : Bienvenue sur le menu principal")
+        print(f"[{str(datetime.now())}]: Bienvenue sur le menu principal")
 
     def make_choice(self):
         while True:
@@ -39,7 +39,7 @@ class Menu_Principal(AbstractView):
             elif self.reponse["Accueil"] == "Créer un compte utilisateur":
                 MCC.menu_Creer_Compte1.make_choice()
             elif self.reponse["Accueil"] == "Quitter l\'application":
-                print(f"{str(datetime.now())}  : Cya! Merci et à bientôt!")
+                print(f"[{str(datetime.now())}]: Cya! Merci et à bientôt!")
                 break
 
 if __name__ == "__main__": 

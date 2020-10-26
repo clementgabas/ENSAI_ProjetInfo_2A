@@ -8,12 +8,14 @@ HOST, PORT = ('', 5566)
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #init du socket
 sock.bind((HOST, PORT))
-print(f"{str(datetime.now())} : Le serveur est démarré.")
+print(f"[{str(datetime.now())}]: Le serveur est démarré.")
 
 while True:
     sock.listen()
     conn, address = sock.accept()
-    print(f"{str(datetime.now())} : En écoute...")
+    data = conn.recv(1024)
+    data = data.decode("utf8")
+    print(f"[{str(datetime.now())}]: " + data)
 
     my_thread = ThreadForClient(conn)
     my_thread.start()
