@@ -1,6 +1,8 @@
 #Importation des modules
 import PyInquirer as inquirer
 from View.abstractView import AbstractView
+import View.menu_Utilisateur_Co as MUC
+
 
 #Création du menu de connexion
 
@@ -22,13 +24,18 @@ class Menu_Connexion(AbstractView):
         ]
         while True:
             self.reponse = inquirer.prompt(self.questions)
-            if menu_Connexion1.reponse["Identifiant"] == "1" and menu_Connexion1.reponse["Password"] == "2":
-                print("Connexion réussie")
-                import menu_Utilisateur_Co as MUC
-                MUC.menu_User_Co1.make_choice()
-                break
-            else:
-                print("Identifiant ou mot de passe incorrect. Veuillez réessayer")
+
+            identifiant, mdp = menu_Connexion1.reponse["Identifiant"], menu_Connexion1.reponse["Password"]
+
+            #fonction de connexion
+
+            #if connexion :
+                #Co = MUC.Menu_User_Co()
+                #return Co.make_choice()
+            #else:
+                #print("Id ou mdp incorrect. Veuillez reessayer")
+                #return self.make_choice
+
 
 if __name__ == "__main__": 
     menu_Connexion1 = Menu_Connexion()
