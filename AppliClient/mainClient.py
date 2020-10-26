@@ -1,6 +1,6 @@
 #Main du client
 import socket
-from View.menu_principal import Menu_Principal
+from View.menu_Principal import Menu_Principal
 
 
 

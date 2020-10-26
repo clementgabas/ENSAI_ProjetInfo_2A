@@ -1,6 +1,6 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
+from View.abstractView import AbstractView
 
 #Création du menu Créer compte
 
