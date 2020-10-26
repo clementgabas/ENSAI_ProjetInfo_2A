@@ -29,7 +29,9 @@ class Menu_Connexion(AbstractView):
                 break
             else:
                 print("Identifiant ou mot de passe incorrect. Veuillez réessayer")
-menu_Connexion1 = Menu_Connexion()
+
+if __name__ == "__main__": 
+    menu_Connexion1 = Menu_Connexion()
 
 
 # Les réponses des utilisateurs sont stockés dans : menu_Connexion1.reponse["Identifiant"] et (menu_Connexion1.reponse["Password"]) il faudra ensuite les comparer aux id et mdp stockés en base avant

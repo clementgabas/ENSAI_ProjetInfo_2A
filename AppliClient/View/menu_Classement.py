@@ -38,4 +38,7 @@ class Menu_Classement(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Classement1 = Menu_Classement()
+
+
+if __name__ == "__main__": 
+    menu_Classement1 = Menu_Classement()

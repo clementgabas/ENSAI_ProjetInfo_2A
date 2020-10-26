@@ -32,4 +32,6 @@ class menu_Salle(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Salle1 = menu_Salle()
+
+if __name__ == "__main__": 
+    menu_Salle1 = menu_Salle()

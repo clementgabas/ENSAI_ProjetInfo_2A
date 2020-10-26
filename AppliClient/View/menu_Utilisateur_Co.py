@@ -35,5 +35,5 @@ class Menu_User_Co(AbstractView):
             elif self.reponse["Menu_Co"] == "Se déconnecter":
                 print("Déconnexion réussie")
                 break
-
-menu_User_Co1 = Menu_User_Co()
+if __name__ == "__main__": 
+    menu_User_Co1 = Menu_User_Co()

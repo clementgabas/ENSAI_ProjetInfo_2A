@@ -41,4 +41,7 @@ class Menu_Profil(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Profil1 = Menu_Profil()
+
+
+if __name__ == "__main__": 
+    menu_Profil1 = Menu_Profil()

@@ -35,4 +35,7 @@ class Menu_Modif_Inf(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Modif1 = Menu_Modif_Inf()
+
+
+if __name__ == "__main__": 
+    menu_Modif1 = Menu_Modif_Inf()

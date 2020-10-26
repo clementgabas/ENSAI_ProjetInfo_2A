@@ -35,6 +35,8 @@ class Menu_Ami(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Ami1 = Menu_Ami()
+
+if __name__ == "__main__": 
+    menu_Ami1 = Menu_Ami()
 
 #Comment

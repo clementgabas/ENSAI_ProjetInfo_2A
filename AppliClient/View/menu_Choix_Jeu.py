@@ -56,4 +56,5 @@ class Menu_Choix_Jeu_Anonyme(AbstractView):
             import menu_Choix_Mode_Jeu as MCMJ
             MCMJ.menu_Choix_Mode_Jeu_Anonyme1.make_choice()
 
-menu_Choix_Jeu_Anonyme1  = Menu_Choix_Jeu_Anonyme()
+if __name__ == "__main__": 
+    menu_Choix_Jeu_Anonyme1  = Menu_Choix_Jeu_Anonyme()

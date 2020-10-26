@@ -33,7 +33,10 @@ class Menu_Creer_Compte(AbstractView):
                 break
 
 
-menu_Creer_Compte1  = Menu_Creer_Compte()
+
+
+if __name__ == "__main__": 
+    menu_Creer_Compte1  = Menu_Creer_Compte()
 
 # Les réponses des utilisateurs sont stockés dans : menu_Creer_Compte1.reponse["Identifiant"] et (menu_Creer_Compte1.reponse["Password"]) il faudra ensuite les comparer aux id et mdp stockés en base avant
 #de permttre l'authentification.
