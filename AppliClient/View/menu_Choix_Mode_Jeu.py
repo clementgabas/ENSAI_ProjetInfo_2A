@@ -1,6 +1,6 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
+from View.abstractView import AbstractView
 
 #Création du menu des classements.
 
@@ -60,4 +60,7 @@ class menu_Choix_Mode_Jeu_Anonyme(AbstractView):
                 print("Vous allez être redirigé vers le menu précédent.")
                 break
 
-menu_Choix_Mode_Jeu_Anonyme1 = menu_Choix_Mode_Jeu_Anonyme()
+
+
+if __name__ == "__main__": 
+    menu_Choix_Mode_Jeu_Anonyme1 = menu_Choix_Mode_Jeu_Anonyme()
