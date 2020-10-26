@@ -5,14 +5,13 @@ class MDP:
 
     def __init__(self, password):
         self.mdp = password
-        self.hashedMDP = hashMDP(self)
-        self.antiSQLmdp = anti_SQL_injection(self)
 
     def hashMDP(self):
         #source:https://www.vitoshacademy.com/hashing-passwords-in-python/
         salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
         hash = binascii.hexlify(hashlib.pbkdf2_hmac('sha512', self.mdp.encode('utf-8'), salt, 100000))
         return(salt + hash).decode('ascii')
+
 
     def isLegal(self):
         mot_de_passe_entre = self.mdp
