@@ -36,6 +36,8 @@ try:
 except:
     print(f"[{str(datetime.now())}]: Connexion au serveur échouée.")
 finally:
-    print(f"[{str(datetime.now())}]: Vous avez bien quitté l'application.")
-    sock.send(f"Le client (id = {id_client}) s'est déconnecté du serveur.".encode("utf8"))
-    sock.close()
+    try:
+        sock.send(f"Le client (id = {id_client}) s'est déconnecté du serveur.".encode("utf8"))
+        print(f"[{str(datetime.now())}]: Vous avez bien quitté l'application.")
+    finally:
+        sock.close()

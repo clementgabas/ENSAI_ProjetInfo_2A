@@ -15,7 +15,7 @@ while True:
     conn, address = sock.accept()
     data = conn.recv(1024)
     data = data.decode("utf8")
-    print(f"[{str(datetime.now())}]: " + data)
+    print(f"[{str(datetime.now())}]:" + data)
 
     my_thread = ThreadForClient(conn)
     my_thread.start()

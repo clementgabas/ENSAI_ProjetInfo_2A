@@ -11,5 +11,5 @@ class ThreadForClient(threading.Thread):
     def run(self):
         data = self.conn.recv(1024)
         data = data.decode("utf8")
-        print(f"[{str(datetime.now())}]" + data)
+        print(f"[{str(datetime.now())}]:" + data)
 
