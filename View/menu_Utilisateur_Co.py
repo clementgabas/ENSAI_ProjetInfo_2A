@@ -27,7 +27,7 @@ class Menu_User_Co(AbstractView):
             if self.reponse["Menu_Co"] == "Jouer":
                 print("Vous avez choisi de jouer")
                 import menu_Choix_Jeu as MCJ
-                MCJ.menu_Choix_Jeu1.make_choice()
+                MCJ.menu_Choix_Jeu_Connecte1.make_choice()
             elif self.reponse["Menu_Co"] == "Accéder au profil":
                 print("Vous avez décidé d'accéder à voter profil")
                 import menu_Profil as MPro

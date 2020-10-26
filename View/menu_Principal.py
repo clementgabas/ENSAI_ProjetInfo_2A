@@ -34,7 +34,7 @@ class Menu_Principal(AbstractView):
             if self.reponse["Accueil"] == "Me connecter":
                 MC.menu_Connexion1.make_choice()
             elif self.reponse["Accueil"] == "Jouer en tant qu\'anonyme":
-                MCJ.menu_Choix_Jeu1.make_choice()
+                MCJ.menu_Choix_Jeu_Anonyme1.make_choice()
             elif self.reponse["Accueil"] == "Créer un compte utilisateur":
                 MCC.menu_Creer_Compte1.make_choice()
             elif self.reponse["Accueil"] == "Quitter l\'application":
