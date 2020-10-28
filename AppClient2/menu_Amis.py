@@ -1,6 +1,6 @@
 #Importation des modules
 import PyInquirer as inquirer
-from View.abstractView import AbstractView
+from abstractView import AbstractView
 
 from printFunctions import timePrint as print
 
@@ -23,7 +23,8 @@ class Menu_Ami(AbstractView):
             },
         ]
     def display_info(self):
-        print("Bienvenue sur le menu ami")
+        #print("Bienvenue sur le menu ami")
+        pass
     def make_choice(self):
         while True:
             self.reponse = inquirer.prompt(self.questions)

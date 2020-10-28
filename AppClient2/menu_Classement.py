@@ -23,8 +23,11 @@ class Menu_Classement(AbstractView):
                           ]
             },
         ]
+        
     def display_info(self):
-        print("Bienvenue sur le menu ami")
+        #print("Bienvenue sur le menu ami")
+        pass
+
     def make_choice(self):
         while True:
             self.reponse = inquirer.prompt(self.questions)

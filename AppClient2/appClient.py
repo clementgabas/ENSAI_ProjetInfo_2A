@@ -3,7 +3,7 @@ from printFunctions import timePrint as print
 
 
 def lancer_appli():
-	Acceuil = Menu_Acceuil()
+	Acceuil = Menu_Accueil()
 	Acceuil.display_info()
 	return Acceuil.make_choice()
 

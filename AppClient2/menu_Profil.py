@@ -1,6 +1,10 @@
 #Importation des modules
 import PyInquirer as inquirer
 from abstractView import AbstractView
+import menu_Mod_Inf as MMI
+import menu_Amis as MA
+import menu_Classement as MC
+
 
 from printFunctions import timePrint as print
 
@@ -14,34 +18,46 @@ class Menu_Profil(AbstractView):
                 'name' : 'menu_Profil',
                 'message' : "Que souhaitez-vous faire ?",
                           'choices' : [
-                              'Modifier mes informations personnelles',
+                              'Accéder à mes informations personnelles',
                               'Accéder à ma liste d\'amis',
-                              'Accéder au classement',
+                              'Accéder aux classements',
                               inquirer.Separator(),
                               'Revenir au menu précédent',
                           ]
             },
         ]
+
     def display_info(self):
-        print("Bienvenue sur le menu profil")
+        #print("Bienvenue sur le menu profil")
+        pass
+
     def make_choice(self):
         while True:
             self.reponse = inquirer.prompt(self.questions)
-            if self.reponse["menu_Profil"] == "Modifier mes informations personnelles":
-                print("Vous avez choisi de modifier vos informations personnelles")
-                import menu_Mod_Inf as MMI
-                MMI.menu_Modif1.make_choice()
+
+            if self.reponse["menu_Profil"] == "Accéder à mes informations personnelles":
+            	InfPerso = MMI.Menu_Modif_Inf()
+            	InfPerso.display_info()
+            	return InfPerso.make_choice()
+
             elif self.reponse["menu_Profil"] == "Accéder à ma liste d\'amis":
-                print("Vous avez décidé d'accéder à votre liste d\'amis")
-                import menu_Amis as MA
-                MA.menu_Ami1.make_choice()
+                Amis = MA.menu_Amis()
+                Amis.display_info()
+                return Amis.make_choice()
+
             elif self.reponse["menu_Profil"] == "Accéder au classement":
-                print("Vous avez décidé d'accéder à votre classement")
-                import menu_Classement as MC
-                MC.menu_Classement1.make_choice()
+            	Classement = MC.Menu_Classement()
+            	Classement.display_info()
+            	return Classement.make_choice()
+
             elif self.reponse["menu_Profil"] == "Revenir au menu précédent":
-                print("Vous allez être redirigé vers le menu précédent.")
-                break
+            	import menu_Utilisateur_Co as MUC
+            	Retour = MUC.Menu_User_Co()
+            	Retour.display_info()
+            	return Retour.make_choice()
+            else:
+            	print("Erreur dans menu_Profil.Menu_Profil.make_choice")
+            break
 
 
 

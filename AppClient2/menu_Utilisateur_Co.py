@@ -42,7 +42,11 @@ class Menu_User_Co(AbstractView):
                 return Profil.make_choice()
 
             elif self.reponse["Menu_Co"] == "Se déconnecter":
+                import menu_Accueil as MA
+                Deco = MA.Menu_Accueil()
                 print("Déconnexion réussie")
+                Deco.display_info()
+                return Deco.make_choice()
 
             else:
                 print("Réponse invalide dans le menu_Utilisateur.Menu_User_Co.make_choice() ... Boucle break")
