@@ -41,7 +41,7 @@ class Menu_Profil(AbstractView):
             	return InfPerso.make_choice()
 
             elif self.reponse["menu_Profil"] == "Accéder à ma liste d\'amis":
-                Amis = MA.menu_Amis()
+                Amis = MA.Menu_Ami()
                 Amis.display_info()
                 return Amis.make_choice()
 

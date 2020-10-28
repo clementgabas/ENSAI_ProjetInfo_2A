@@ -33,7 +33,7 @@ class Menu_Modif_Inf(AbstractView):
                 return self.modif_mdp()
             elif self.reponse["menu_Modif_Info"] == "Revenir au menu précédent":
                 import menu_Profil as MP
-                Retour = MP.menu_Profil()
+                Retour = MP.Menu_Profil()
                 Retour.display_info()
                 return Retour.make_choice()
             else:
