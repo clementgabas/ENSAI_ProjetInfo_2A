@@ -1,6 +1,9 @@
 #Importation des modules
 import PyInquirer as inquirer
 from abstractView import AbstractView
+
+from printFunctions import timePrint as print
+
 #Création du menu Créer compte
 
 class Menu_Creer_Compte(AbstractView):
@@ -37,6 +40,8 @@ class Menu_Creer_Compte(AbstractView):
 
 if __name__ == "__main__": 
     menu_Creer_Compte1  = Menu_Creer_Compte()
+    menu_Creer_Compte1.display_info()
+    menu_Creer_Compte1.make_choice()
 
 # Les réponses des utilisateurs sont stockés dans : menu_Creer_Compte1.reponse["Identifiant"] et (menu_Creer_Compte1.reponse["Password"]) il faudra ensuite les comparer aux id et mdp stockés en base avant
 #de permttre l'authentification.

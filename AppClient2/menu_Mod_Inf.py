@@ -2,6 +2,8 @@
 import PyInquirer as inquirer
 from View.abstractView import AbstractView
 
+from printFunctions import timePrint as print
+
 #Création du menu de mofidification des informations.
 
 class Menu_Modif_Inf(AbstractView):
@@ -39,3 +41,5 @@ class Menu_Modif_Inf(AbstractView):
 
 if __name__ == "__main__": 
     menu_Modif1 = Menu_Modif_Inf()
+    menu_Modif1.display_info()
+    menu_Modif1.make_choice()

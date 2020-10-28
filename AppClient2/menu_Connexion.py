@@ -3,14 +3,14 @@ import PyInquirer as inquirer
 from abstractView import AbstractView
 import menu_Utilisateur_Co as MUC
 
-from datetime import datetime
+from printFunctions import timePrint as print
 
 
 #Création du menu de connexion
 
 class Menu_Connexion(AbstractView):
     def display_info(self):
-        print(f"[{str(datetime.now())}]: Vous êtes sur le menu de connexion")
+        print("Vous êtes sur le menu de connexion")
 
     def make_choice(self):
         self.questions = [
@@ -36,7 +36,7 @@ class Menu_Connexion(AbstractView):
             # sinon, on réessaye
 
             #Dans notre cas, on simule que la connexion renvoit True
-            print(f"[{str(datetime.now())}]: **** On simmule que la connection se passe bien car on a pas encore coder l'authentification ****")
+            print("**** On simmule que la connection se passe bien car on a pas encore coder l'authentification ****")
             connexion = True
 
             if connexion :
@@ -44,15 +44,38 @@ class Menu_Connexion(AbstractView):
                 Co.display_info()
                 return Co.make_choice()
             else:
-                print(f"[{str(datetime.now())}]: Id ou mdp incorrect. Veuillez reessayer")
-                return self.make_choice
+                print("Id ou mdp incorrect.")
+                return self.make_choice_retour()
 
 
 
 
             #on envoit au serveur id et mdp et on lui demande si on peut se connecter.
 
-
+    def make_choice_retour(self):
+        self.questions_retour = [
+            {
+                'type': 'list',
+                'name': 'Retour',
+                'message': "Que souhaitez-vous faire ?",
+                    'choices': [
+                        'Réessayer',
+                        'Retourner à l\'accueil',
+                    ]
+            },
+        ]
+        while True:
+            self.reponse_retour = inquirer.prompt(self.questions_retour)
+            if self.reponse_retour['Retour'] == "Réessayer":
+                return self.make_choice()
+            elif self.reponse_retour['Retour'] == "Retourner à l'accueil":
+                import menu_Accueil as MA
+                Retour = MA.Menu_Accueil()
+                Retour.display_info()
+                return Retour.make_choice()
+            else:
+                print("Erreur dans menu_Connexion.Menu_Connexion.make_choice_retour")
+            break
 
 if __name__ == "__main__": 
     menu_Connexion1 = Menu_Connexion()

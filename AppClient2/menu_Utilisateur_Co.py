@@ -4,8 +4,7 @@ from abstractView import AbstractView
 import menu_Choix_Jeu as MCJ
 import menu_Profil as MPro
 
-from datetime import datetime
-
+from printFunctions import timePrint as print
 
 
 #Création du menu pour les utilisateurs connectés
@@ -26,7 +25,7 @@ class Menu_User_Co(AbstractView):
             },
         ]
     def display_info(self):
-        print(f"[{str(datetime.now())}]: 'Pseudo', vous êtes connectés. Bienvenue!")
+        print("'Pseudo', vous êtes connectés. Bienvenue!")
 
     def make_choice(self):
         while True:
@@ -43,10 +42,10 @@ class Menu_User_Co(AbstractView):
                 return Profil.make_choice()
 
             elif self.reponse["Menu_Co"] == "Se déconnecter":
-                print(f"[{str(datetime.now())}]: Déconnexion réussie")
+                print("Déconnexion réussie")
 
             else:
-                print(f"[{str(datetime.now())}]: réponse invalide dans le menu_Utilisateur.Menu_User_Co.make_choice() ... Boucle break")
+                print("Réponse invalide dans le menu_Utilisateur.Menu_User_Co.make_choice() ... Boucle break")
             break
 
 if __name__ == "__main__": 

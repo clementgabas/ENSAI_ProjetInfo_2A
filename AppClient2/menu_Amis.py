@@ -2,6 +2,8 @@
 import PyInquirer as inquirer
 from View.abstractView import AbstractView
 
+from printFunctions import timePrint as print
+
 #Création du menu ami.
 
 class Menu_Ami(AbstractView):
@@ -38,5 +40,7 @@ class Menu_Ami(AbstractView):
 
 if __name__ == "__main__": 
     menu_Ami1 = Menu_Ami()
+    menu_Ami1.display_info()
+    menu_Ami1.make_choice()
 
 #Comment

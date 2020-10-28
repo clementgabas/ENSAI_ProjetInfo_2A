@@ -2,7 +2,7 @@
 import PyInquirer as inquirer
 from abstractView import AbstractView
 
-from datetime import datetime
+from printFunctions import timePrint as print
 
 
 #Création du menu des classements.
@@ -35,22 +35,24 @@ class Menu_Salle(AbstractView):
         while True:
             self.reponse = inquirer.prompt(self.questions)
             if self.reponse["menu_Salle"] == "Créer une salle":
-                print(f"[{str(datetime.now())}]: Vous avez choisi de créer une salle")
+                print("Vous avez choisi de créer une salle")
                 print("*** On a pas encore la suite. On devrait donc quitter l'appli ***")
             elif self.reponse["menu_Salle"] == "Rejoindre une salle":
-                print(f"[{str(datetime.now())}]: Vous avez décidé de rejoindre une salle")
+                print("Vous avez décidé de rejoindre une salle")
                 print("*** On a pas encore la suite. On devrait donc quitter l'appli ***")
             elif self.reponse["menu_Salle"] == "Revenir au menu précédent":
-                print(f"[{str(datetime.now())}]: Vous allez être redirigé vers le menu précédent.")
+                print("Vous allez être redirigé vers le menu précédent.")
                 import menu_Choix_Mode_Jeu as MCMJ
                 Retour = MCMJ.Menu_Choix_Mode_Jeu_Connecte(self.game)
                 Retour.display_info()
                 return Retour.make_choice()
             else:
-              print(f"[{str(datetime.now())}]: réponse invalide dans le menu_Salle.Menu_Salle.make_choice() ... Boucle break")
+              print("Réponse invalide dans le menu_Salle.Menu_Salle.make_choice() ... Boucle break")
             break
 
 
 
 if __name__ == "__main__": 
     menu_Salle1 = Menu_Salle()
+    menu_Salle1.display_info()
+    menu_Salle1.make_choice()

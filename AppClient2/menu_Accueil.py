@@ -7,10 +7,11 @@ import menu_Creer_Compte as MCC
 import menu_Connexion as MC
 import menu_Choix_Jeu as MCJ
 
+from printFunctions import timePrint as print
 
 # Création du menu_Principal
 
-class Menu_Acceuil(AbstractView):
+class Menu_Accueil(AbstractView):
     def __init__(self):
         self.questions = [
             {
@@ -28,7 +29,7 @@ class Menu_Acceuil(AbstractView):
         ]
 
     def display_info(self):
-        print(f"[{str(datetime.now())}]: Bienvenue dans l'accueil de l'application.")
+        print("Bienvenue dans l'accueil de l'application.")
 
     def make_choice(self):
         while True:
@@ -51,13 +52,13 @@ class Menu_Acceuil(AbstractView):
                 return CrCompte.make_choice()
 
             elif self.reponse["Accueil"] == "Quitter l\'application":
-                return print(f"[{str(datetime.now())}]: Cya! Merci et à bientôt!")
+                return print("Cya! Merci et à bientôt!")
 
             else:
-                print(f"[{str(datetime.now())}]: réponse invalide dans le menu_Acceuil.Menu_Acceuil.make_choice() ... Boucle break")
+                print("Réponse invalide dans le menu_Acceuil.Menu_Acceuil.make_choice() ... Boucle break")
             break
 
 if __name__ == "__main__": 
-    Menu_P1 = Menu_Acceuil()
+    Menu_P1 = Menu_Accueil()
     Menu_P1.display_info()
     Menu_P1.make_choice()

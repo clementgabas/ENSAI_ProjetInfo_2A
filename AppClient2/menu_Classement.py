@@ -2,6 +2,8 @@
 import PyInquirer as inquirer
 from abstractView import AbstractView
 
+from printFunctions import timePrint as print
+
 #Création du menu des classements.
 
 class Menu_Classement(AbstractView):
@@ -42,3 +44,5 @@ class Menu_Classement(AbstractView):
 
 if __name__ == "__main__": 
     menu_Classement1 = Menu_Classement()
+    menu_Classement1.display_info()
+    menu_Classement1.make_choice()

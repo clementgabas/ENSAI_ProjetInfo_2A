@@ -2,6 +2,8 @@
 import PyInquirer as inquirer
 from abstractView import AbstractView
 
+from printFunctions import timePrint as print
+
 #Création du menu profil
 
 class Menu_Profil(AbstractView):
@@ -45,3 +47,5 @@ class Menu_Profil(AbstractView):
 
 if __name__ == "__main__": 
     menu_Profil1 = Menu_Profil()
+    menu_Profil1.display_info()
+    menu_Profil1.make_choice()
