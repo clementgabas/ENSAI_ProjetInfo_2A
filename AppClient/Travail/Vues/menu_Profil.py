@@ -45,7 +45,7 @@ class Menu_Profil(AbstractView):
                 Amis.display_info()
                 return Amis.make_choice()
 
-            elif self.reponse["menu_Profil"] == "Accéder au classement":
+            elif self.reponse["menu_Profil"] == "Accéder aux classements":
             	Classement = MC.Menu_Classement()
             	Classement.display_info()
             	return Classement.make_choice()
