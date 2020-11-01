@@ -1,0 +1,27 @@
+Home
+
+	home/connexion
+	@app.route('home/connexion/<User>' method=['GET','PUT'])
+	
+	home/inscription
+	@app.route('home/inscription/<User>' method=['POST'])
+	
+	home/annonyme
+	@app.route('home/annonyme/<User>' method=['POST'])
+
+
+
+
+home/menu principal/
+
+	Menu principal/profil/
+	@app.route('Menu principal/profil/User' method=['GET','PUT','DELETE'])
+	@app.route('Menu principal/profil/Friends' method=['GET','PUT','DELETE'])
+	@app.route('Menu principal/profil/classement' method=['GET','PUT','DELETE'])
+
+
+	Menu principal/Jeu/
+	@app.route('Menu principal/Jeu/Parametre' method=['GET','PUT/POST?'])
+	
+	Menu principal/Quitter/
+	@app.route('/exit' method=['DELETE','POST?'])
