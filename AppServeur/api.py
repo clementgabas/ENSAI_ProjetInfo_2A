@@ -14,6 +14,8 @@ from loguru import logger
 from requests import codes as http_codes
 from api.commons import configuration
 
+import sqlite3
+
 CACHE_TTL = 60  # 60 seconds
 
 # Load conf
@@ -52,16 +54,77 @@ def access_log():
     logger.info("{0} {1}".format(request.method, request.path))
 
 
-@ns.route("/", strict_slashes=False)
+
+
+
+
+
+
+
+
+
+
+@app.route("/", strict_slashes=False)
+@app.route("/home")
 class Base(Resource):
     @staticmethod
     def get():
         """
             Base route
         """
-        response = {"status_code": http_codes.OK, "message": "Api jeux"}
+        response = {"status_code": http_codes.OK, "message": "Vous êtes bien sur l'Api jeux"}
 
         return make_reponse(response, http_codes.OK)
+
+@app.route('/home/users', methods = ['POST'])
+#@app.route('home/inscription/<User>' method=['POST'])
+def new_user():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    if username is None or password is None:
+        abort(400) # missing arguments
+
+    con = sqlite3.connect("db_API_jeux.db")
+    cursor = con.cursor()
+    try:
+    	cursor.execute("SELECT identifiant FROM Utilisateur")
+    	ide = cursor.fetchone()
+    except:
+    	print("ERROR : API.new_user : does user already exist")
+    	raise ConnectionAbortedError
+    finally:
+    	con.close()
+
+    if ide != None: #il existe déjà un utilisateur avec cet identifiant dans la db
+    	abort(401) #existing user
+
+    pseudo = request.json.get("pseudo")
+    hpassword = password
+    con = sqlite3.connect("db_API_jeux.db")
+    cursor = con.cursor()
+    try:
+    	cursor.execute("INSERT INTO Utilisateur (pseudo, identifiant, mdp, nbr_parties_jouees, nbr_parties_gagnees, est_connecte, en_file, en_partie) VALUES (%s, %s, %s, 0, 0, "False", "False", "False",)", (pseudo, username, hpassword,))
+    except:
+    	print("ERROR : API.new_user : add user into db")
+    	raise ConnectionAbortedError
+    finally:
+    	con.close()
+
+    return jsonify({ 'username': username }), 201, {'Location': url_for('get_user', id = username, _external = True)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
