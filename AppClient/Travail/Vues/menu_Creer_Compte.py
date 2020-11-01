@@ -1,6 +1,6 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
+from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
 
@@ -8,7 +8,7 @@ from printFunctions import timePrint as print
 
 class Menu_Creer_Compte(AbstractView):
     def display_info(self):
-        print("Bienvue sur le menu de création de compte")
+        print("Bienvenue sur le menu de création de compte")
     def make_choice(self):
         self.questions = [
             {
@@ -53,7 +53,7 @@ class Menu_Creer_Compte(AbstractView):
             is_pseudo_free = True
 
             print("Compte créer avec succès. Veuillez vous authentifiez svp")
-            import menu_Connexion as MC
+            import Vues.menu_Connexion as MC
             Co = MC.Menu_Connexion()
             Co.display_info()
             return Co.make_choice()
@@ -75,7 +75,7 @@ class Menu_Creer_Compte(AbstractView):
             if self.reponse_retour['Retour'] == "Réessayer":
                 return self.make_choice()
             elif self.reponse_retour['Retour'] == "Retourner à l'accueil":
-                import menu_Accueil as MA
+                import Vues.menu_Accueil as MA
                 Retour = MA.Menu_Accueil()
                 Retour.display_info()
                 return Retour.make_choice()

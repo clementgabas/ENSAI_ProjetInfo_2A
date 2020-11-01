@@ -1,7 +1,7 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
-import menu_Utilisateur_Co as MUC
+from Vues.abstractView import AbstractView
+import Vues.menu_Utilisateur_Co as MUC
 
 from printFunctions import timePrint as print
 
@@ -69,7 +69,7 @@ class Menu_Connexion(AbstractView):
             if self.reponse_retour['Retour'] == "Réessayer":
                 return self.make_choice()
             elif self.reponse_retour['Retour'] == "Retourner à l'accueil":
-                import menu_Accueil as MA
+                import Vues.menu_Accueil as MA
                 Retour = MA.Menu_Accueil()
                 Retour.display_info()
                 return Retour.make_choice()

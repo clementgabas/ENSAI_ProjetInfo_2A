@@ -1,6 +1,6 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
+from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
 
@@ -36,7 +36,7 @@ class Menu_Ami(AbstractView):
             elif self.reponse["menu_Ami"] == "Afficher ma liste d\'amis":
                 return self.voir_liste_ami()
             elif self.reponse["menu_Ami"] == "Revenir au menu précédent":
-                import menu_Profil as MP
+                import Vues.menu_Profil as MP
                 Retour = MP.Menu_Profil()
                 Retour.display_info()
                 return Retour.make_choice()            
@@ -71,6 +71,7 @@ class Menu_Ami(AbstractView):
             else:
                 print("Erreur dans l'API add_friend.")
             break
+
     def echec_ajout_ami(self):
         self.echecAjoutAmiQ = [
             {

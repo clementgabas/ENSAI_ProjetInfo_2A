@@ -1,8 +1,8 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
-import menu_Choix_Jeu as MCJ
-import menu_Profil as MPro
+from Vues.abstractView import AbstractView
+import Vues.menu_Choix_Jeu as MCJ
+import Vues.menu_Profil as MPro
 
 from printFunctions import timePrint as print
 
@@ -42,7 +42,7 @@ class Menu_User_Co(AbstractView):
                 return Profil.make_choice()
 
             elif self.reponse["Menu_Co"] == "Se déconnecter":
-                import menu_Accueil as MA
+                import Vues.menu_Accueil as MA
                 Deco = MA.Menu_Accueil()
                 print("Déconnexion réussie")
                 Deco.display_info()

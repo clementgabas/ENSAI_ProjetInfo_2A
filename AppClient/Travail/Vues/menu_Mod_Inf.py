@@ -1,6 +1,6 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
+from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
 
@@ -32,7 +32,7 @@ class Menu_Modif_Inf(AbstractView):
             elif self.reponse["menu_Modif_Info"] == "Modifier mon mot de passe":
                 return self.modif_mdp()
             elif self.reponse["menu_Modif_Info"] == "Revenir au menu précédent":
-                import menu_Profil as MP
+                import Vues.menu_Profil as MP
                 Retour = MP.Menu_Profil()
                 Retour.display_info()
                 return Retour.make_choice()

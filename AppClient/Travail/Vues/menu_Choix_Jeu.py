@@ -1,7 +1,7 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
-import menu_Choix_Mode_Jeu as MCMJ
+from Vues.abstractView import AbstractView
+import Vues.menu_Choix_Mode_Jeu as MCMJ
 
 from printFunctions import timePrint as print
 
@@ -37,7 +37,7 @@ class Menu_Choix_Jeu_Connecte(AbstractView):
 
         elif self.reponse["choix_Jeu_Connecte"] == "Revenir au menu précédent":
             print("Vous allez être redirigé vers le menu précédent.")
-            import menu_Utilisateur_Co as MUC
+            import Vues.menu_Utilisateur_Co as MUC
             Retour = MUC.Menu_User_Co()
             Retour.display_info()
             return Retour.make_choice()

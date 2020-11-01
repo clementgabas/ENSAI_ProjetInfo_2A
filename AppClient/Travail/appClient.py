@@ -1,4 +1,4 @@
-from menu_Accueil import Menu_Accueil
+from Vues.menu_Accueil import Menu_Accueil
 from printFunctions import timePrint as print
 
 

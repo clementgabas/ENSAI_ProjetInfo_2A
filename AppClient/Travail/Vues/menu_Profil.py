@@ -1,9 +1,9 @@
 #Importation des modules
 import PyInquirer as inquirer
-from abstractView import AbstractView
-import menu_Mod_Inf as MMI
-import menu_Amis as MA
-import menu_Classement as MC
+from Vues.abstractView import AbstractView
+import Vues.menu_Mod_Inf as MMI
+import Vues.menu_Amis as MA
+import Vues.menu_Classement as MC
 
 
 from printFunctions import timePrint as print
@@ -51,7 +51,7 @@ class Menu_Profil(AbstractView):
             	return Classement.make_choice()
 
             elif self.reponse["menu_Profil"] == "Revenir au menu précédent":
-            	import menu_Utilisateur_Co as MUC
+            	import Vues.menu_Utilisateur_Co as MUC
             	Retour = MUC.Menu_User_Co()
             	Retour.display_info()
             	return Retour.make_choice()
