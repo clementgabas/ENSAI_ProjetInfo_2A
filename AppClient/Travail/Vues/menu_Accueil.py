@@ -41,9 +41,10 @@ class Menu_Accueil(AbstractView):
                 return Co.make_choice()
 
             elif self.reponse["Accueil"] == "Jouer en tant qu\'anonyme":
-                #jsp si il faut mettre la classe choix_mode_jeu_conencte ou choix_mode_jeu_anonyme..
+                #jsp si il faut mettre la classe choix_mode_jeu_connecte ou choix_mode_jeu_anonyme..
                 #Jeu = MCJ.Menu_Choix_Mode_Jeu_Connecte()
                 #return Jeu.make_choice()
+                print("-------------------- JE PROPOSE DANS UN PREMIER TEMPS DE NE TRAVAILLER QUE SUR LES USERS CO ET APRES ON GERERA CA MAIS EN FAIT J AI DES IDEES DE COMMENT FAIRE MAIS D ABORD ON GERE LE RESTE CA CEST MOINS IMPORTANT DE POUVOIR JOUER ANONYMEMENT OU NON -----------------------")
                 pass
 
             elif self.reponse["Accueil"] == "Créer un compte utilisateur":
