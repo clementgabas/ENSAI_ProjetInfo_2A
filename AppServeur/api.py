@@ -5,6 +5,8 @@ import random
 import json
 import hashlib
 
+from api.codeList import _codes
+
 from flask import Flask, jsonify, request, Blueprint
 from flask_cors import CORS
 from flask_restplus import Api, Resource
@@ -76,31 +78,37 @@ def get():
 
 @app.route('/home/users', methods = ['POST'])
 def new_user():
-    print(request.get_json(force=True))
+    request.get_json(force=True)
     username = request.json.get('username')
     password = request.json.get('password')
     pseudo = request.json.get('pseudo')
 
-    if username is None or password is None:
-        abort(400) # missing arguments
+    if username is "" or password is "":
+        response = {"status_code": http_codes.bad_request, "message": "Missing argument."} #error 400
+        return make_reponse(response, http_codes.bad_request)
 
 
     try: #on vérifie si l'utilisateur existe
         con = sqlite3.connect("database/apijeux.db")
-        cursor = con.cursor()
+        cursor, cursor2 = con.cursor(), con.cursor()
         cursor.execute("SELECT pseudo FROM Utilisateur WHERE identifiant = ?", (username,))
+        cursor2.execute("SELECT identifiant FROM Utilisateur WHERE pseudo = ?", (pseudo,))
         ide = cursor.fetchone()
+        pse = cursor2.fetchone()
     except:
-        print("ERROR : API.new_user : does user already exist")
+        print("ERROR : API.new_user :")
         raise ConnectionAbortedError
     finally:
         con.close()
 
     if ide != None: #il existe déjà un utilisateur avec cet identifiant dans la db
-        abort(401) #existing user
-        #return jsonify ave les erreurs
+        response = {"status_code": http_codes.conflict, "message": "User already exists in the DB."} #error 409
+        return make_reponse(response, http_codes.conflict)
+    if pse != None: #il existe deja un user avec ce pseudo
+        response = {"status_code": http_codes.conflict, "message": "Pseudo already exists in the DB."} #error 409
+        return make_reponse(response, http_codes.conflict)
 
-    hpassword = password
+    hpassword = password #-- a faire!!!
 
     con = sqlite3.connect("database/apijeux.db")
     cursor = con.cursor()
@@ -114,10 +122,8 @@ def new_user():
     finally:
         con.close()
 
-    return print("c valide")
-
-    #return jsonify({ 'username': username }), 201, {'Location': url_for('get_user', id = username, _external = True)}
-
+    response = {"status_code": http_codes.ok, "message": "L'utilisateur a bien été ajouté à la DB."}
+    return make_reponse(response, http_codes.ok) #code 200
 
 
 
@@ -187,3 +193,4 @@ if __name__ == "__main__":
         app.run(host="localhost", port=5001, debug=True)
     else:
         app.run(host="localhost", port=int(cf_port), debug=True)
+

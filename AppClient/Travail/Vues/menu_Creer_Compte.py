@@ -56,22 +56,29 @@ class Menu_Creer_Compte(AbstractView):
             import json
             res = requests.post('http://localhost:9090/home/users', data=json.dumps(dataPost))
 
-            print("reponse de l'api" + res.text)
-
-            #on simule l'API.
-            #elle prend en entrée l'id et le mdp et elle vérifie si c'est bon.
-            is_id_free = True
-            id_mdp_legal = True
-            has_API_worked = True
-
-            is_pseudo_legit = True
-            is_pseudo_free = True
-
-            print("Compte créer avec succès. Veuillez vous authentifiez svp")
-            import Vues.menu_Connexion as MC
-            Co = MC.Menu_Connexion()
-            Co.display_info()
-            return Co.make_choice()
+            if res.status_code == 400:
+                print("L'identifiant ou le mot de passe n'a pas été précisé.")
+                return self.make_choice_retour()
+            elif res.status_code == 409:
+                if "user" in res.text:
+                    print("L'identifiant est déjà utilisé par un autre membre.")
+                elif "pseudo" in res.text:
+                    print("Le pseudo est déjà utilisé par un autre membre")
+                else:
+                    print("error")
+                return self.make_choice_retour()
+            elif res.status_code == 404:
+                print("erreur, l'api n'a pas été trouvée")
+                return self.make_choice_retour()
+            elif res.status_code == 200:
+                print("Compte créer avec succès. Veuillez vous authentifiez svp")
+                import Vues.menu_Connexion as MC
+                Co = MC.Menu_Connexion()
+                Co.display_info()
+                return Co.make_choice()
+            else:
+                print("erreur non prévue : "+ str(res.status_code))
+                return self.make_choice_retour()
 
     def make_choice_retour(self):
         self.questions_retour = [
@@ -98,10 +105,13 @@ class Menu_Creer_Compte(AbstractView):
                 print("Erreur dans menu_Creer_Comtpe.Menu_CreerCompte.make_choice_retour")
             break
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
+
     menu_Creer_Compte1  = Menu_Creer_Compte()
     menu_Creer_Compte1.display_info()
     menu_Creer_Compte1.make_choice()
+
+
 
 # Les réponses des utilisateurs sont stockés dans : menu_Creer_Compte1.reponse["Identifiant"] et (menu_Creer_Compte1.reponse["Password"]) il faudra ensuite les comparer aux id et mdp stockés en base avant
 #de permttre l'authentification.
