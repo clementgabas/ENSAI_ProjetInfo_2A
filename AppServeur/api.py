@@ -66,21 +66,20 @@ def access_log():
 
 @app.route("/", strict_slashes=False)
 @app.route("/home")
-class Base(Resource):
-    @staticmethod
-    def get():
-        """
-            Base route
-        """
-        response = {"status_code": http_codes.OK, "message": "Vous êtes bien sur l'Api jeux"}
-
-        return make_reponse(response, http_codes.OK)
+def get():
+    """
+        Base route
+    """
+    response = {"status_code": http_codes.OK, "message": "Vous êtes bien sur l'Api jeux"}
+    return make_reponse(response, http_codes.OK)
 
 @app.route('/home/users', methods = ['POST'])
 #@app.route('home/inscription/<User>' method=['POST'])
 def new_user():
+
     username = request.json.get('username')
     password = request.json.get('password')
+    print(username, password)
     if username is None or password is None:
         abort(400) # missing arguments
 
@@ -100,11 +99,11 @@ def new_user():
 
     pseudo = request.json.get("pseudo")
     hpassword = password
-    
+
     con = sqlite3.connect("apijeux.db")
     cursor = con.cursor()
     try:
-    	cursor.execute("INSERT INTO Utilisateur (pseudo, identifiant, mdp, nbr_parties_jouees, nbr_parties_gagnees, est_connecte, en_file, en_partie) VALUES (%s, %s, %s, 0, 0, "False", "False", "False",)", (pseudo, username, hpassword,))
+    	cursor.execute("INSERT INTO Utilisateur (pseudo, identifiant, mdp, nbr_parties_jouees, nbr_parties_gagnees, est_connecte, en_file, en_partie) VALUES (?, ?, ?, 0, 0, 'False', 'False', 'False',)", (pseudo, username, hpassword,))
     except:
     	print("ERROR : API.new_user : add user into db")
     	raise ConnectionAbortedError

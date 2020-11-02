@@ -37,6 +37,11 @@ class Menu_Connexion(AbstractView):
 
             #Dans notre cas, on simule que la connexion renvoit True
             print("**** On simmule que la connection se passe bien car on a pas encore coder l'authentification ****")
+
+            #--- Connexion à l'API
+            import requests
+            
+
             connexion = True
 
             if connexion :

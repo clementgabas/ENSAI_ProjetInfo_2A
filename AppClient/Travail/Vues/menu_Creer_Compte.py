@@ -34,20 +34,34 @@ class Menu_Creer_Compte(AbstractView):
                 'message': "Veuillez insérer votre pseudo",
             },]
         while True:
+
+
             self.reponse = inquirer.prompt(self.questions)
-            if self.reponse["Password"] != self.reponse["password_Check"]:
+
+            identifiant, mdp, mdp2 = self.reponse["identifiant"], self.reponse["Password"], self.reponse["password_Check"]
+
+            if mdp != mdp2:
                 print("Les mot de passes ne correspondent pas.")
                 return self.make_choice_retour()
-                
+
+            #ensuite elle demande un pseudo et vérifie si il est libre
+            self.reponsePseudo = inquirer.prompt(self.questionsPseudo)
+            pseudo = self.reponsePseudo['pseudo']
+
+            #création du data pour le corps du post de l'api
+            dataPost = {'username' : identifiant, "password" : mdp, "pseudo" : pseudo}
+
+            #-- connexion à l'API
+            import requests
+            res = requests.post('http://localhost:9090/home/users', data=dataPost)
+
+            print("reponse de l'api" + res.text)
+
             #on simule l'API.
             #elle prend en entrée l'id et le mdp et elle vérifie si c'est bon.
             is_id_free = True
             id_mdp_legal = True
             has_API_worked = True
-
-            #ensuite elle demande un pseudo et vérifie si il est libre
-            self.reponsePseudo = inquirer.prompt(self.questionsPseudo)
-            pseudo = self.reponsePseudo['pseudo']
 
             is_pseudo_legit = True
             is_pseudo_free = True
