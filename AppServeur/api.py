@@ -84,7 +84,7 @@ def new_user():
     if username is None or password is None:
         abort(400) # missing arguments
 
-    con = sqlite3.connect("db_API_jeux.db")
+    con = sqlite3.connect("apijeux.db")
     cursor = con.cursor()
     try:
     	cursor.execute("SELECT identifiant FROM Utilisateur")
@@ -100,7 +100,8 @@ def new_user():
 
     pseudo = request.json.get("pseudo")
     hpassword = password
-    con = sqlite3.connect("db_API_jeux.db")
+    
+    con = sqlite3.connect("apijeux.db")
     cursor = con.cursor()
     try:
     	cursor.execute("INSERT INTO Utilisateur (pseudo, identifiant, mdp, nbr_parties_jouees, nbr_parties_gagnees, est_connecte, en_file, en_partie) VALUES (%s, %s, %s, 0, 0, "False", "False", "False",)", (pseudo, username, hpassword,))
