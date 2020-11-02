@@ -4,6 +4,7 @@ from Vues.abstractView import AbstractView
 import Vues.menu_Utilisateur_Co as MUC
 
 from printFunctions import timePrint as print
+from travailMDP.testmdp import *
 
 
 #Création du menu de connexion
@@ -31,9 +32,8 @@ class Menu_Connexion(AbstractView):
             if identifiant == "" or mdp == "":
                 print("L'identifiant ou le mot de passe n'a pas été précisé.")
                 return self.make_choice_retour()
-            hmdp = mdp #a faire!!!
 
-            dataPost = {'username': identifiant, "hpassword": hmdp}
+            dataPost = {'username': identifiant, "password": mdp}
 
             # -- connexion à l'API
             import requests

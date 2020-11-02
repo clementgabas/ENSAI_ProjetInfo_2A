@@ -19,6 +19,8 @@ from api.commons import configuration
 import sqlite3
 import requests
 
+from travailMDP.testmdp import *
+
 CACHE_TTL = 60  # 60 seconds
 
 # Load conf
@@ -110,21 +112,25 @@ def new_user():
 @app.route('/home/connexion', methods = ['GET']) #creation d'un nouvel utilisateur
 def identification():
     request.get_json(force=True)
-    username, hpassword= request.json.get('username'), request.json.get('hpassword')
+    username, password= request.json.get('username'), request.json.get('password')
 
     try: #on vérifie si l'utilisateur existe et s'il correspond au mot de passe
         con = sqlite3.connect("database/apijeux.db")
         cursor= con.cursor()
-        cursor.execute("SELECT pseudo FROM Utilisateur WHERE identifiant = ? and mdp = ?", (username, hpassword))
-        pse = cursor.fetchone()
+        cursor.execute("SELECT pseudo, mdp FROM Utilisateur WHERE identifiant = ?", (username,))
+        res = cursor.fetchone()
     except:
         print("ERROR : API.identification :")
         raise ConnectionAbortedError
     finally:
         con.close()
 
-    if pse == None: #un tel ide avec ce mdp n'existe pas
-        response = {"status_code": http_codes.unauthorized, "message": "Username or password incorrect."} #error 401
+    if res == None: #un tel ide avec ce mdp n'existe pas
+        response = {"status_code": http_codes.unauthorized, "message": "Username incorrect."} #error 401
+        return make_reponse(response, http_codes.unauthorized)
+    pse, storedMDP = res[0], res[1]
+    if not verify_password(storedMDP, password):
+        response = {"status_code": http_codes.unauthorized, "message": "Password incorrect."}  # error 401
         return make_reponse(response, http_codes.unauthorized)
 
     response = {"status_code": http_codes.ok, "message": "Connection réussie.", "pseudo": pse}

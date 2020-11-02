@@ -3,7 +3,7 @@ import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
-
+from travailMDP.testmdp import *
 #Création du menu Créer compte
 
 class Menu_Creer_Compte(AbstractView):
@@ -47,7 +47,9 @@ class Menu_Creer_Compte(AbstractView):
                 print("L'identifiant ou le mot de passe n'a pas été précisé.")
                 return self.make_choice_retour()
 
-            hmdp = mdp #a faire!!!
+            #if not is_mdp_legal(mdp):
+                #return self.make_choice_retour()
+            hmdp = hacherMotDePasse(mdp)
 
             #ensuite elle demande un pseudo
             self.reponsePseudo = inquirer.prompt(self.questionsPseudo)
