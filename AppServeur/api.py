@@ -15,6 +15,7 @@ from requests import codes as http_codes
 from api.commons import configuration
 
 import sqlite3
+import requests
 
 CACHE_TTL = 60  # 60 seconds
 
@@ -74,11 +75,11 @@ def get():
     return make_reponse(response, http_codes.OK)
 
 @app.route('/home/users', methods = ['POST'])
-#@app.route('home/inscription/<User>' method=['POST'])
 def new_user():
-
+    print(request.get_json(force=True))
     username = request.json.get('username')
     password = request.json.get('password')
+
     print(username, password)
     if username is None or password is None:
         abort(400) # missing arguments
@@ -86,16 +87,16 @@ def new_user():
     con = sqlite3.connect("apijeux.db")
     cursor = con.cursor()
     try:
-    	cursor.execute("SELECT identifiant FROM Utilisateur")
-    	ide = cursor.fetchone()
+        cursor.execute("SELECT identifiant FROM Utilisateur")
+        ide = cursor.fetchone()
     except:
-    	print("ERROR : API.new_user : does user already exist")
-    	raise ConnectionAbortedError
+        print("ERROR : API.new_user : does user already exist")
+        raise ConnectionAbortedError
     finally:
-    	con.close()
+        con.close()
 
     if ide != None: #il existe déjà un utilisateur avec cet identifiant dans la db
-    	abort(401) #existing user
+        abort(401) #existing user
 
     pseudo = request.json.get("pseudo")
     hpassword = password
@@ -103,12 +104,12 @@ def new_user():
     con = sqlite3.connect("apijeux.db")
     cursor = con.cursor()
     try:
-    	cursor.execute("INSERT INTO Utilisateur (pseudo, identifiant, mdp, nbr_parties_jouees, nbr_parties_gagnees, est_connecte, en_file, en_partie) VALUES (?, ?, ?, 0, 0, 'False', 'False', 'False',)", (pseudo, username, hpassword,))
+        cursor.execute("INSERT INTO Utilisateur (pseudo, identifiant, mdp, nbr_parties_jouees, nbr_parties_gagnees, est_connecte, en_file, en_partie) VALUES (?, ?, ?, 0, 0, 'False', 'False', 'False',)", (pseudo, username, hpassword,))
     except:
-    	print("ERROR : API.new_user : add user into db")
-    	raise ConnectionAbortedError
+        print("ERROR : API.new_user : add user into db")
+        raise ConnectionAbortedError
     finally:
-    	con.close()
+        con.close()
 
     return jsonify({ 'username': username }), 201, {'Location': url_for('get_user', id = username, _external = True)}
 

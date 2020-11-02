@@ -53,7 +53,8 @@ class Menu_Creer_Compte(AbstractView):
 
             #-- connexion à l'API
             import requests
-            res = requests.post('http://localhost:9090/home/users', data=dataPost)
+            import json
+            res = requests.post('http://localhost:9090/home/users', data=json.dumps(dataPost))
 
             print("reponse de l'api" + res.text)
 
