@@ -79,15 +79,16 @@ def new_user():
     print(request.get_json(force=True))
     username = request.json.get('username')
     password = request.json.get('password')
+    pseudo = request.json.get('pseudo')
 
-    print(username, password)
     if username is None or password is None:
         abort(400) # missing arguments
 
-    con = sqlite3.connect("apijeux.db")
-    cursor = con.cursor()
-    try:
-        cursor.execute("SELECT identifiant FROM Utilisateur")
+
+    try: #on vérifie si l'utilisateur existe
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("SELECT pseudo FROM Utilisateur WHERE identifiant = ?", (username,))
         ide = cursor.fetchone()
     except:
         print("ERROR : API.new_user : does user already exist")
@@ -97,21 +98,25 @@ def new_user():
 
     if ide != None: #il existe déjà un utilisateur avec cet identifiant dans la db
         abort(401) #existing user
+        #return jsonify ave les erreurs
 
-    pseudo = request.json.get("pseudo")
     hpassword = password
 
-    con = sqlite3.connect("apijeux.db")
+    con = sqlite3.connect("database/apijeux.db")
     cursor = con.cursor()
     try:
-        cursor.execute("INSERT INTO Utilisateur (pseudo, identifiant, mdp, nbr_parties_jouees, nbr_parties_gagnees, est_connecte, en_file, en_partie) VALUES (?, ?, ?, 0, 0, 'False', 'False', 'False',)", (pseudo, username, hpassword,))
+        cursor.execute("INSERT INTO Utilisateur (pseudo, identifiant, mdp, nbr_parties_jouees, nbr_parties_gagnees, est_connecte, en_file, en_partie) VALUES (?, ?, ?, 0, 0, 'False', 'False', 'False')", (pseudo, username, hpassword,))
+        con.commit()
     except:
         print("ERROR : API.new_user : add user into db")
+        con.rollback()
         raise ConnectionAbortedError
     finally:
         con.close()
 
-    return jsonify({ 'username': username }), 201, {'Location': url_for('get_user', id = username, _external = True)}
+    return print("c valide")
+
+    #return jsonify({ 'username': username }), 201, {'Location': url_for('get_user', id = username, _external = True)}
 
 
 
