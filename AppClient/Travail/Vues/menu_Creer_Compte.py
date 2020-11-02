@@ -4,6 +4,9 @@ from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
 from travailMDP.testmdp import *
+
+import requests
+import json
 #Création du menu Créer compte
 
 class Menu_Creer_Compte(AbstractView):
@@ -38,7 +41,7 @@ class Menu_Creer_Compte(AbstractView):
 
             self.reponse = inquirer.prompt(self.questions)
 
-            identifiant, mdp, mdp2 = self.reponse["identifiant"], self.reponse["Password"], self.reponse["password_Check"]
+            identifiant, mdp, mdp2 = self.reponse["identifiant"].lower(), self.reponse["Password"], self.reponse["password_Check"]
 
             if mdp != mdp2:
                 print("Les mot de passes ne correspondent pas.")
@@ -55,15 +58,13 @@ class Menu_Creer_Compte(AbstractView):
 
             #ensuite elle demande un pseudo
             self.reponsePseudo = inquirer.prompt(self.questionsPseudo)
-            pseudo = self.reponsePseudo['pseudo']
+            pseudo = self.reponsePseudo['pseudo'].lower()
             if not anti_SQl_injection(pseudo):
                 return self.make_choice_retour()
             #création du data pour le corps du post de l'api
             dataPost = {'username' : identifiant, "hpassword" : hmdp, "pseudo" : pseudo}
 
             #-- connexion à l'API
-            import requests
-            import json
             res = requests.post('http://localhost:9090/home/users', data=json.dumps(dataPost))
 
             if res.status_code == 409:

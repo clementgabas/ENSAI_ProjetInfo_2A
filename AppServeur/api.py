@@ -109,7 +109,7 @@ def new_user():
     response = {"status_code": http_codes.ok, "message": "L'utilisateur a bien été ajouté à la DB."}
     return make_reponse(response, http_codes.ok) #code 200
 
-@app.route('/home/connexion', methods = ['GET']) #creation d'un nouvel utilisateur
+@app.route('/home/connexion', methods = ['GET']) #connexion d'un utilisateur
 def identification():
     request.get_json(force=True)
     username, password= request.json.get('username'), request.json.get('password')
@@ -133,7 +133,38 @@ def identification():
         response = {"status_code": http_codes.unauthorized, "message": "Password incorrect."}  # error 401
         return make_reponse(response, http_codes.unauthorized)
 
+    #-- Connexion réussie
+    try: #on update le statut "est_connecte" à True de l'utilisateur qui vient de se co
+        con = sqlite3.connect("database/apijeux.db")
+        cursor= con.cursor()
+        cursor.execute("UPDATE Utilisateur SET est_connecte = 'True' WHERE identifiant = ?", (username,))
+        con.commit()
+    except:
+        print("ERROR : API.identification :")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
     response = {"status_code": http_codes.ok, "message": "Connection réussie.", "pseudo": pse}
+    return make_reponse(response, http_codes.ok)  # code 200
+
+@app.route('/home/deconnexion', methods = ['GET']) #deconnexion d'un utilisateur
+def deconnect():
+    request.get_json(force=True)
+    pseudo = request.json.get('pseudo')
+    try: #on update le statut "est_connecte" à False de l'utilisateur qui vient de se deco
+        con = sqlite3.connect("database/apijeux.db")
+        cursor= con.cursor()
+        cursor.execute("UPDATE Utilisateur SET est_connecte = 'False' WHERE pseudo = ?", (pseudo,))
+        con.commit()
+    except:
+        print("ERROR : API.deconnexion :")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
+    response = {"status_code": http_codes.ok, "message": "Déconnection réussie."}
     return make_reponse(response, http_codes.ok)  # code 200
 
 

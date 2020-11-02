@@ -6,6 +6,8 @@ import Vues.menu_Utilisateur_Co as MUC
 from printFunctions import timePrint as print
 from travailMDP.testmdp import *
 
+import requests
+import json
 
 #Création du menu de connexion
 
@@ -28,7 +30,7 @@ class Menu_Connexion(AbstractView):
         ]
         while True:
             self.reponse = inquirer.prompt(self.questions)
-            identifiant, mdp = self.reponse["Identifiant"], self.reponse["Password"]
+            identifiant, mdp = self.reponse["Identifiant"].lower(), self.reponse["Password"]
 
             if identifiant == "" or mdp == "":
                 print("L'identifiant ou le mot de passe n'a pas été précisé.")
@@ -39,12 +41,10 @@ class Menu_Connexion(AbstractView):
             dataPost = {'username': identifiant, "password": mdp}
 
             # -- connexion à l'API
-            import requests
-            import json
             res = requests.get('http://localhost:9090/home/connexion', data=json.dumps(dataPost))
 
             if res.status_code == 200 :
-                pseudo = res.json()["pseudo"][0].upper()
+                pseudo = res.json()["pseudo"]
                 print("Connection réussie")
                 Co = MUC.Menu_User_Co(pseudo)
                 Co.display_info()
