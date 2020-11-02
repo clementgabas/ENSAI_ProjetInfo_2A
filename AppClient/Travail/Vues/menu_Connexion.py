@@ -29,8 +29,11 @@ class Menu_Connexion(AbstractView):
         while True:
             self.reponse = inquirer.prompt(self.questions)
             identifiant, mdp = self.reponse["Identifiant"], self.reponse["Password"]
+
             if identifiant == "" or mdp == "":
                 print("L'identifiant ou le mot de passe n'a pas été précisé.")
+                return self.make_choice_retour()
+            if not anti_SQl_injection(identifiant) or not anti_SQl_injection(mdp):
                 return self.make_choice_retour()
 
             dataPost = {'username': identifiant, "password": mdp}

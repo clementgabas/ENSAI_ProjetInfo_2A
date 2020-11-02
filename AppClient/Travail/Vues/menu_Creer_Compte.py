@@ -46,6 +46,8 @@ class Menu_Creer_Compte(AbstractView):
             if identifiant is "" or mdp is "":
                 print("L'identifiant ou le mot de passe n'a pas été précisé.")
                 return self.make_choice_retour()
+            if not anti_SQl_injection(identifiant) or not anti_SQl_injection(mdp):
+                return self.make_choice_retour()
 
             #if not is_mdp_legal(mdp):
                 #return self.make_choice_retour()
@@ -54,7 +56,8 @@ class Menu_Creer_Compte(AbstractView):
             #ensuite elle demande un pseudo
             self.reponsePseudo = inquirer.prompt(self.questionsPseudo)
             pseudo = self.reponsePseudo['pseudo']
-
+            if not anti_SQl_injection(pseudo):
+                return self.make_choice_retour()
             #création du data pour le corps du post de l'api
             dataPost = {'username' : identifiant, "hpassword" : hmdp, "pseudo" : pseudo}
 
