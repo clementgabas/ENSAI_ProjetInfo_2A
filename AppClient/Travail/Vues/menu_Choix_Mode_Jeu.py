@@ -9,7 +9,7 @@ from datetime import datetime
 #Création du menu des classements.
 
 class Menu_Choix_Mode_Jeu_Connecte(AbstractView):
-    def __init__(self, jeu):
+    def __init__(self, pseudo = "user", jeu="p4"):
         self.questions = [
             {
                 'type' : 'list',
@@ -23,6 +23,7 @@ class Menu_Choix_Mode_Jeu_Connecte(AbstractView):
                           ]
             },
         ]
+        self.pseudo = pseudo
         if jeu.lower() == "oie":
             self.game = "Jeu de l'Oie"
         elif jeu.lower() == "p4":
@@ -40,7 +41,7 @@ class Menu_Choix_Mode_Jeu_Connecte(AbstractView):
 
             if self.reponse["menu_Choix_Mode_Jeu_Connecte"] == "Jouer avec des amis":
                 print(f"Vous avez choisi de jouer avec des amis au {self.game}.")
-                Amis = MS.Menu_Salle(jeu=self.game) 
+                Amis = MS.Menu_Salle(pseudo=self.pseudo, jeu=self.game)
                 Amis.display_info()
                 return Amis.make_choice()
 
@@ -52,7 +53,7 @@ class Menu_Choix_Mode_Jeu_Connecte(AbstractView):
             elif self.reponse["menu_Choix_Mode_Jeu_Connecte"] == "Revenir au menu précédent":
                 print("Vous allez être redirigés vers le menu précédent.")
                 import Vues.menu_Choix_Jeu as MCJ
-                Retour = MCJ.Menu_Choix_Jeu_Connecte()
+                Retour = MCJ.Menu_Choix_Jeu_Connecte(self.pseudo)
                 Retour.display_info()
                 return Retour.make_choice()
 
@@ -61,7 +62,7 @@ class Menu_Choix_Mode_Jeu_Connecte(AbstractView):
             break
 
 class Menu_Choix_Mode_Jeu_Anonyme(AbstractView):
-    def __init__(self, jeu):
+    def __init__(self, jeu="p4"):
         self.questions = [
             {
                 'type' : 'list',
@@ -74,7 +75,6 @@ class Menu_Choix_Mode_Jeu_Anonyme(AbstractView):
                           ]
             },
         ]
-
         if jeu.lower() == "oie":
             self.game = "Jeu de l'Oie"
         elif jeu.lower() == "p4":

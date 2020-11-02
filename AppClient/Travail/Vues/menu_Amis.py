@@ -7,7 +7,7 @@ from printFunctions import timePrint as print
 #Création du menu ami.
 
 class Menu_Ami(AbstractView):
-    def __init__(self):
+    def __init__(self, pseudo="user"):
         self.questions = [
             {
                 'type' : 'list',
@@ -22,6 +22,7 @@ class Menu_Ami(AbstractView):
                           ]
             },
         ]
+        self.pseudo = pseudo
     def display_info(self):
         #print("Bienvenue sur le menu ami")
         pass
@@ -38,7 +39,7 @@ class Menu_Ami(AbstractView):
                 return self.voir_liste_ami()
             elif self.reponse["menu_Ami"] == "Revenir au menu précédent":
                 import Vues.menu_Profil as MP
-                Retour = MP.Menu_Profil()
+                Retour = MP.Menu_Profil(self.pseudo)
                 Retour.display_info()
                 return Retour.make_choice()            
             else:
@@ -65,7 +66,7 @@ class Menu_Ami(AbstractView):
 
             if not does_pseudo_exist:
                 print("Le pseudo a ajouté à votre liste d'ami n'exsite pas.")
-                return echec_ajout_ami()
+                return self.echec_ajout_ami()
             if has_API_worked:
                 print("Votre nouvel ami a bien été ajouté à votre liste d'amis.")
                 return self.make_choice()

@@ -9,7 +9,7 @@ from printFunctions import timePrint as print
 #Création du menu Créer compte
 
 class Menu_Choix_Jeu_Connecte(AbstractView):
-    def __init__(self):
+    def __init__(self, pseudo="user"):
         self.questions = [
              {
                 'type': 'list',
@@ -23,6 +23,7 @@ class Menu_Choix_Jeu_Connecte(AbstractView):
                     ]
                 },
             ]
+        self.pseudo = pseudo
     def display_info(self):
         pass #on a rien d'intéressant à print ici.
 

@@ -7,7 +7,7 @@ from printFunctions import timePrint as print
 #Création du menu de mofidification des informations.
 
 class Menu_Modif_Inf(AbstractView):
-    def __init__(self):
+    def __init__(self, pseudo = "user"):
         self.questions = [
             {
                 'type' : 'list',
@@ -21,6 +21,7 @@ class Menu_Modif_Inf(AbstractView):
                           ]
             },
         ]
+        self.pseudo = pseudo
     def display_info(self):
         #print("Bienvenue sur le menu de modification des informations")
         pass
@@ -33,7 +34,7 @@ class Menu_Modif_Inf(AbstractView):
                 return self.modif_mdp()
             elif self.reponse["menu_Modif_Info"] == "Revenir au menu précédent":
                 import Vues.menu_Profil as MP
-                Retour = MP.Menu_Profil()
+                Retour = MP.Menu_Profil(self.pseudo)
                 Retour.display_info()
                 return Retour.make_choice()
             else:

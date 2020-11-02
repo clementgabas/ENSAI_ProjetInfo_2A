@@ -10,7 +10,7 @@ from printFunctions import timePrint as print
 #Création du menu pour les utilisateurs connectés
 
 class Menu_User_Co(AbstractView):
-    def __init__(self):
+    def __init__(self, pseudo="user"):
         self.questions = [
             {
                 'type' : 'list',
@@ -24,20 +24,21 @@ class Menu_User_Co(AbstractView):
                           ]
             },
         ]
+        self.pseudo = pseudo
     def display_info(self):
-        print("'Pseudo', vous êtes connectés. Bienvenue!")
+        print(f"{self.pseudo}, vous êtes connectés. Bienvenue!")
 
     def make_choice(self):
         while True:
             self.reponse = inquirer.prompt(self.questions)
 
             if self.reponse["Menu_Co"] == "Jouer":
-                Play = MCJ.Menu_Choix_Jeu_Connecte()
+                Play = MCJ.Menu_Choix_Jeu_Connecte(self.pseudo)
                 Play.display_info()
                 return Play.make_choice()
 
             elif self.reponse["Menu_Co"] == "Accéder au profil":
-                Profil = MPro.Menu_Profil()
+                Profil = MPro.Menu_Profil(self.pseudo)
                 Profil.display_info()
                 return Profil.make_choice()
 

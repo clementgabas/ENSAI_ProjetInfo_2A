@@ -8,7 +8,7 @@ from printFunctions import timePrint as print
 #Création du menu des classements.
 
 class Menu_Salle(AbstractView):
-    def __init__(self, jeu):
+    def __init__(self, pseudo = "user", jeu = "p4"):
         self.questions = [
             {
                 'type' : 'list',
@@ -22,6 +22,7 @@ class Menu_Salle(AbstractView):
                           ]
             },
         ]
+        self.pseudo = pseudo
         if jeu.lower() == "oie":
             self.game = "Jeu de l'Oie"
         elif jeu.lower() == "p4":
@@ -44,7 +45,7 @@ class Menu_Salle(AbstractView):
             elif self.reponse["menu_Salle"] == "Revenir au menu précédent":
                 print("Vous allez être redirigé vers le menu précédent.")
                 import Vues.menu_Choix_Mode_Jeu as MCMJ
-                Retour = MCMJ.Menu_Choix_Mode_Jeu_Connecte(self.game)
+                Retour = MCMJ.Menu_Choix_Mode_Jeu_Connecte(pseudo = self.pseudo, jeu=self.game)
                 Retour.display_info()
                 return Retour.make_choice()
             else:

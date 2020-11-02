@@ -11,7 +11,7 @@ from printFunctions import timePrint as print
 #Création du menu profil
 
 class Menu_Profil(AbstractView):
-    def __init__(self):
+    def __init__(self, pseudo):
         self.questions = [
             {
                 'type' : 'list',
@@ -26,7 +26,7 @@ class Menu_Profil(AbstractView):
                           ]
             },
         ]
-
+        self.pseudo = pseudo
     def display_info(self):
         #print("Bienvenue sur le menu profil")
         pass
@@ -36,27 +36,27 @@ class Menu_Profil(AbstractView):
             self.reponse = inquirer.prompt(self.questions)
 
             if self.reponse["menu_Profil"] == "Accéder à mes informations personnelles":
-            	InfPerso = MMI.Menu_Modif_Inf()
-            	InfPerso.display_info()
-            	return InfPerso.make_choice()
+                InfPerso = MMI.Menu_Modif_Inf(self.pseudo)
+                InfPerso.display_info()
+                return InfPerso.make_choice()
 
             elif self.reponse["menu_Profil"] == "Accéder à ma liste d\'amis":
-                Amis = MA.Menu_Ami()
+                Amis = MA.Menu_Ami(self.pseudo)
                 Amis.display_info()
                 return Amis.make_choice()
 
             elif self.reponse["menu_Profil"] == "Accéder aux classements":
-            	Classement = MC.Menu_Classement()
-            	Classement.display_info()
-            	return Classement.make_choice()
+                Classement = MC.Menu_Classement(self.pseudo)
+                Classement.display_info()
+                return Classement.make_choice()
 
             elif self.reponse["menu_Profil"] == "Revenir au menu précédent":
-            	import Vues.menu_Utilisateur_Co as MUC
-            	Retour = MUC.Menu_User_Co()
-            	Retour.display_info()
-            	return Retour.make_choice()
+                import Vues.menu_Utilisateur_Co as MUC
+                Retour = MUC.Menu_User_Co(self.pseudo)
+                Retour.display_info()
+                return Retour.make_choice()
             else:
-            	print("Erreur dans menu_Profil.Menu_Profil.make_choice")
+                print("Erreur dans menu_Profil.Menu_Profil.make_choice")
             break
 
 

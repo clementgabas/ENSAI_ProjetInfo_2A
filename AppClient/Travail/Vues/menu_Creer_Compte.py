@@ -43,23 +43,25 @@ class Menu_Creer_Compte(AbstractView):
             if mdp != mdp2:
                 print("Les mot de passes ne correspondent pas.")
                 return self.make_choice_retour()
+            if identifiant is "" or mdp is "":
+                print("L'identifiant ou le mot de passe n'a pas été précisé.")
+                return self.make_choice_retour()
 
-            #ensuite elle demande un pseudo et vérifie si il est libre
+            hmdp = mdp #a faire!!!
+
+            #ensuite elle demande un pseudo
             self.reponsePseudo = inquirer.prompt(self.questionsPseudo)
             pseudo = self.reponsePseudo['pseudo']
 
             #création du data pour le corps du post de l'api
-            dataPost = {'username' : identifiant, "password" : mdp, "pseudo" : pseudo}
+            dataPost = {'username' : identifiant, "hpassword" : hmdp, "pseudo" : pseudo}
 
             #-- connexion à l'API
             import requests
             import json
             res = requests.post('http://localhost:9090/home/users', data=json.dumps(dataPost))
 
-            if res.status_code == 400:
-                print("L'identifiant ou le mot de passe n'a pas été précisé.")
-                return self.make_choice_retour()
-            elif res.status_code == 409:
+            if res.status_code == 409:
                 if "user" in res.text:
                     print("L'identifiant est déjà utilisé par un autre membre.")
                 elif "pseudo" in res.text:
@@ -70,8 +72,10 @@ class Menu_Creer_Compte(AbstractView):
             elif res.status_code == 404:
                 print("erreur, l'api n'a pas été trouvée")
                 return self.make_choice_retour()
+            elif res.status_code == 500:
+                return print("erreur dans le code de l'api")
             elif res.status_code == 200:
-                print("Compte créer avec succès. Veuillez vous authentifiez svp")
+                print("Compte créé avec succès. Veuillez vous authentifiez svp")
                 import Vues.menu_Connexion as MC
                 Co = MC.Menu_Connexion()
                 Co.display_info()

@@ -56,19 +56,10 @@ cache = Cache(app, config={"CACHE_TYPE": "simple"})
 def access_log():
     logger.info("{0} {1}".format(request.method, request.path))
 
+#-------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-@app.route("/", strict_slashes=False)
-@app.route("/home")
+@app.route("/", strict_slashes=False) #acceuil
+@app.route("/home") #acceuil
 def get():
     """
         Base route
@@ -76,17 +67,10 @@ def get():
     response = {"status_code": http_codes.OK, "message": "Vous êtes bien sur l'Api jeux"}
     return make_reponse(response, http_codes.OK)
 
-@app.route('/home/users', methods = ['POST'])
+@app.route('/home/users', methods = ['POST']) #creation d'un nouvel utilisateur
 def new_user():
     request.get_json(force=True)
-    username = request.json.get('username')
-    password = request.json.get('password')
-    pseudo = request.json.get('pseudo')
-
-    if username is "" or password is "":
-        response = {"status_code": http_codes.bad_request, "message": "Missing argument."} #error 400
-        return make_reponse(response, http_codes.bad_request)
-
+    username, hpassword, pseudo = request.json.get('username'), request.json.get('hpassword'), request.json.get('pseudo')
 
     try: #on vérifie si l'utilisateur existe
         con = sqlite3.connect("database/apijeux.db")
@@ -108,8 +92,6 @@ def new_user():
         response = {"status_code": http_codes.conflict, "message": "Pseudo already exists in the DB."} #error 409
         return make_reponse(response, http_codes.conflict)
 
-    hpassword = password #-- a faire!!!
-
     con = sqlite3.connect("database/apijeux.db")
     cursor = con.cursor()
     try:
@@ -125,8 +107,28 @@ def new_user():
     response = {"status_code": http_codes.ok, "message": "L'utilisateur a bien été ajouté à la DB."}
     return make_reponse(response, http_codes.ok) #code 200
 
+@app.route('/home/connexion', methods = ['GET']) #creation d'un nouvel utilisateur
+def identification():
+    request.get_json(force=True)
+    username, hpassword= request.json.get('username'), request.json.get('hpassword')
 
+    try: #on vérifie si l'utilisateur existe et s'il correspond au mot de passe
+        con = sqlite3.connect("database/apijeux.db")
+        cursor= con.cursor()
+        cursor.execute("SELECT pseudo FROM Utilisateur WHERE identifiant = ? and mdp = ?", (username, hpassword))
+        pse = cursor.fetchone()
+    except:
+        print("ERROR : API.identification :")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
 
+    if pse == None: #un tel ide avec ce mdp n'existe pas
+        response = {"status_code": http_codes.unauthorized, "message": "Username or password incorrect."} #error 401
+        return make_reponse(response, http_codes.unauthorized)
+
+    response = {"status_code": http_codes.ok, "message": "Connection réussie.", "pseudo": pse}
+    return make_reponse(response, http_codes.ok)  # code 200
 
 
 

@@ -28,34 +28,35 @@ class Menu_Connexion(AbstractView):
         while True:
             self.reponse = inquirer.prompt(self.questions)
             identifiant, mdp = self.reponse["Identifiant"], self.reponse["Password"]
-            
-            #A cette étape, on requete l'API pour savoir si oui ou non on peut se connecter grâce aux id et mdp donnés.
+            if identifiant == "" or mdp == "":
+                print("L'identifiant ou le mot de passe n'a pas été précisé.")
+                return self.make_choice_retour()
+            hmdp = mdp #a faire!!!
 
-            #en fonction de ce que renvoit l'API :
-            # si l'API répond connexion = True, on se connecte
-            # sinon, on réessaye
+            dataPost = {'username': identifiant, "hpassword": hmdp}
 
-            #Dans notre cas, on simule que la connexion renvoit True
-            print("**** On simmule que la connection se passe bien car on a pas encore coder l'authentification ****")
-
-            #--- Connexion à l'API
+            # -- connexion à l'API
             import requests
-            
+            import json
+            res = requests.get('http://localhost:9090/home/connexion', data=json.dumps(dataPost))
 
-            connexion = True
-
-            if connexion :
-                Co = MUC.Menu_User_Co()
+            if res.status_code == 200 :
+                pseudo = res.json()["pseudo"][0].upper()
+                print("Connection réussie")
+                Co = MUC.Menu_User_Co(pseudo)
                 Co.display_info()
                 return Co.make_choice()
-            else:
-                print("Id ou mdp incorrect.")
+            elif res.status_code == 404:
+                print("erreur, l'api n'a pas été trouvée")
                 return self.make_choice_retour()
-
-
-
-
-            #on envoit au serveur id et mdp et on lui demande si on peut se connecter.
+            elif res.status_code == 500:
+                return print("erreur dans le code de l'api")
+            elif res.status_code == 401:
+                print("Identifiant ou mot de passe incorrect.")
+                return self.make_choice_retour()
+            else:
+                print("erreur non prévue : "+ str(res.status_code))
+                return self.make_choice_retour()
 
     def make_choice_retour(self):
         self.questions_retour = [
