@@ -1,4 +1,7 @@
 Mettez ici les avancées de vos derniers commit svp, qu'on sache où on en est à chaque fois que l'on pull ou clone.
 Merci
 
-26/10 : Création des programmes mainClient.py et mainServeur.py et premières ébauches de navigation dans l'application pour un client.
+03/11 : l'api fonctionne mais n'est pas terminée!
+La création d'un compte est terminée.
+La connexion est terminée.
+La gestion des amis est termineé.
