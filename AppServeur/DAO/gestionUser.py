@@ -1,8 +1,27 @@
 import sqlite3
 
 def does_pseudo_exist(pseudo):
+    """
+    Fonction qui renvoit True si il existe dans la DB un utilisateur ayant ce pseudo, qui renvoit False sinon.
+
+    Parameters
+    ----------
+    pseudo : str
+        Pseudo dont on vérifie l'existance dans la DB.
+
+    Raises
+    ------
+    ConnectionAbortedError
+        Si une erreur se produit au cours de la communication avec la DB, l'erreur est levée..
+
+    Returns
+    -------
+    Bool : Bool
+        Booléen qui précise si oui ou non le pseudo existe dans la DB.
+
+    """
     Bool = False
-    try: #on vérifie si l'ami existe
+    try: #on vérifie si le pseudo existe
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
         cursor.execute("SELECT identifiant FROM Utilisateur WHERE pseudo = ?", (pseudo,))
@@ -19,8 +38,27 @@ def does_pseudo_exist(pseudo):
     return Bool
 
 def does_username_exist(username):
+    """
+    Fonction qui renvoit True si il existe dans la DB un utilisateur ayant cet identifiant, renvoit False sinon.
+
+    Parameters
+    ----------
+    username : str
+        Identifiant dont on cherche l'existance dans la DB.
+
+    Raises
+    ------
+    ConnectionAbortedError
+        Si une erreur se produit au cours de la communication avec la DB, l'erreur est levée.
+
+    Returns
+    -------
+    Bool : Bool
+        Booléen qui précise si oui ou non l'identifiant existe dans la DB.
+
+    """
     Bool = False
-    try: #on vérifie si l'ami existe
+    try: #on vérifie si l'identifiant existe
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
         cursor.execute("SELECT pseudo FROM Utilisateur WHERE identifiant = ?", (username,))
@@ -37,7 +75,28 @@ def does_username_exist(username):
     return Bool
 
 def add_user(username, pseudo, hpassword):
-    #procédure qui ajoute un utilisateur à la db
+    """
+    Procédure qui ajoute une utilisateur à la DB.
+
+    Parameters
+    ----------
+    username : str
+        Identifiant de l'utilisateur.
+    pseudo : str
+        Pseudo de l'utilisateur.
+    hpassword : str
+        Hash du mot de passe de l'utilisateur.
+
+    Raises
+    ------
+    ConnectionAbortedError
+        Si un erreur se produit au cours de la communication avec la DB, un rollback jusqu'au précédant commit à lieu et l'erreur est levée.
+
+    Returns
+    -------
+    None.
+
+    """
     con = sqlite3.connect("database/apijeux.db")
     cursor = con.cursor()
     try:
@@ -53,6 +112,27 @@ def add_user(username, pseudo, hpassword):
         con.close()
 
 def get_hpass(username):
+    """
+    Fonction qui renvoit le hash de mot de passe stocké dans la DB pour un identifiant donné.
+
+    Parameters
+    ----------
+    username : str
+        Identifiant associé au hmdp recherché.
+
+    Raises
+    ------
+    ConnectionAbortedError
+        Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+    ValueError
+        pass
+
+    Returns
+    -------
+    hpass : str
+        Renvoit le hash du mot de passe associé à l'identifiant en entrée.
+
+    """
     try: #on récupère le hpass
         con = sqlite3.connect("database/apijeux.db")
         cursor= con.cursor()
@@ -69,7 +149,28 @@ def get_hpass(username):
     return hpass[0]
 
 def get_pseudo(username):
-    try: #on récupère le hpass
+    """
+    Fonction qui renvoit le pseudo associé à un identifiant dans la DB
+
+    Parameters
+    ----------
+    username : str
+        Identifiant dont on souhaite le pseudo associé.
+
+    Raises
+    ------
+    ConnectionAbortedError
+        DESCRIPTION.
+    ValueError
+        DESCRIPTION.
+
+    Returns
+    -------
+    pseudo : str
+        Pseudo associé à l'identifiant en entrée.
+
+    """
+    try: #on récupère le pseudo
         con = sqlite3.connect("database/apijeux.db")
         cursor= con.cursor()
         cursor.execute("SELECT pseudo FROM Utilisateur WHERE identifiant = ?", (username,))
@@ -85,7 +186,31 @@ def get_pseudo(username):
     return pseudo[0]
 
 def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'True'):
-    """username_or_pseudo in ('username','pseudo') ; nouvel_etat in ('True', 'False')"""
+    """
+    Procédure qui permet de modifier la valeur est_connecté pour un utilisateur dans la DB en fonction de son pseudo ou de son identifiant.
+
+    Parameters
+    ----------
+    ide : str
+        nom de l'identifiant ou du pseudo de l'utilisateur dont on veut modifier la valeur du est_connecte.
+    username_or_pseudo : str, optional
+        Il faut préciser si le ide fournit correspond à l'identifiant ou au pseudo de l'utilisateur. username_or_pseudo est donc à valeur dans ('username', 'pseudo'). The default is 'username'.
+    nouvel_etat : str, optional
+        Il faut préciser si on veut mettre est_connecte à True ou à False. nouvel_etat est donc à valeur dans ('True','False'). The default is 'True'.
+
+    Raises
+    ------
+    ValueError
+        DESCRIPTION.
+    ConnectionAbortedError
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
+
 
     if not username_or_pseudo in ('username', 'pseudo'):
         print("username_or_pseudo doit prendre la valeur 'username' ou la valeur 'pseudo'!")
