@@ -87,8 +87,10 @@ def new_user():
         response = {"status_code": http_codes.conflict, "message": "Pseudo already exists in the DB."} #error 409
         return make_reponse(response, http_codes.conflict)
 
-    #-- on ajoute le nouvel utilisateur (username, pseudo, hpassword) à la DB
+    #-- on ajoute le nouvel utilisateur (username, pseudo, hpassword) à la DB Utilisateur
     DAOuser.add_user(username, pseudo, hpassword)
+    #-- on ajoute l'utilisateur à la db Score pour suivre ces classement
+    DAOuser.add_user_score(pseudo)
     #-- on renvoit le code ok et le message d'ajout de l'utilisateur.
     response = {"status_code": http_codes.ok, "message": "L'utilisateur a bien été ajouté à la DB."}
     return make_reponse(response, http_codes.ok) #code 200
