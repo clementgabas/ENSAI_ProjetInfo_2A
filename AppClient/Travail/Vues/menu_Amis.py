@@ -3,7 +3,8 @@ import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
-
+import requests
+import json
 #Création du menu ami.
 
 class Menu_Ami(AbstractView):
@@ -51,28 +52,34 @@ class Menu_Ami(AbstractView):
         self.ajoutAmiQ = [
             {
                 'type': 'input',
-                'name': 'ami_add',
-                'message': "Veuillez fournir le pseudo de l'ami à ajouter à la liste des amis.",
+                'name': 'pseudo_ami',
+                'message': "Veuillez fournir le pseudo de l'ami à ajouter à la liste des amis :",
             }
         ]
         while True:
             self.ajoutAmiR = inquirer.prompt(self.ajoutAmiQ)
-            pseudo_a_add = self.ajoutAmiR["ami_add"]
-
-            #on fournit ce pseudo à l'api. Elle vérifie si il existe. Si il existe, elle l'ajoute à la liste de vos amis
-            print("*** ON SIMULE QUE L API A BIEN FOCNTIONNE ***")
-            does_pseudo_exist = True
-            has_API_worked = True
-
-            if not does_pseudo_exist:
-                print("Le pseudo a ajouté à votre liste d'ami n'exsite pas.")
+            pseudo_ami = self.ajoutAmiR["pseudo_ami"]
+            if pseudo_ami == self.pseudo:
+                print("Vous ne pouvez pas vous ajouter vous meme comme ami.")
                 return self.echec_ajout_ami()
-            if has_API_worked:
-                print("Votre nouvel ami a bien été ajouté à votre liste d'amis.")
+
+            dataPost = {'pseudo': self.pseudo, 'pseudo_ami': pseudo_ami}
+            # -- connexion à l'API
+            res = requests.post('http://localhost:9090/home/main/profil/friends', data=json.dumps(dataPost))
+            if res.status_code == 404:
+                print(f"Le pseudo a ajouter à votre liste d'ami ({pseudo_ami}) n'existe pas.")
+                return self.echec_ajout_ami()
+            if res.status_code == 208:
+                print(f"Le lien d'amitié avec {pseudo_ami} existe déjà.")
                 return self.make_choice()
+            if res.status_code == 200:
+                print(f"Votre nouvel ami ({pseudo_ami}) a bien été ajouté à votre liste d'amis.")
+                return self.make_choice()
+            elif res.status_code == 500:
+                return print("erreur dans le code de l'api")
             else:
-                print("Erreur dans l'API add_friend.")
-            break
+                print("erreur non prévue : " + str(res.status_code))
+                return self.make_choice_retour()
 
     def echec_ajout_ami(self):
         self.echecAjoutAmiQ = [
@@ -106,26 +113,30 @@ class Menu_Ami(AbstractView):
         ]
         while True:
             self.suppAmiR = inquirer.prompt(self.suppAmiQ)
-            pseudo_a_supp = self.suppAmiR["ami_supp"]
+            pseudo_ami = self.suppAmiR["ami_supp"]
 
-            #on fournit ce pseudo à l'api. Elle vérifie si il existe dans votre liste d'amis. Si il existe, elle le supprime de la liste de vos amis
-            print("*** ON SIMULE QUE L API A BIEN FOCNTIONNE ***")
-            does_pseudo_exist = True
-            is_pseudo_in_your_list = True
-            has_API_worked = True
+            if pseudo_ami == self.pseudo:
+                print("Vous ne pouvez pas vous supprimer vous meme comme ami.")
+                return self.echec_ajout_ami()
 
-            if not does_pseudo_exist:
-                print("Le pseudo à supprimer de votre liste d'ami n'exsite pas.")
-                return self.echec_supp_ami()
-            if not is_pseudo_in_your_list:
-                print("Vous n'êtes pas ami avec cette personne")
-                return self.echec_supp_ami()
-            if has_API_worked:
-                print("Votre nouvel ami a bien été supprimé de votre liste d'amis.")
+            dataPost = {'pseudo': self.pseudo, 'pseudo_ami': pseudo_ami}
+            # -- connexion à l'API
+            res = requests.delete('http://localhost:9090/home/main/profil/friends', data=json.dumps(dataPost))
+            if res.status_code == 404:
+                print(f"Le pseudo a supprimer de votre liste d'ami ({pseudo_ami}) n'existe pas.")
+                return self.echec_ajout_ami()
+            if res.status_code == 208:
+                print(f"Le lien d'amitié avec {pseudo_ami} n'existe pas.")
                 return self.make_choice()
+            if res.status_code == 200:
+                print(f"Votre ancien ami ({pseudo_ami}) a bien été supprimé de votre liste d'amis.")
+                return self.make_choice()
+            elif res.status_code == 500:
+                return print("erreur dans le code de l'api")
             else:
-                print("Erreur dans l'API supp_friend.")
-            break
+                print("erreur non prévue : " + str(res.status_code))
+                return self.make_choice_retour()
+
     def echec_supp_ami(self):
         self.echecSuppAmiQ = [
             {
@@ -149,10 +160,23 @@ class Menu_Ami(AbstractView):
             break
 
     def voir_liste_ami(self):
-        #l'API affiche votre liste d'ami
-        print("*** ON SIMULE QUE L API AFFICHE LA LISTE D AMI")
-        return self.make_choice()
 
+        dataPost = {'pseudo': self.pseudo}
+        # -- connexion à l'API
+        res = requests.get('http://localhost:9090/home/main/profil/friends', data=json.dumps(dataPost))
+
+        if res.status_code == 200:
+            liste_amis = res.json()["liste_amis"]
+            print(str(liste_amis))
+            return self.make_choice()
+        elif res.status_code == 404:
+            print("erreur, l'api n'a pas été trouvée")
+            return self.make_choice()
+        elif res.status_code == 500:
+            return print("erreur dans le code de l'api")
+        else:
+            print("erreur non prévue : " + str(res.status_code))
+            return self.make_choice_retour()
 
 if __name__ == "__main__": 
     menu_Ami1 = Menu_Ami()

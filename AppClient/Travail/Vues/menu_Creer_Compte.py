@@ -68,9 +68,9 @@ class Menu_Creer_Compte(AbstractView):
             res = requests.post('http://localhost:9090/home/users', data=json.dumps(dataPost))
 
             if res.status_code == 409:
-                if "user" in res.text:
+                if "User" in res.json()['message']:
                     print("L'identifiant est déjà utilisé par un autre membre.")
-                elif "pseudo" in res.text:
+                elif "Pseudo" in res.json()['message']:
                     print("Le pseudo est déjà utilisé par un autre membre")
                 else:
                     print("error")

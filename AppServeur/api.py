@@ -18,8 +18,12 @@ from api.commons import configuration
 
 import sqlite3
 import requests
+from datetime import datetime
 
 from travailMDP.testmdp import *
+import DAO.gestionUser as DAOuser
+import DAO.gestionAmis as DAOfriend
+
 
 CACHE_TTL = 60  # 60 seconds
 
@@ -167,12 +171,58 @@ def deconnect():
     response = {"status_code": http_codes.ok, "message": "Déconnection réussie."}
     return make_reponse(response, http_codes.ok)  # code 200
 
+@app.route('/home/main/profil/friends', methods=['GET'])
+def afficher_liste_amis():
+    request.get_json(force=True)
+    pseudo = request.json.get('pseudo')
 
+    #-- on récupère la liste des amis
+    liste_amis = DAOfriend.afficher_liste_amis(pseudo)
+    #-- on renvoit le code ok, le message et la liste des amis.
+    response = {"status_code": http_codes.ok, "message": "Liste des amis récupérée.", 'liste_amis': liste_amis} #code 200
+    return make_reponse(response, http_codes.ok)  # code 200
 
+@app.route('/home/main/profil/friends', methods=['POST'])
+def ajout_ami():
+    request.get_json(force=True)
+    pseudo, pseudo_ami = request.json.get('pseudo'), request.json.get('pseudo_ami')
 
+    #-- vérification si un utilisateur avec le pseudo_ami existe dans la DB
+    if not DAOuser.does_pseudo_exist(pseudo_ami):
+        response = {"status_code": http_codes.not_found, "message": "L'ami à ajouter n'existe pas."}  # code 404
+        return make_reponse(response, http_codes.not_found)  # code 404
 
+    #-- on vérifie si pseudo n'est pas déjà ami avec pseudo_ami
+    if DAOfriend.are_pseudos_friends(pseudo, pseudo_ami):
+        response = {"status_code": http_codes.already_reported, "message": "L'amitié existe déjà."}  # code 208
+        return make_reponse(response, http_codes.already_reported)  # code 208
 
+    #-- on effectue la procédure qui ajoute le lien d'amitié
+    DAOfriend.add_amitie(pseudo, pseudo_ami)
+    #-- on renvoit le code ok et le message d'ajout de l'ami.
+    response = {"status_code": http_codes.ok, "message": "Ami ajouté."}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
 
+@app.route('/home/main/profil/friends', methods=['DELETE'])
+def supp_ami():
+    request.get_json(force=True)
+    pseudo, pseudo_ami = request.json.get('pseudo'), request.json.get('pseudo_ami')
+
+    #-- vérification si un utilisateur avec le pseudo_ami existe dans la DB
+    if not DAOuser.does_pseudo_exist(pseudo_ami):
+        response = {"status_code": http_codes.not_found, "message": "L'ami à supprimer n'existe pas."}  # code 404
+        return make_reponse(response, http_codes.not_found)  # code 404
+
+    # -- on vérifie si pseudo est bien ami avec pseudo_ami
+    if not DAOfriend.are_pseudos_friends(pseudo, pseudo_ami):
+        response = {"status_code": http_codes.already_reported, "message": "L'amitié n'existe pas."}  # code 208
+        return make_reponse(response, http_codes.already_reported)  # code 208
+
+    # -- on effectue la procédure qui supprime le lien d'amitié
+    DAOfriend.sup_amitie(pseudo, pseudo_ami)
+    #-- on renvoit le code ok et le message de suppression de l'ami.
+    response = {"status_code": http_codes.ok, "message": "Ami supprimé."}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
 
 
 
