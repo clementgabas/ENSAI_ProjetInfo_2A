@@ -106,7 +106,7 @@ def identification():
         return make_reponse(response, http_codes.unauthorized)
 
     #-- on récupère le hpass associé à l'utilisateur et on le compare au hash du mdp fournit pour la connection
-    stored_hpass = DAOuser.get_hpass(username)
+    stored_hpass = DAOuser.get_hpass_username(username)
     if not MDPgestion.verify_password(stored_hpass, password):
         response = {"status_code": http_codes.unauthorized, "message": "Password incorrect."}  # error 401
         return make_reponse(response, http_codes.unauthorized)
@@ -193,7 +193,7 @@ def supp_ami():
     response = {"status_code": http_codes.ok, "message": "Ami supprimé."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
-@app.route('/home/main/profil/user', methods=['PUT']) #modification du pseudo
+@app.route('/home/main/profil/user/pseudo', methods=['PUT']) #modification du pseudo
 def modif_pseudo():
     request.get_json(force=True)
     old_pseudo, new_pseudo = request.json.get('old_pseudo'), request.json.get('new_pseudo')
@@ -209,7 +209,28 @@ def modif_pseudo():
     response = {"status_code": http_codes.ok, "message": "pseudo mis à jour."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
+@app.route('/home/main/profil/user/password', methods=['PUT']) #modification du mot de passe
+def modif_password():
+    request.get_json(force=True)
+    pseudo, old_password, new_password = request.json.get('pseudo'), request.json.get('old_password'), request.json.get('new_password')
+    #-- on vérifie si l'ancien mdp correspond bien au mdp enregistré pour le pseudo
+        #-- on recupere le hpass stocké
+    stored_hpass = DAOuser.get_hpass_pseudo(pseudo)
+    print(stored_hpass)
+        #-- on compare les hpass
+    if not MDPgestion.verify_password(stored_hpass, old_password):
+        response = {"status_code": http_codes.unauthorized, "message": "Password incorrect."}  # error 401
+        return make_reponse(response, http_codes.unauthorized)
 
+    new_hpass = MDPgestion.hacherMotDePasse(new_password)
+    #-- on modifie le mdp dans la db utilisateur
+    DAOuser.update_password(pseudo, new_hpass)
+    # -- on renvoit le code ok et le message de suppression de l'ami.
+    response = {"status_code": http_codes.ok, "message": "mdp mis à jour."}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
+
+
+#---------------------------------------------------------
 @app.after_request
 def set_response_headers(response):
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'

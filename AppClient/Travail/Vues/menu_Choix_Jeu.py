@@ -39,14 +39,14 @@ class Menu_Choix_Jeu_Connecte(AbstractView):
         elif self.reponse["choix_Jeu_Connecte"] == "Revenir au menu précédent":
             print("Vous allez être redirigé vers le menu précédent.")
             import Vues.menu_Utilisateur_Co as MUC
-            Retour = MUC.Menu_User_Co()
+            Retour = MUC.Menu_User_Co(self.pseudo)
             Retour.display_info()
             return Retour.make_choice()
 
         else:
             return print("Erreur dans le choix du jeu dans menu_Choix_Jeu.menu_Choix_Jeu_Connecte.make_choice()")
 
-        Jouer = MCMJ.Menu_Choix_Mode_Jeu_Connecte(jeu)
+        Jouer = MCMJ.Menu_Choix_Mode_Jeu_Connecte(pseudo = self.pseudo, jeu = jeu)
         Jouer.display_info()
         return Jouer.make_choice()
 

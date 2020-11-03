@@ -3,6 +3,8 @@ import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
+from travailMDP.testmdp import *
+
 import requests
 import json
 #Création du menu de mofidification des informations.
@@ -47,17 +49,17 @@ class Menu_Modif_Inf(AbstractView):
             {
                 'type' : 'password',
                 'name' : 'Old_Password',
-                'message' : "Veuillez insérer votre ancien mot de passe",
+                'message' : "Veuillez insérer votre mot de passe actuel : ",
             },
             {
                 'type': 'password',
                 'name': 'New_Password',
-                'message': "Veuillez insérer votre nouveau mot de passe",
+                'message': "Veuillez insérer votre nouveau mot de passe : ",
             },
             {
                 'type': 'password',
                 'name': 'Password_Check',
-                'message': "Veuillez confirmer votre mot de passe",
+                'message': "Veuillez confirmer votre nouveau mot de passe : ",
             },
         ]
         while True:
@@ -68,26 +70,32 @@ class Menu_Modif_Inf(AbstractView):
             if new_mdp1 != new_mdp2:
                 print("Les deux nouveaux mots de passes ne correspondent pas.")
                 return self.echec_modif_mdp()
-            print("*** PHASE DE MODIF DU MOT DE PASSE DANS L API... ON SIMULE ICI ***")
-
-            #on envoit à l'api ancien et nouveau mdp. Elle vérifie si l'ancien est bon puis si le nouveau est valide. Enfin elle effectue les changement et return True
-            is_old_correct = True
-            is_new_legit = True
-            has_API_worked = True
-
-            if not is_old_correct:
-                print("L'ancien mot de passe donné n'est pas bon.")
+            if new_mdp1 == "":
+                print("Veuillez fournir un nouveau mot de passe svp.")
                 return self.echec_modif_mdp()
-            if not is_new_legit:
-                print("Le nouveau mot de passe ne vérifie pas les conditions (au moins 8 caractères, une minuscule, une majuscule, un chiffre et un caractère spécial.")
+            if not anti_SQl_injection(new_mdp1):
                 return self.echec_modif_mdp()
-            if has_API_worked:
-                print("Votre mot de passe a bien été modifié!")
+
+            #if not is_mdp_legal(new_mdp1):
+                #return self.echec_modif_mdp()
+
+            dataPost = {'pseudo': self.pseudo, 'old_password': old_mdp, 'new_password': new_mdp1}
+            res = requests.put('http://localhost:9090/home/main/profil/user/password', data=json.dumps(dataPost))
+
+            if res.status_code == 401:
+                print("Le mot de passe fournit ne correspond pas.")
+                return self.echec_modif_mdp()
+            if res.status_code == 200:
+                print("Le mot de passe a bien été modifié.")
                 return self.make_choice()
+            elif res.status_code == 404:
+                print("erreur, l'api n'a pas été trouvée")
+                return self.echec_modif_mdp()
+            elif res.status_code == 500:
+                return print("erreur dans le code de l'api")
             else:
-                prin("Une erreur est survenue dans la communication avec l' dans modif_mdp.")
-                return self.make_choice()
-            break
+                print("erreur non prévue : "+ str(res.status_code))
+                return self.echec_modif_mdp()
 
     def echec_modif_mdp(self):
         self.echecMdpQ = [
@@ -129,7 +137,7 @@ class Menu_Modif_Inf(AbstractView):
                     return self.echec_modif_pseudo()
 
                 dataPost = {'old_pseudo': self.pseudo, 'new_pseudo': new_pseudo}
-                res = requests.put('http://localhost:9090/home/main/profil/user', data=json.dumps(dataPost))
+                res = requests.put('http://localhost:9090/home/main/profil/user/pseudo', data=json.dumps(dataPost))
 
                 if res.status_code == 409:
                     print("Le pseudo demandé est déjà utilisé.")

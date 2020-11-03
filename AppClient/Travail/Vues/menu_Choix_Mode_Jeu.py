@@ -53,7 +53,7 @@ class Menu_Choix_Mode_Jeu_Connecte(AbstractView):
             elif self.reponse["menu_Choix_Mode_Jeu_Connecte"] == "Revenir au menu précédent":
                 print("Vous allez être redirigés vers le menu précédent.")
                 import Vues.menu_Choix_Jeu as MCJ
-                Retour = MCJ.Menu_Choix_Jeu_Connecte(self.pseudo)
+                Retour = MCJ.Menu_Choix_Jeu_Connecte(pseudo = self.pseudo)
                 Retour.display_info()
                 return Retour.make_choice()
 

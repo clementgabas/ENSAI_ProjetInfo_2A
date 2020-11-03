@@ -1,5 +1,6 @@
 import sqlite3
 
+#-- does .. exist
 def does_pseudo_exist(pseudo):
     """
     Fonction qui renvoit True si il existe dans la DB un utilisateur ayant ce pseudo, qui renvoit False sinon.
@@ -74,6 +75,8 @@ def does_username_exist(username):
         Bool = True
     return Bool
 
+
+#-- add ..
 def add_user(username, pseudo, hpassword):
     """
     Procédure qui ajoute une utilisateur à la DB.
@@ -143,7 +146,9 @@ def add_user_score(pseudo):
     finally:
         con.close()
 
-def get_hpass(username):
+
+#-- get ..
+def get_hpass_username(username):
     """
     Fonction qui renvoit le hash de mot de passe stocké dans la DB pour un identifiant donné.
 
@@ -169,6 +174,22 @@ def get_hpass(username):
         con = sqlite3.connect("database/apijeux.db")
         cursor= con.cursor()
         cursor.execute("SELECT mdp FROM Utilisateur WHERE identifiant = ?", (username,))
+        hpass = cursor.fetchone()
+    except:
+        print("Erreur dans get_hpass")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    if hpass == None:
+        print("le execute renvoit none, erreur dans get_hpass")
+        raise ValueError
+    return hpass[0]
+
+def get_hpass_pseudo(pseudo):
+    try: #on récupère le hpass
+        con = sqlite3.connect("database/apijeux.db")
+        cursor= con.cursor()
+        cursor.execute("SELECT mdp FROM Utilisateur WHERE pseudo = ?", (pseudo,))
         hpass = cursor.fetchone()
     except:
         print("Erreur dans get_hpass")
@@ -240,7 +261,7 @@ def get_est_connecte(username):
         raise ValueError
 
 
-
+#-- update ..
 def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'True'):
     """
     Procédure qui permet de modifier la valeur est_connecté pour un utilisateur dans la DB en fonction de son pseudo ou de son identifiant.
@@ -298,6 +319,7 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
         finally:
             con.close()
 
+
 def update_pseudo_table_utilisateur(old_pseudo, new_pseudo):
     try:  # on update le pseudo de l'utilisateur dans la table utilisateur
         con = sqlite3.connect("database/apijeux.db")
@@ -338,9 +360,21 @@ def update_pseudo_table_score(old_pseudo, new_pseudo):
     finally:
         con.close()
 
-
 def update_pseudo(old_pseudo, new_pseudo):
     update_pseudo_table_utilisateur(old_pseudo, new_pseudo)
     update_pseudo_table_liste_amis(old_pseudo, new_pseudo)
     update_pseudo_table_score(old_pseudo, new_pseudo)
 
+
+def update_password(pseudo, new_password):
+    try:  # on update le mdp dans la table utilisateur
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("UPDATE Utilisateur SET mdp = ? WHERE pseudo = ?", (new_password, pseudo))
+        con.commit()
+    except:
+        print("erreur dans update_password")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
