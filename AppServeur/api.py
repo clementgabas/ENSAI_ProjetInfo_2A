@@ -20,7 +20,7 @@ import sqlite3
 import requests
 from datetime import datetime
 
-from travailMDP.testmdp import *
+import travailMDP.testmdp as MDPgestion
 import DAO.gestionUser as DAOuser
 import DAO.gestionAmis as DAOfriend
 
@@ -78,38 +78,18 @@ def new_user():
     request.get_json(force=True)
     username, hpassword, pseudo = request.json.get('username'), request.json.get('hpassword'), request.json.get('pseudo')
 
-    try: #on vérifie si l'utilisateur existe
-        con = sqlite3.connect("database/apijeux.db")
-        cursor, cursor2 = con.cursor(), con.cursor()
-        cursor.execute("SELECT pseudo FROM Utilisateur WHERE identifiant = ?", (username,))
-        cursor2.execute("SELECT identifiant FROM Utilisateur WHERE pseudo = ?", (pseudo,))
-        ide = cursor.fetchone()
-        pse = cursor2.fetchone()
-    except:
-        print("ERROR : API.new_user :")
-        raise ConnectionAbortedError
-    finally:
-        con.close()
-
-    if ide != None: #il existe déjà un utilisateur avec cet identifiant dans la db
+    #-- on vérifie si un tel username n'existe pas déjà dans la DB
+    if DAOuser.does_username_exist(username):
         response = {"status_code": http_codes.conflict, "message": "User already exists in the DB."} #error 409
         return make_reponse(response, http_codes.conflict)
-    if pse != None: #il existe deja un user avec ce pseudo
+    #-- on vérifie si un tel pseudo n'existe pas déjà dans la DB
+    if DAOuser.does_pseudo_exist(pseudo):
         response = {"status_code": http_codes.conflict, "message": "Pseudo already exists in the DB."} #error 409
         return make_reponse(response, http_codes.conflict)
 
-    con = sqlite3.connect("database/apijeux.db")
-    cursor = con.cursor()
-    try:
-        cursor.execute("INSERT INTO Utilisateur (pseudo, identifiant, mdp, nbr_parties_jouees, nbr_parties_gagnees, est_connecte, en_file, en_partie) VALUES (?, ?, ?, 0, 0, 'False', 'False', 'False')", (pseudo, username, hpassword,))
-        con.commit()
-    except:
-        print("ERROR : API.new_user : add user into db")
-        con.rollback()
-        raise ConnectionAbortedError
-    finally:
-        con.close()
-
+    #-- on ajoute le nouvel utilisateur (username, pseudo, hpassword) à la DB
+    DAOuser.add_user(username, pseudo, hpassword)
+    #-- on renvoit le code ok et le message d'ajout de l'utilisateur.
     response = {"status_code": http_codes.ok, "message": "L'utilisateur a bien été ajouté à la DB."}
     return make_reponse(response, http_codes.ok) #code 200
 
@@ -118,37 +98,24 @@ def identification():
     request.get_json(force=True)
     username, password= request.json.get('username'), request.json.get('password')
 
-    try: #on vérifie si l'utilisateur existe et s'il correspond au mot de passe
-        con = sqlite3.connect("database/apijeux.db")
-        cursor= con.cursor()
-        cursor.execute("SELECT pseudo, mdp FROM Utilisateur WHERE identifiant = ?", (username,))
-        res = cursor.fetchone()
-    except:
-        print("ERROR : API.identification :")
-        raise ConnectionAbortedError
-    finally:
-        con.close()
-
-    if res == None: #un tel ide avec ce mdp n'existe pas
+    #-- on vérifie si un utilisateur avec cet identifiant existe dans la DB
+    if not DAOuser.does_username_exist(username):
         response = {"status_code": http_codes.unauthorized, "message": "Username incorrect."} #error 401
         return make_reponse(response, http_codes.unauthorized)
-    pse, storedMDP = res[0], res[1]
-    if not verify_password(storedMDP, password):
+
+    #-- on récupère le hpass associé à l'utilisateur et on le compare au hash du mdp fournit pour la connection
+    stored_hpass = DAOuser.get_hpass(username)
+    print(stored_hpass)
+    print(password)
+    if not MDPgestion.verify_password(stored_hpass, password):
         response = {"status_code": http_codes.unauthorized, "message": "Password incorrect."}  # error 401
         return make_reponse(response, http_codes.unauthorized)
 
-    #-- Connexion réussie
-    try: #on update le statut "est_connecte" à True de l'utilisateur qui vient de se co
-        con = sqlite3.connect("database/apijeux.db")
-        cursor= con.cursor()
-        cursor.execute("UPDATE Utilisateur SET est_connecte = 'True' WHERE identifiant = ?", (username,))
-        con.commit()
-    except:
-        print("ERROR : API.identification :")
-        con.rollback()
-        raise ConnectionAbortedError
-    finally:
-        con.close()
+    #-------------------------- Connexion réussie -----------------------------
+    #-- on update le statut "est_connecte" à True de l'utilisateur qui vient de se connecter
+    DAOuser.update_est_connecte(username, username_or_pseudo = 'username', nouvel_etat = 'True')
+    #-- on renvoit le code ok, le message et le pseudo
+    pse = DAOuser.get_pseudo(username)
     response = {"status_code": http_codes.ok, "message": "Connection réussie.", "pseudo": pse}
     return make_reponse(response, http_codes.ok)  # code 200
 
@@ -156,18 +123,15 @@ def identification():
 def deconnect():
     request.get_json(force=True)
     pseudo = request.json.get('pseudo')
-    try: #on update le statut "est_connecte" à False de l'utilisateur qui vient de se deco
-        con = sqlite3.connect("database/apijeux.db")
-        cursor= con.cursor()
-        cursor.execute("UPDATE Utilisateur SET est_connecte = 'False' WHERE pseudo = ?", (pseudo,))
-        con.commit()
-    except:
-        print("ERROR : API.deconnexion :")
-        con.rollback()
-        raise ConnectionAbortedError
-    finally:
-        con.close()
 
+    # -- on vérifie si un utilisateur avec ce pseudo existe dans la DB
+    if not DAOuser.does_pseudo_exist(pseudo):
+        response = {"status_code": http_codes.unauthorized, "message": "Pseudo incorrect."}  # error 401
+        return make_reponse(response, http_codes.unauthorized)
+
+    #-- on update le statut "est_connecte" à False de l'utilisateur qui vient de se deco via son pseudo
+    DAOuser.update_est_connecte(pseudo, username_or_pseudo = 'pseudo', nouvel_etat = 'False')
+    #-- on renvoit le code ok et le message.
     response = {"status_code": http_codes.ok, "message": "Déconnection réussie."}
     return make_reponse(response, http_codes.ok)  # code 200
 
