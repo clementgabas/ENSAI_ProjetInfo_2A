@@ -107,8 +107,6 @@ def identification():
 
     #-- on récupère le hpass associé à l'utilisateur et on le compare au hash du mdp fournit pour la connection
     stored_hpass = DAOuser.get_hpass(username)
-    print(stored_hpass)
-    print(password)
     if not MDPgestion.verify_password(stored_hpass, password):
         response = {"status_code": http_codes.unauthorized, "message": "Password incorrect."}  # error 401
         return make_reponse(response, http_codes.unauthorized)

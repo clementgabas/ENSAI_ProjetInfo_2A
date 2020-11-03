@@ -129,13 +129,14 @@ class Menu_Modif_Inf(AbstractView):
                     return self.echec_modif_pseudo()
 
                 dataPost = {'old_pseudo': self.pseudo, 'new_pseudo': new_pseudo}
-                res = request.put('http://localhost:9090/home/main/profil/user', data=json.dumps(dataPost))
+                res = requests.put('http://localhost:9090/home/main/profil/user', data=json.dumps(dataPost))
 
                 if res.status_code == 409:
                     print("Le pseudo demandé est déjà utilisé.")
                     return self.echec_modif_pseudo()
                 elif res.status_code == 200:
                     print("Le pseudo a été mis à jour.")
+                    self.pseudo = new_pseudo
                     return self.make_choice()
                 elif res.status_code == 404:
                     print("erreur, l'api n'a pas été trouvée")
