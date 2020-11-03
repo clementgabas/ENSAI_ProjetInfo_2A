@@ -274,15 +274,49 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
         finally:
             con.close()
 
-def update_pseudo(old_pseudo, new_pseudo):
-    try:  # on update le pseudo de l'utilisateur ayant l'username
+def update_pseudo_table_utilisateur(old_pseudo, new_pseudo):
+    try:  # on update le pseudo de l'utilisateur dans la table utilisateur
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
         cursor.execute("UPDATE Utilisateur SET pseudo = ? WHERE pseudo = ?", (new_pseudo, old_pseudo,))
         con.commit()
     except:
-        print("erreur dans update_pseudo")
+        print("erreur dans update_pseudo_table_utilisateur")
         con.rollback()
         raise ConnectionAbortedError
     finally:
         con.close()
+
+def update_pseudo_table_liste_amis(old_pseudo, new_pseudo):
+    try:  # on update le pseudo de l'utilisateur dans la table liste amis
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("UPDATE Liste_Amis SET pseudo = ? WHERE pseudo = ?", (new_pseudo, old_pseudo,))
+        cursor.execute("UPDATE Liste_Amis SET pseudo_ami = ? WHERE pseudo_ami = ?", (new_pseudo, old_pseudo,))
+        con.commit()
+    except:
+        print("erreur dans update_pseudo_table_liste_ami")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
+def update_pseudo_table_score(old_pseudo, new_pseudo):
+    try:  # on update le pseudo de l'utilisateur dans la table score
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("UPDATE Scores SET pseudo = ? WHERE pseudo = ?", (new_pseudo, old_pseudo,))
+        con.commit()
+    except:
+        print("erreur dans update_pseudo_table_scores")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
+
+def update_pseudo(old_pseudo, new_pseudo):
+    update_pseudo_table_utilisateur(old_pseudo, new_pseudo)
+    update_pseudo_table_liste_amis(old_pseudo, new_pseudo)
+    update_pseudo_table_score(old_pseudo, new_pseudo)
+
