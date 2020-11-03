@@ -111,6 +111,11 @@ def identification():
         response = {"status_code": http_codes.unauthorized, "message": "Password incorrect."}  # error 401
         return make_reponse(response, http_codes.unauthorized)
 
+    #-- on vérifie que l'utilisateur n'est pas déjà conencté
+    if DAOuser.get_est_connecte(username): #l'utilisateur est déjà connecté
+        response = {"status_code": http_codes.forbidden, "message": "User already connected."}  # error 403
+        return make_reponse(response, http_codes.forbidden)
+
     #-------------------------- Connexion réussie -----------------------------
     #-- on update le statut "est_connecte" à True de l'utilisateur qui vient de se connecter
     DAOuser.update_est_connecte(username, username_or_pseudo = 'username', nouvel_etat = 'True')

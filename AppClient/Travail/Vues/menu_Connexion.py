@@ -57,6 +57,9 @@ class Menu_Connexion(AbstractView):
             elif res.status_code == 401:
                 print("Identifiant ou mot de passe incorrect.")
                 return self.make_choice_retour()
+            elif res.status_code == 403:
+                print("L'utilisateur est déjà conecté.")
+                return self.make_choice_retour()
             else:
                 print("erreur non prévue : "+ str(res.status_code))
                 return self.make_choice_retour()

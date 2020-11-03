@@ -217,6 +217,30 @@ def get_pseudo(username):
         raise ValueError
     return pseudo[0]
 
+def get_est_connecte(username):
+    try: #on récupère le pseudo
+        con = sqlite3.connect("database/apijeux.db")
+        cursor= con.cursor()
+        cursor.execute("SELECT est_connecte FROM Utilisateur WHERE identifiant = ?", (username,))
+        est_co = cursor.fetchone()
+    except:
+        print("erreur dans get_pseudo")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    if est_co == None:
+        print("le execute renvoit none, erreur dans get_est_connecte")
+        raise ValueError
+    if est_co[0] == 'True':
+        return True
+    elif est_co[0] == 'False':
+        return False
+    else:
+        print("le execute ne renvoit ni True ni False, erreur dans get_est_connecte")
+        raise ValueError
+
+
+
 def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'True'):
     """
     Procédure qui permet de modifier la valeur est_connecté pour un utilisateur dans la DB en fonction de son pseudo ou de son identifiant.
