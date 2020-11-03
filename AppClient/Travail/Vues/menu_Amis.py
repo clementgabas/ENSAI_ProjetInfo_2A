@@ -1,37 +1,41 @@
-#Importation des modules
+# Importation des modules
 import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
 import requests
 import json
-#Création du menu ami.
+from tabulate import tabulate
+
+
+# Création du menu ami.
 
 class Menu_Ami(AbstractView):
     def __init__(self, pseudo="user"):
         self.questions = [
             {
-                'type' : 'list',
-                'name' : 'menu_Ami',
-                'message' : "Que souhaitez-vous faire ?",
-                          'choices' : [
-                              'Ajouter un ami',
-                              'Supprimer un ami',
-                              'Afficher ma liste d\'amis',
-                              inquirer.Separator(),
-                              'Revenir au menu précédent',
-                          ]
+                'type': 'list',
+                'name': 'menu_Ami',
+                'message': "Que souhaitez-vous faire ?",
+                'choices': [
+                    'Ajouter un ami',
+                    'Supprimer un ami',
+                    'Afficher ma liste d\'amis',
+                    inquirer.Separator(),
+                    'Revenir au menu précédent',
+                ]
             },
         ]
         self.pseudo = pseudo
+
     def display_info(self):
-        #print("Bienvenue sur le menu ami")
+        # print("Bienvenue sur le menu ami")
         pass
-        
+
     def make_choice(self):
         while True:
             self.reponse = inquirer.prompt(self.questions)
-            
+
             if self.reponse["menu_Ami"] == "Ajouter un ami":
                 return self.ajout_ami()
             elif self.reponse["menu_Ami"] == "Supprimer un ami":
@@ -42,11 +46,10 @@ class Menu_Ami(AbstractView):
                 import Vues.menu_Profil as MP
                 Retour = MP.Menu_Profil(self.pseudo)
                 Retour.display_info()
-                return Retour.make_choice()            
+                return Retour.make_choice()
             else:
                 print("erreur")
             break
-                
 
     def ajout_ami(self):
         self.ajoutAmiQ = [
@@ -87,10 +90,10 @@ class Menu_Ami(AbstractView):
                 'type': 'list',
                 'name': 'Retour',
                 'message': "Que souhaitez-vous faire ?",
-                    'choices': [
-                        'Réessayer',
-                        'Retourner au menu de la liste des amis',
-                    ]
+                'choices': [
+                    'Réessayer',
+                    'Retourner au menu de la liste des amis',
+                ]
             },
         ]
         while True:
@@ -143,10 +146,10 @@ class Menu_Ami(AbstractView):
                 'type': 'list',
                 'name': 'Retour',
                 'message': "Que souhaitez-vous faire ?",
-                    'choices': [
-                        'Réessayer',
-                        'Retourner au menu de la liste des amis',
-                    ]
+                'choices': [
+                    'Réessayer',
+                    'Retourner au menu de la liste des amis',
+                ]
             },
         ]
         while True:
@@ -167,7 +170,8 @@ class Menu_Ami(AbstractView):
 
         if res.status_code == 200:
             liste_amis = res.json()["liste_amis"]
-            print(str(liste_amis))
+            print("\n" + tabulate(liste_amis, headers=["Pseudo", "Date d'ajout"], tablefmt="grid"))
+
             return self.make_choice()
         elif res.status_code == 404:
             print("erreur, l'api n'a pas été trouvée")
@@ -178,9 +182,10 @@ class Menu_Ami(AbstractView):
             print("erreur non prévue : " + str(res.status_code))
             return self.make_choice_retour()
 
-if __name__ == "__main__": 
+
+if __name__ == "__main__":
     menu_Ami1 = Menu_Ami()
     menu_Ami1.display_info()
     menu_Ami1.make_choice()
 
-#Comment
+# Comment
