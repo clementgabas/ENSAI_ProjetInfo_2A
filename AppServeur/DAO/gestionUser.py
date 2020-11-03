@@ -111,6 +111,38 @@ def add_user(username, pseudo, hpassword):
     finally:
         con.close()
 
+def add_user_score(pseudo):
+    """
+        Procédure qui ajoute un utilisateur à la DB score.
+
+        Parameters
+        ----------
+        pseudo : str
+            Pseudo de l'utilisateur.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si un erreur se produit au cours de la communication avec la DB, un rollback jusqu'au précédant commit à lieu et l'erreur est levée.
+
+        Returns
+        -------
+        None.
+
+        """
+    con = sqlite3.connect("database/apijeux.db")
+    cursor = con.cursor()
+    try:
+        cursor.execute("INSERT INTO Scores (jeu, pseudo, score) VALUES ('P4', ?, 1000)", (pseudo,))
+        cursor.execute("INSERT INTO Scores (jeu, pseudo, score) VALUES ('Oie', ?, 1000)", (pseudo,))
+        con.commit()
+    except:
+        print("erreur dans add_user_score")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
 def get_hpass(username):
     """
     Fonction qui renvoit le hash de mot de passe stocké dans la DB pour un identifiant donné.
@@ -211,7 +243,6 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
 
     """
 
-
     if not username_or_pseudo in ('username', 'pseudo'):
         print("username_or_pseudo doit prendre la valeur 'username' ou la valeur 'pseudo'!")
         raise ValueError
@@ -243,33 +274,14 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
         finally:
             con.close()
 
-def add_user_score(pseudo):
-    """
-        Procédure qui ajoute un utilisateur à la DB score.
-
-        Parameters
-        ----------
-        pseudo : str
-            Pseudo de l'utilisateur.
-
-        Raises
-        ------
-        ConnectionAbortedError
-            Si un erreur se produit au cours de la communication avec la DB, un rollback jusqu'au précédant commit à lieu et l'erreur est levée.
-
-        Returns
-        -------
-        None.
-
-        """
-    con = sqlite3.connect("database/apijeux.db")
-    cursor = con.cursor()
-    try:
-        cursor.execute("INSERT INTO Scores (jeu, pseudo, score) VALUES ('P4', ?, 1000)", (pseudo,))
-        cursor.execute("INSERT INTO Scores (jeu, pseudo, score) VALUES ('Oie', ?, 1000)", (pseudo,))
+def update_pseudo(old_pseudo, new_pseudo):
+    try:  # on update le pseudo de l'utilisateur ayant l'username
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("UPDATE Utilisateur SET pseudo = ? WHERE pseudo = ?", (new_pseudo, old_pseudo,))
         con.commit()
     except:
-        print("erreur dans add_user_score")
+        print("erreur dans update_pseudo")
         con.rollback()
         raise ConnectionAbortedError
     finally:

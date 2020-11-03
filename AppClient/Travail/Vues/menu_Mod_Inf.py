@@ -3,7 +3,8 @@ import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
-
+import requests
+import json
 #Création du menu de mofidification des informations.
 
 class Menu_Modif_Inf(AbstractView):
@@ -115,33 +116,35 @@ class Menu_Modif_Inf(AbstractView):
                 {
                     'type' : 'input',
                     'name' : 'New_Pseudo',
-                    'message' : "Veuillez insérer votre nouveau pseudo",
+                    'message' : "Veuillez insérer votre nouveau pseudo : ",
                 },
             ]
             while True:
+                print(f"Votre pseudo actuel est {self.pseudo}.")
                 self.mdpR = inquirer.prompt(self.mdpQ)
-                new_pseudo = self.mdpR["New_Pseudo"]
+                new_pseudo = self.mdpR["New_Pseudo"].lower()
 
-                print("*** PHASE DE MODIF DU PSEUDO DANS L API... ON SIMULE ICI ***")
-
-                #on envoit à l'api le nouveau pseudo. Elle vérifie si il est légit puis si il est libre. Enfin, elle return si la modif a été faite.
-                is_new_legit = True
-                is_new_free = True
-                has_API_worked = True
-
-                if not is_new_legit:
-                    print("Votre nouveau pseudo ne vérifie pas les confitions d'utilisations.")
+                if new_pseudo == self.pseudo:
+                    print("Le nouveau pseudo est identique à l'ancien.")
                     return self.echec_modif_pseudo()
-                if not is_new_free:
-                    print("Votre nouveau pseudo est déjà utilisé par un autre utilisateur")
+
+                dataPost = {'old_pseudo': self.pseudo, 'new_pseudo': new_pseudo}
+                res = request.put('http://localhost:9090/home/main/profil/user', data=json.dumps(dataPost))
+
+                if res.status_code == 409:
+                    print("Le pseudo demandé est déjà utilisé.")
                     return self.echec_modif_pseudo()
-                if has_API_worked:
-                    print("Votre pseudo a bien été modifié!")
+                elif res.status_code == 200:
+                    print("Le pseudo a été mis à jour.")
                     return self.make_choice()
+                elif res.status_code == 404:
+                    print("erreur, l'api n'a pas été trouvée")
+                    return self.echec_modif_pseudo()
+                elif res.status_code == 500:
+                    return print("erreur dans le code de l'api")
                 else:
-                    prin("Une erreur est survenue dans la communication avec l'API dans modif_pseudo.")
-                    return self.make_choice()
-                break
+                    print("erreur non prévue : " + str(res.status_code))
+                    return self.echec_modif_pseudo()
 
     def echec_modif_pseudo(self):
         self.echecPseudoQ = [

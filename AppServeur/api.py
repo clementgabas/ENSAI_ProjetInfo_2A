@@ -137,7 +137,7 @@ def deconnect():
     response = {"status_code": http_codes.ok, "message": "Déconnection réussie."}
     return make_reponse(response, http_codes.ok)  # code 200
 
-@app.route('/home/main/profil/friends', methods=['GET'])
+@app.route('/home/main/profil/friends', methods=['GET']) #affichage liste amis
 def afficher_liste_amis():
     request.get_json(force=True)
     pseudo = request.json.get('pseudo')
@@ -148,7 +148,7 @@ def afficher_liste_amis():
     response = {"status_code": http_codes.ok, "message": "Liste des amis récupérée.", 'liste_amis': liste_amis} #code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
-@app.route('/home/main/profil/friends', methods=['POST'])
+@app.route('/home/main/profil/friends', methods=['POST']) #ajout d'un ami
 def ajout_ami():
     request.get_json(force=True)
     pseudo, pseudo_ami = request.json.get('pseudo'), request.json.get('pseudo_ami')
@@ -169,7 +169,7 @@ def ajout_ami():
     response = {"status_code": http_codes.ok, "message": "Ami ajouté."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
-@app.route('/home/main/profil/friends', methods=['DELETE'])
+@app.route('/home/main/profil/friends', methods=['DELETE']) #suppression d'un ami
 def supp_ami():
     request.get_json(force=True)
     pseudo, pseudo_ami = request.json.get('pseudo'), request.json.get('pseudo_ami')
@@ -190,9 +190,21 @@ def supp_ami():
     response = {"status_code": http_codes.ok, "message": "Ami supprimé."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
+@app.route('/home/main/profil/user', methods=['PUT']) #modification du pseudo
+def modif_pseudo():
+    request.get_json(force=True)
+    old_pseudo, new_pseudo = request.json.get('old_pseudo'), request.json.get('new_pseudo')
 
+    #-- on vérifie si le new_pseudo est libre
+    if DAOuser.does_pseudo_exist(new_pseudo):
+        response = {"status_code": http_codes.conflict, "message": "Le pseudo demandé est déjà utilisé."}  # code 409
+        return make_reponse(response, http_codes.conflict)  # code 409
 
-
+    # -- on effectue la procédure qui uptade le pseudo
+    DAOuser.update_pseudo(old_pseudo, new_pseudo)
+    # -- on renvoit le code ok et le message de suppression de l'ami.
+    response = {"status_code": http_codes.ok, "message": "pseudo mis à jour."}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
 
 
 @app.after_request
