@@ -63,7 +63,7 @@ cache = Cache(app, config={"CACHE_TYPE": "simple"})
 def access_log():
     logger.info("{0} {1}".format(request.method, request.path))
 
-#-------------------------------------------------------------------
+#-------------------------- main --------------------------------
 
 @app.route("/", strict_slashes=False) #acceuil
 @app.route("/home") #acceuil
