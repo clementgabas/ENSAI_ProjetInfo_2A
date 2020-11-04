@@ -378,9 +378,7 @@ def update_password(pseudo, new_password):
         raise ConnectionAbortedError
     finally:
         con.close()
-<<<<<<< HEAD
 
-=======
 def get_stat(pseudo):
     try:  # on récupère les info interessante
         con = sqlite3.connect("database/apijeux.db")
@@ -421,4 +419,3 @@ def put_all_users_disconnected():
         raise ConnectionAbortedError
     finally:
         con.close()
->>>>>>> 3fb2ea79c4e9154b51fe6f515a6f3e7fc364a46f

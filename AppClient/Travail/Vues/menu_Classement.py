@@ -3,6 +3,8 @@ import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
+import requests
+import json
 
 #Création du menu des classements.
 
