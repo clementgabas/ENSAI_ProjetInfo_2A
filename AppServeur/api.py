@@ -253,31 +253,23 @@ def modifier_stats_perso():
 
 
 
-@app.route('/home/main/profil/classment', methods=['GET']) #affichage classement jeu de l'oie
-def afficher_classement_jeu_oie():
+@app.route('/home/main/profil/classment/jeu', methods=['GET']) #affichage classement jeu de l'oie
+def afficher_classement():
     request.get_json(force=True)
+    nom_jeu = request.json.get("nom_jeu")
     #-- on récupère le classement du jeu de l'oie
-    classement_jeu_oie = DAOclassement.afficher_classement_jeu_oie()
+    classement_jeu = DAOclassement.afficher_classement_jeu(nom_jeu)
     #-- on renvoit le code ok, le message et le classement du jeu de l'oie
-    response = {"status_code": http_codes.ok, "message": "Classement jeu de l'oie récupéré.", 'classement_jeu_oie': classement_jeu_oie} #code 200
+    response = {"status_code": http_codes.ok, "message": "Classement jeu de l'oie récupéré.", 'classement_jeu': classement_jeu} #code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
-@app.route('/home/main/profil/classment', methods=['GET']) #affichage classement puissance 4
-def afficher_classement_p4():
-    request.get_json(force=True)
-    #-- on récupère le classement du puissance 4
-    classement_p4 = DAOclassement.afficher_classement_p4()
-    #-- on renvoit le code ok, le message et le classmenent du p4
-    response = {"status_code": http_codes.ok, "message": "Classement du puissance 4 recupéré", 'classement_p4': classement_p4} #code 200
-    return make_reponse(response, http_codes.ok)  # code 200
-
-@app.route('/home/main/profil/classment', methods=['GET']) #affichage classement général
+@app.route('/home/main/profil/classment/general', methods=['GET']) #affichage classement général
 def afficher_classement_general():
     request.get_json(force=True)
     #-- on récupère le classement général
     classement_general = DAOclassement.afficher_classement_general()
     #-- on renvoit le code ok, le message et le classement général
-    response = {"status_code": http_codes.ok, "message": "Classement général récupéré.", 'classement_general': classement_general} #code 200
+    response = {"status_code": http_codes.ok, "message": "Classement général récupéré.", "classement_general": classement_general} #code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
 #------------------------home/game----------------------------------
