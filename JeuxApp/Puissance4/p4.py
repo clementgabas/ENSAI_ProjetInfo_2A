@@ -167,8 +167,8 @@ def printGrid(_grid, nbline, nbcol):
             elif _grid[j][i] == 2:
                 line = line + " O |"
         print(line)
+        print(separator)
         line = "|"
-    print(separator)
     
     
 
