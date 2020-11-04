@@ -14,9 +14,9 @@ class Player:
     def __init__(self, name, color):
         self._name = name
         self._color = color
-        if self._color == "Jaune": #Rond A MODIFIER
+        if self._color == "Jaune": #Croix A MODIFIER
             self._token = 1
-        elif self._color == "Rouge": #Croix A MODIFIER
+        elif self._color == "Rouge": #Rond A MODIFIER
             self._token = 2
 
 
