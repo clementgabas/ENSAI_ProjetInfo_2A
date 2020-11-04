@@ -55,8 +55,14 @@ class Menu_Salle(AbstractView):
         if res.status_code == 200:
             id_salle = res.json()['id_salle']
             print(f"Une salle (numéro {id_salle}) vient d'être créée. Vos amis peuvent la rejoindre via son numéro.")
-        else:
+        elif res.status_code == 404:
+            print("erreur, l'api n'a pas été trouvée")
             return self.echec_creer_salle()
+        elif res.status_code == 500:
+            return print("erreur dans le code de l'api")
+        else:
+            print("erreur non prévue : " + str(res.status_code))
+            return self.make_choice_retour()
 
     def echec_creer_salle(self):
         self.questions_retour = [
