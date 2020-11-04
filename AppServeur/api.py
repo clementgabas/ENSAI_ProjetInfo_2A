@@ -233,6 +233,26 @@ def modif_password():
     response = {"status_code": http_codes.ok, "message": "mdp mis à jour."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
+
+@app.route('/home/main/profil/user/stat', methods=['GET']) #afficher stat perso
+def afficher_stats_perso():
+    request.get_json(force=True)
+    pseudo = request.json.get('pseudo')
+    stat_perso = DAOuser.get_stat(pseudo)
+    response = {"status_code": http_codes.ok, "message": "Statistiques personelles récupérées.",
+                'Statistiques personelles': stat_perso}  # code 200
+    return make_reponse(response, http_codes.ok)
+
+@app.route('/home/main/profil/user/stat', methods=['PUT']) #reinitialiser stat perso
+def modifier_stats_perso():
+    request.get_json(force=True)
+    pseudo = request.json.get('pseudo')
+    DAOuser.update_stat(pseudo)
+    response = {"status_code": http_codes.ok, "message": "Statistiques personelles réinitialisées."}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
+
+
+
 @app.route('/home/main/profil/classment', methods=['GET']) #affichage classement jeu de l'oie
 def afficher_classement_jeu_oie():
     request.get_json(force=True)
