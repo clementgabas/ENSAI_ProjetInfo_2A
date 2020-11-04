@@ -31,10 +31,10 @@ class Menu_Choix_Jeu_Connecte(AbstractView):
         self.reponse = inquirer.prompt(self.questions)
 
         if self.reponse["choix_Jeu_Connecte"] == "Le jeu de l\'oie":
-            jeu = "Oie"
+            jeu = "oie"
 
         elif self.reponse["choix_Jeu_Connecte"] == "Le puissance 4":
-            jeu = "P4"
+            jeu = "p4"
 
         elif self.reponse["choix_Jeu_Connecte"] == "Revenir au menu précédent":
             print("Vous allez être redirigé vers le menu précédent.")
