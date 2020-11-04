@@ -378,3 +378,17 @@ def update_password(pseudo, new_password):
         raise ConnectionAbortedError
     finally:
         con.close()
+
+#-- put
+def put_all_users_disconnected():
+    try:
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("UPDATE Utilisateur SET est_connecte = 'False' WHERE est_connecte = 'True'", ())
+        con.commit()
+    except:
+        print("erreur dans put_all_users_disconnected")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()

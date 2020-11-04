@@ -304,6 +304,7 @@ def make_reponse(p_object=None, status_code=http_codes.OK):
 
 
 if __name__ == "__main__":
+    DAOuser.put_all_users_disconnected()
     #cf_port = os.getenv("PORT")
     cf_port = conf["port"]
     if cf_port is None:
