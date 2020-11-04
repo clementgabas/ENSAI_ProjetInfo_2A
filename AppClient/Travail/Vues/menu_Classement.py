@@ -51,21 +51,62 @@ class Menu_Classement(AbstractView):
 
 
     def aff_class_gen(self):
-        print("*** ON SIMULE QUE L API AFFICHE LE CLASSEMENT GENERAL TOUS JEUX CONFONDUS ***")
-        return self.make_choice()
+        # -- connexion à l'API
+        res = requests.get('http://localhost:9090/home/main/profil/classment')
+
+        if res.status_code == 200:
+            classement_general = res.json()["classement_general"]
+            print("\n" + tabulate(classement_general, headers=["Pseudo", "score"], tablefmt="grid"))
+
+            return self.make_choice()
+        elif res.status_code == 404:
+            print("erreur, l'api n'a pas été trouvée")
+            return self.make_choice()
+        elif res.status_code == 500:
+            return print("erreur dans le code de l'api")
+        else:
+            print("erreur non prévue : " + str(res.status_code))
+            return self.make_choice_retour()
 
     def aff_class_oie(self):
-        print("*** API affiche le top du classement et votre position ***")
-        return self.make_choice()
+        # -- connexion à l'API
+        res = requests.get('http://localhost:9090/home/main/profil/classment')
+
+        if res.status_code == 200:
+            classement_jeu_oie = res.json()["classement_jeu_oie"]
+            print("\n" + tabulate(classement_jeu_oie, headers=["Pseudo", "score"], tablefmt="grid"))
+
+            return self.make_choice()
+        elif res.status_code == 404:
+            print("erreur, l'api n'a pas été trouvée")
+            return self.make_choice()
+        elif res.status_code == 500:
+            return print("erreur dans le code de l'api")
+        else:
+            print("erreur non prévue : " + str(res.status_code))
+            return self.make_choice_retour()
 
     def aff_class_p4(self):
-        print("*** API affiche le top du classement et votre position ***")
-        return self.make_choice()
+        # -- connexion à l'API
+        res = requests.get('http://localhost:9090/home/main/profil/classment')
+
+        if res.status_code == 200:
+            classement_p4 = res.json()["classement_p4"]
+            print("\n" + tabulate(classement_p4, headers=["Pseudo", "score"], tablefmt="grid"))
+
+            return self.make_choice()
+        elif res.status_code == 404:
+            print("erreur, l'api n'a pas été trouvée")
+            return self.make_choice()
+        elif res.status_code == 500:
+            return print("erreur dans le code de l'api")
+        else:
+            print("erreur non prévue : " + str(res.status_code))
+            return self.make_choice_retour()
 
     def aff_stat_perso(self):
         print("*** API AFFICHE NBR DE PARTIES PAR JEU ET NBRE DE VICTOIRE (ET RATIO DE VICTOIRE) ***")
         return self.make_choice()
-
 
 
 
