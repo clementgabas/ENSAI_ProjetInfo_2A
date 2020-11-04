@@ -378,3 +378,6 @@ def update_password(pseudo, new_password):
         raise ConnectionAbortedError
     finally:
         con.close()
+
+def delete_user(self):
+    pass
