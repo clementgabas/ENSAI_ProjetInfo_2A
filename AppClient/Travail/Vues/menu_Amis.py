@@ -170,7 +170,7 @@ class Menu_Ami(AbstractView):
 
         if res.status_code == 200:
             liste_amis = res.json()["liste_amis"]
-            print("\n" + tabulate(liste_amis, headers=["Pseudo", "Date d'ajout"], tablefmt="grid"))
+            print("\n" + tabulate(liste_amis, headers=["Pseudo", "Date d'ajout", "Est connecté?"], tablefmt="grid"))
 
             return self.make_choice()
         elif res.status_code == 404:
