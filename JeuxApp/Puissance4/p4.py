@@ -152,11 +152,14 @@ class Grid:
 
 
 
-def printGrid(_grid):
+def printGrid(_grid, nbline, nbcol):
     line = "|"
-    for i in range(9, -1, -1):
-        print("-----------------------------------------")
-        for j in range(10):
+    separator = "-"
+    for k in range(nbcol):
+        separator = separator + "----"
+    print(separator)
+    for i in range(nbline - 1, -1, -1):
+        for j in range(nbcol):
             if _grid[j][i] == 0:
                 line = line + "   |"
             elif _grid[j][i] == 1:
@@ -165,11 +168,14 @@ def printGrid(_grid):
                 line = line + " O |"
         print(line)
         line = "|"
-    print("-----------------------------------------")
-
+    print(separator)
+    
+    
 
 # Param par défaut
-power4Grid = Grid(10, 10, 4) # nb lignes, nb colonnes, nb jetons alignés
+nbcolumn = 10 #peut etre defini par input
+nbline = 10 #peut etre defini par input
+power4Grid = Grid(nbline, nbcolumn, 4) # nb lignes, nb colonnes, nb jetons alignés
 listOfPlayers = []
 numberOfPlayer = 2 # deux joueurs
 player = Player("Player1", "Jaune") # écrit couleur dans classe A MODIFIER
@@ -193,19 +199,19 @@ while endOfGame == False:
         test_input = False
         
         while test_input == False:
-            column_input = input(currentplayer._name + " choisissez une colonne pour votre jeton:")
+            column_input = input(currentplayer._name + " choisissez une colonne pour votre jeton :")
             try:
                 val_column_input = int(column_input)
                 test_input = True
             except ValueError:
-                print("Le numero de colonne n'est pas valide!")
+                print("Le numero de colonne n'est pas valide !")
         power4Grid.Throw(val_column_input, currentplayer.Get_Token())
-        printGrid(power4Grid.getGrid())
+        printGrid(power4Grid.getGrid(), nbline, nbcolumn)
         
         if power4Grid.TestIfWin():
             endOfGame = True
             break
-print(currentplayer._name + " gagne la partie!")
+print(currentplayer._name + " gagne la partie !")
 
 
 
