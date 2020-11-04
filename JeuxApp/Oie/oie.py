@@ -8,15 +8,15 @@ Created on Fri Oct 09 11:08:42 2020
 
 import random
 
-class Player:
+class Player():
     """
     Classe qui gère les paramètres du joueur
     """
-    _name = "" # pseudo
-    _color = "" # couleur pion
-    _nbwaitingturn = 1 # nb tours d'attente
-    _actualbox = 0 # case actuelle
-    _previousbox = 0 # case d'où l'on vient
+    _name = ""  # pseudo
+    _color = ""  # couleur pion
+    _nbwaitingturn = 1  # nb tours d'attente
+    _actualbox = 0  # case actuelle
+    _previousbox = 0  # case d'où l'on vient
 
     def __init__(self, name, color):
         """
@@ -25,11 +25,13 @@ class Player:
         self._name = name
         self._color = color
 
+
     def set_waitingturn(self, nbwaitingturn):
         """
         Modifier le nombre de tours d'attente
         """
         self._nbwaitingturn = nbwaitingturn
+
 
     def get_waitingturn(self):
         """
@@ -37,16 +39,18 @@ class Player:
         """
         return self._nbwaitingturn
 
+
     def test_waitingturn(self):
         """
-        Tester si le joueur doit encore attendre ou peut jouer 
+        Tester si le joueur doit encore attendre ou peut jouer
         Retourne True ou False
         Si >1, je le retranche de 1 et je teste pour voir si = à 0
-        Valeur par défaut c'est 1   
+        Valeur par défaut c'est 1
          """
         if self._nbwaitingturn > 1:
             self._nbwaitingturn = self._nbwaitingturn - 1
         return self._nbwaitingturn - 1 == 0
+
 
     def freeze_waiting(self):
         """
@@ -54,17 +58,20 @@ class Player:
         """
         self._nbwaitingturn = -1
 
+
     def get_actualbox(self):
         """
         Obtenir la case où il se situe actuellement
         """
         return self._actualbox
 
+
     def set_actualbox(self, box):
         """
         Définir la case où il se situe
         """
         self._actualbox = box
+
 
     def add_dice(self, value):
         """
@@ -78,13 +85,13 @@ class Dice:
     """
     Permet de gérer les dés : le lancer, le nb de dés, le nombre de valeurs (faces)
     """
-    _numofdice = 0 # nb de dés
-    _diceresult = [] # stocker le résultat de chaque dé (sa dimension varie en fct du nb de dés)
-    _numoffaces = 0 # nb de faces par dé
+    _numofdice = 0  # nb de dés
+    _diceresult = []  # stocker le résultat de chaque dé (sa dimension varie en fct du nb de dés)
+    _numoffaces = 0  # nb de faces par dé
 
     def __init__(self, numofdice, numoffaces):
         """
-        Initialisation de la classe dé 
+        Initialisation de la classe dé
         Définir nb dés et nb faces
         En fct nb dés, on définit la dimension du tableau _diceresult
         """
@@ -93,6 +100,7 @@ class Dice:
         for i in range(self._numofdice):
             self._diceresult.append(0)
 
+
     def throw(self):
         """
         Jeté de dés : pour chaque dé, on fait un random (entre 1 et nb faces) et on stocke ce résultat dans _diceresult
@@ -100,11 +108,13 @@ class Dice:
         for i in range(self._numofdice):
             self._diceresult[i] = random.randint(1, self._numoffaces)
 
+
     def dicevalue(self, num):
         """
         Demande le résultat d'un lancer de dé en donnant l'id du dé (_dicevalue[0] donne le premier dé)
         """
         return self._diceresult[num]
+
 
     def sumofdices(self):
         """
@@ -116,14 +126,15 @@ class Dice:
         return s
 
 
+
 class Tray(Dice):
     """
     Plateau qui hérité de la classe dé
     Sert à définir le nombre de cases, les particularités des cases
     """
-    _nbBox = 1 # nb de cases
-    _boxList = [] # tableau de classes 'box'
-    
+    _nbBox = 1  # nb de cases
+    _boxList = []  # tableau de classes 'box'
+
     def __init__(self, numofdice, numoffaces, nbBox):
         """
         Initialisation nb dés, nb faces et le nb de cases
@@ -131,17 +142,46 @@ class Tray(Dice):
         self._nbBox = nbBox
         Dice.__init__(self, numofdice, numoffaces)
         # Dimensione le tableau _boxList en fonction de _nbBox
-        for i in range(self._nbBox + 1): 
+        for i in range(self._nbBox + 1):
             box = Box("None")  # On instancie une classe box
-            self._boxList.append(box) # Qui est ajoutée au tableau _boxList
-            
+            self._boxList.append(box)  # Qui est ajoutée au tableau _boxList
+
+
+    def Set_GameByDefault(self):
+        """
+        On definit les regles par defaut du jeu de l'oie
+        """
+        self.set_rules(6, "Bridge")
+        self.set_rules(9, "Goose")
+        self.set_rules(12, "Bridge")
+        self.set_rules(14, "Goose")
+        self.set_rules(18, "Goose")
+        self.set_rules(19, "Hotel")
+        self.set_rules(23, "Goose")
+        self.set_rules(26, "Dice63")
+        self.set_rules(27, "Goose")
+        self.set_rules(31, "Well")
+        self.set_rules(32, "Goose")
+        self.set_rules(36, "Goose")
+        self.set_rules(41, "Goose")
+        self.set_rules(42, "Labyrinth")
+        self.set_rules(45, "Goose")
+        self.set_rules(50, "Goose")
+        self.set_rules(52, "Jail")
+        self.set_rules(53, "Dice54")
+        self.set_rules(54, "Goose")
+        self.set_rules(58, "Skull")
+        self.set_rules(59, "Goose")
+
+
     def set_rules(self, boxnumber, boxtype):
         """
         Affecte une règle à une case
         Prend num case et sa règle
         """
-        box = self._boxList[boxnumber] # Récupère l'instance de la box dans le tableau
-        box.setType(boxtype) # Et on lui affecte la règle
+        box = self._boxList[boxnumber]  # Récupère l'instance de la box dans le tableau
+        box.setType(boxtype)  # Et on lui affecte la règle
+
 
     def get_type(self, boxnumber):
         """
@@ -149,6 +189,7 @@ class Tray(Dice):
         """
         box = self._boxList[boxnumber]
         return box._boxType
+
 
     def search_box(self, start, end, test):
         """
@@ -160,25 +201,27 @@ class Tray(Dice):
                 return i
         return -1
 
+
     def compute_dice(self):
         """
-        A DEFINIR
-        Deux types de cases : combinaison de dés, et cases types
+        recherche de combinaison de dés
         """
         dice1 = 0
         dice2 = 0
+        # recherche de la combinaison 6 + 3
         for i in range(self._numofdice):
             if self._diceresult[i] == 6:
                 dice1 = 1
             elif self._diceresult[i] == 3:
                 dice2 = 1
         if dice1 == 1 and dice2 == 1:
-            #on recherche la case Dice63
+            # on recherche la case Dice63
             foundbox = self.search_box(0, self._nbBox, "Dice63")
             if foundbox != -1:
-                return foundbox, 1
+                return foundbox, 1  # retourne le tuple: index de la case Dice63 , combinaison speciale trouve == 1
         dice1 = 0
         dice2 = 0
+        # recherche de la combinaison 5 + 4
         for i in range(self._numofdice):
             if self._diceresult[i] == 5:
                 dice1 = 1
@@ -188,14 +231,15 @@ class Tray(Dice):
             # on recherche la case Dice54
             foundbox = self.search_box(0, self._nbBox, "Dice54")
             if foundbox != -1:
-                return foundbox, 1
-        return -1, 0
+                return foundbox, 1  # retourne le tuple: index de la case Dice54 , combinaison speciale trouve == 1
+        return -1, 0  # retourne le tuple: index fictif , combinaison speciale non trouve == 0
+
 
     def compute_rule(self, boxnumber, previousbox):
         """
-        
+        Recherche de cases speciales
         """
-        #return tuple type/box/nextturn
+        # return tuple type/box/nextturn
         box = self._boxList[boxnumber]
         if box._boxType == "Goose":
             return 1, boxnumber + self.sumofdices(), 1
@@ -216,13 +260,15 @@ class Tray(Dice):
             return 1, 0, 1
         return 0, boxnumber, 1
 
+
     def compute_lastbox(self, boxnumber):
         """
         Gérer fin du plateau pour qu'un dé trop grand revienne en arrière
         """
-        if boxnumber > _nbBox:
-            boxnumber = _nbBox - (boxnumber - _nbBox)
+        if boxnumber > self._nbBox:
+            boxnumber = self._nbBox - (boxnumber - self._nbBox)
         return boxnumber
+
 
     def test_If_Win(self, boxnumber):
         """
@@ -231,16 +277,18 @@ class Tray(Dice):
         return boxnumber == self._nbBox
 
 
+
 class Box:
     """
     Définit une case par sa règle
     """
-    
+
     def __init__(self, boxType):
         """
         Initialise en mettant la règle de la case
         """
         self._boxType = boxType
+
 
     def setType(self, boxType):
         """
@@ -248,32 +296,11 @@ class Box:
         """
         self._boxType = boxType
 
-#***************************MAIN*******************************
+
+# ***************************MAIN*******************************
 # Règles par défaut, à écraser si l'on souhaite personnaliser une partie
-gooseTray = Tray(2, 6, 63) # 2 dés, 6 face, 63 cases
-gooseTray.set_rules(6, "Bridge")
-gooseTray.set_rules(9, "Goose")
-gooseTray.set_rules(12, "Bridge")
-gooseTray.set_rules(14, "Goose")
-gooseTray.set_rules(18, "Goose")
-gooseTray.set_rules(19, "Hotel")
-gooseTray.set_rules(23, "Goose")
-gooseTray.set_rules(26, "Dice63")
-gooseTray.set_rules(27, "Goose")
-gooseTray.set_rules(31, "Well")
-gooseTray.set_rules(32, "Goose")
-gooseTray.set_rules(36, "Goose")
-gooseTray.set_rules(41, "Goose")
-gooseTray.set_rules(42, "Labyrinth")
-gooseTray.set_rules(45, "Goose")
-gooseTray.set_rules(50, "Goose")
-gooseTray.set_rules(52, "Jail")
-gooseTray.set_rules(53, "Dice54")
-gooseTray.set_rules(54, "Goose")
-gooseTray.set_rules(58, "Skull")
-gooseTray.set_rules(59, "Goose")
-# Passer Box en abstraite pour que les règles ne soient pas entrées en dur
-# Ou autrement énumérer ces règles et l'utilisateur chosit où il les affecte (mais ne modifie pas leur contenu)
+gooseTray = Tray(2, 6, 63)  # 2 dés, 6 face, 63 cases
+gooseTray.Set_GameByDefault()
 
 
 # Tableau des joueurs (avec pseudo et couleur)
@@ -288,73 +315,91 @@ listOfPlayers.append(player)
 player = Player("Player4", "vert")
 listOfPlayers.append(player)
 
+
 # Le jeu commence
 gooseTray.throw()
-endOfGame = 0 # Booléen pour continuer la partie en fct de si elle est terminée (s'arrête à 1)
-gameturn = 0 # indique le tour de jeu
+endOfGame = 0  # Booléen pour continuer la partie en fct de si elle est terminée (s'arrête à 1)
+gameturn = 0  # indique le tour de jeu
 
 
 # Tant que la partie n'est pas temrinée (aucun joueur n'a gagné), la partie continue
-while endOfGame == 0: 
+while endOfGame == 0:
 
-    gameturn = gameturn + 1 # incrémente le tour
-    print("**********")
+    gameturn = gameturn + 1  # incrémente le tour
+    print("\n**********")
     print("* tour", gameturn, "*")
     print("**********")
-    
+
     # Pour chaque joueur on exécute le code (un par un)
-    for j in range(numberOfPlayer): 
-        currentplayer = listOfPlayers[j] # récupère le joueur actuel (celui qui joue)
+    for j in range(numberOfPlayer):
+        currentplayer = listOfPlayers[j]  # récupère le joueur actuel (celui qui joue)
+
+        input(currentplayer._name + " appuyez sur entrée pour lancer les dés!")
+        print("Tour du joueur : " + currentplayer._name)
         
-        if currentplayer.test_waitingturn() == 1: # test si le joeur ne doit pas passer son tour
-            actualBox = currentplayer.get_actualbox() # récupère sa case actuelle
-            gooseTray.throw() # lancer les dés
-            print("    lancer:", gooseTray._diceresult[0] , "+", gooseTray._diceresult[1], "=", gooseTray.sumofdices()) # affiche par ex 2+3 = 5
-            currentplayer.add_dice(gooseTray.sumofdices()) # on ajoute dés à case actuelle 
-            currentplayer.set_actualbox(gooseTray.compute_lastbox(currentplayer.get_actualbox())) # on déplace le joeur sur new case & on vérifie qu'il ne dépasse pas la dernière case 
-            
+        if currentplayer.test_waitingturn() == 1:  # test si le joeur ne doit pas passer son tour
+            actualBox = currentplayer.get_actualbox()  # récupère sa case actuelle
+            gooseTray.throw()  # lancer les dés
+            print("    lancer de dés:", gooseTray._diceresult[0], "+", gooseTray._diceresult[1], "=",
+                  gooseTray.sumofdices())  # affiche par ex 2+3 = 5
+            currentplayer.add_dice(gooseTray.sumofdices())  # on ajoute dés à case actuelle
+            print("        Va sur la case:", currentplayer.get_actualbox())
+            currentplayer.set_actualbox(gooseTray.compute_lastbox(
+                currentplayer.get_actualbox()))  # on déplace le joeur sur new case & on vérifie qu'il ne dépasse pas la dernière case
+
             # Teste victoire joueur ?
-            if gooseTray.test_If_Win(currentplayer.get_actualbox()) == 1: 
-                print("                                    *", currentplayer._name, " a gagné")
+            if gooseTray.test_If_Win(currentplayer.get_actualbox()) == 1:
+                print("*******", currentplayer._name, " a gagné!!!! *******")
                 endOfGame = 1
                 break
-                
+
             # A DEFINIR Si pas victoire, renvoie résultat du test combinaison spéciale de dés
-            resultDiceRules= gooseTray.compute_dice()
-            
-            # A DEFINIR On regarde s'il a fait une combinaison spéciale de dés (par exemple doubles)
+            resultDiceRules = gooseTray.compute_dice()
+
+            # On regarde s'il a fait une combinaison spéciale de dés (par exemple doubles)
             if resultDiceRules[1] == 1:
                 print("        dé spécial:", resultDiceRules)
                 currentplayer.set_actualbox(resultDiceRules[0])
+                print("        Va sur la case:", currentplayer.get_actualbox())
+                
             else:
                 ruletest = 1
                 while ruletest > 0:
                     resultBoxRules = gooseTray.compute_rule(currentplayer.get_actualbox(), actualBox)
-                    ruletest = resultBoxRules[0] == 1 and resultBoxRules[1] != actualBox and resultBoxRules[1] < gooseTray._nbBox
+                    ruletest = resultBoxRules[0] == 1 and resultBoxRules[1] != actualBox and resultBoxRules[
+                        1] < gooseTray._nbBox
+                    
                     if resultBoxRules[0] != 0:
                         print("        case spéciale:", gooseTray.get_type(currentplayer.get_actualbox()))
-                    if resultBoxRules[0] == 1:#case speciale concerne seulement le joueur
+                  
+                    if resultBoxRules[0] == 1:  # case speciale concerne seulement le joueur
                         currentplayer.set_actualbox(gooseTray.compute_lastbox(resultBoxRules[1]))
                         currentplayer.set_waitingturn(resultBoxRules[2])
                         ruletest = currentplayer.get_waitingturn() == 1
-                    elif resultBoxRules[0] == 2:#case speciale concerne aussi un autre joueur
+                        print("        Va sur la case:", currentplayer.get_actualbox())
+                 
+                    elif resultBoxRules[0] == 2:  # case speciale concerne aussi un autre joueur
                         currentplayer.set_actualbox(resultBoxRules[1])
                         currentplayer.freeze_waiting()
-                        for k in range(numberOfPlayer):
-                            if k != j:#il ne s'agit pas du joueur en cours
+                  
+                    for k in range(numberOfPlayer):
+                            if k != j:  # il ne s'agit pas du joueur en cours
                                 player = listOfPlayers[k]
                                 if player.get_actualbox() == currentplayer.get_actualbox():
-                                    #il s'agit du joueur sur la meme case
-                                    #on lui applique les regle de la case liberee
-                                    player.set_actualbox(resultBoxRules[2])#on affecte l'ancienne case du joueur actif
+                                    # il s'agit du joueur sur la meme case
+                                    # on lui applique les regle de la case liberee
+                                    player.set_actualbox(
+                                        resultBoxRules[2])  # on affecte l'ancienne case du joueur actif
                                     if resultBoxRules[3] == 0:
-                                        player.set_waitingturn(resultBoxRules[4])#le joueur redemarre
+                                        player.set_waitingturn(resultBoxRules[4])  # le joueur redemarre
                                         player.set_actualbox(resultBoxRules[3])
+                                        print("        Joueur " + player._name + " va sur case:", player.get_actualbox())
                                         break
+           
             if gooseTray.test_If_Win(currentplayer.get_actualbox()) == 1:
-                print("                                    *", currentplayer._name, " a gagné")
+                print("*******", currentplayer._name, " a gagné!!!! *******")
                 endOfGame = 1
                 break
         else:
             print("    pas de lancer - attente:", currentplayer.get_waitingturn(), "tours")
-        print("                                    *", currentplayer._name, ":", currentplayer.get_actualbox())
+        print("        Termine le tour sur la case: ", currentplayer.get_actualbox())
