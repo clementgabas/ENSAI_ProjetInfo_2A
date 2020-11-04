@@ -62,7 +62,7 @@ class Menu_Salle(AbstractView):
             return print("erreur dans le code de l'api")
         else:
             print("erreur non prévue : " + str(res.status_code))
-            return self.make_choice_retour()
+            return self.echec_creer_salle()
 
     def echec_creer_salle(self):
         self.questions_retour = [
