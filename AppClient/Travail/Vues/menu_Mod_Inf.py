@@ -184,7 +184,7 @@ class Menu_Modif_Inf(AbstractView):
                 print("Erreur dans echec_modif_pseudo")
             break
 
-   def affich_stat_perso(self):
+    def affich_stat_perso(self):
         dataPost = {'pseudo': self.pseudo}
         # -- connexion à l'API
         res = requests.get('http://localhost:9090/home/main/profil/user/stat', data=json.dumps(dataPost))
