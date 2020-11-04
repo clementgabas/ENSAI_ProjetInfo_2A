@@ -24,6 +24,7 @@ import travailMDP.testmdp as MDPgestion
 import DAO.gestionUser as DAOuser
 import DAO.gestionAmis as DAOfriend
 import DAO.gestionClassement as DAOclassement
+import DAO.gestionParties as DAOparties
 
 CACHE_TTL = 60  # 60 seconds
 
@@ -73,6 +74,7 @@ def get():
     response = {"status_code": http_codes.OK, "message": "Vous êtes bien sur l'Api jeux"}
     return make_reponse(response, http_codes.OK)
 
+#---------------------------- home -----------------------------------
 @app.route('/home/users', methods = ['POST']) #creation d'un nouvel utilisateur
 def new_user():
     request.get_json(force=True)
@@ -139,6 +141,8 @@ def deconnect():
     #-- on renvoit le code ok et le message.
     response = {"status_code": http_codes.ok, "message": "Déconnection réussie."}
     return make_reponse(response, http_codes.ok)  # code 200
+
+#-----------------------------home/main -------------------------------------------
 
 @app.route('/home/main/profil/friends', methods=['GET']) #affichage liste amis
 def afficher_liste_amis():
@@ -229,6 +233,26 @@ def modif_password():
     response = {"status_code": http_codes.ok, "message": "mdp mis à jour."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
+
+@app.route('/home/main/profil/user/stat', methods=['GET']) #afficher stat perso
+def afficher_stats_perso():
+    request.get_json(force=True)
+    pseudo = request.json.get('pseudo')
+    stat_perso = DAOuser.get_stat(pseudo)
+    response = {"status_code": http_codes.ok, "message": "Statistiques personelles récupérées.",
+                'Statistiques personelles': stat_perso}  # code 200
+    return make_reponse(response, http_codes.ok)
+
+@app.route('/home/main/profil/user/stat', methods=['PUT']) #reinitialiser stat perso
+def modifier_stats_perso():
+    request.get_json(force=True)
+    pseudo = request.json.get('pseudo')
+    DAOuser.update_stat(pseudo)
+    response = {"status_code": http_codes.ok, "message": "Statistiques personelles réinitialisées."}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
+
+
+
 @app.route('/home/main/profil/classment', methods=['GET']) #affichage classement jeu de l'oie
 def afficher_classement_jeu_oie():
     request.get_json(force=True)
@@ -255,6 +279,27 @@ def afficher_classement_general():
     #-- on renvoit le code ok, le message et le classement général
     response = {"status_code": http_codes.ok, "message": "Classement général récupéré.", 'classement_general': classement_general} #code 200
     return make_reponse(response, http_codes.ok)  # code 200
+
+#------------------------home/game----------------------------------
+@app.route('/home/game/room', methods=['POST'])
+def creer_salle():
+    request.get_json(force=True)
+    pseudo_chef, game = request.json.get('pseudo_chef_salle'), request.json.get('game')
+    if game.lower() == 'p4':
+        total_places = 2
+    elif game.lower() == 'oie':
+        total_places = 5
+
+
+    #-- fonction qui créé la partie dans la table et qui renvoit son id
+    id_partie = DAOparties.add_partie(pseudo_chef, game, total_places)
+    #-- procedure qui créé la table coups associée
+    DAOparties.create_coup(id_partie)
+    # -- on renvoit le code ok, le message et l'id de la partie créée.
+    response = {"status_code": http_codes.ok, "message": "Salle et table coup créées.", "id_salle":id_partie}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
+
+
 
 #---------------------------------------------------------
 @app.after_request
@@ -304,6 +349,7 @@ def make_reponse(p_object=None, status_code=http_codes.OK):
 
 
 if __name__ == "__main__":
+    DAOuser.put_all_users_disconnected()
     #cf_port = os.getenv("PORT")
     cf_port = conf["port"]
     if cf_port is None:

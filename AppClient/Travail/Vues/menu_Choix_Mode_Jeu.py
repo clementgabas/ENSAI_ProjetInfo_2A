@@ -24,12 +24,7 @@ class Menu_Choix_Mode_Jeu_Connecte(AbstractView):
             },
         ]
         self.pseudo = pseudo
-        if jeu.lower() == "oie":
-            self.game = "Jeu de l'Oie"
-        elif jeu.lower() == "p4":
-            self.game = "Puissance 4"
-        else:
-            self.game = "erreur sur le jeu"
+        self.game = jeu.lower()
 
     def display_info(self):
         #print("Bienvenue sur le menu de choix du jeu")

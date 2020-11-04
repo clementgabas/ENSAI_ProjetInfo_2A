@@ -378,6 +378,47 @@ def update_password(pseudo, new_password):
         raise ConnectionAbortedError
     finally:
         con.close()
+<<<<<<< HEAD
 
-def delete_user(self):
-    pass
+=======
+def get_stat(pseudo):
+    try:  # on récupère les info interessante
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("SELECT nbr_parties_jouees, nbr_parties_gagnees FROM Utilisateur WHERE pseudo = ?", (pseudo,))
+        stat_perso = cursor.fetchall()
+    except:
+        print("ERROR : API.afficher stat perso :")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return stat_perso
+
+def update_stat(pseudo):
+    try:  # on update le mdp dans la table utilisateur
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("UPDATE Utilisateur SET nbr_parties_jouees = 0, nbr_parties_gagnees = 0 WHERE pseudo = ?", (pseudo,))
+        con.commit()
+    except:
+        print("erreur dans update_stat")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
+
+#-- put
+def put_all_users_disconnected():
+    try:
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("UPDATE Utilisateur SET est_connecte = 'False' WHERE est_connecte = 'True'", ())
+        con.commit()
+    except:
+        print("erreur dans put_all_users_disconnected")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+>>>>>>> 3fb2ea79c4e9154b51fe6f515a6f3e7fc364a46f

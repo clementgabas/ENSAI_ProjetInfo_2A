@@ -108,6 +108,10 @@ def sup_amitie(pseudo1, pseudo2):
         con.close()
 
 def afficher_liste_amis(pseudo):
+    liste_amis = get_liste_amis(pseudo)
+    return get_est_connecte_liste_amis(liste_amis)
+
+def get_liste_amis(pseudo):
     """
     Fonction qui retourne la liste des amis de pseudo
 
@@ -138,3 +142,35 @@ def afficher_liste_amis(pseudo):
     finally:
         con.close()
     return liste_amis
+
+def get_est_connecte_liste_amis(liste_amis):
+    if liste_amis:
+        #liste_amis est de la forme [('pseudo', 'date'), ('pseudo', 'date')]
+        liste = []
+        for couple in liste_amis:
+            pseudo_ami = couple[0]
+            date_ami = couple[1]
+            try:
+                con = sqlite3.connect("database/apijeux.db")
+                cursor = con.cursor()
+                cursor.execute("SELECT est_connecte FROM Utilisateur WHERE pseudo = ?", (pseudo_ami,))
+                est_connecte_ami = cursor.fetchone()[0]
+            except:
+                print("ERROR : API.get_est_connecte_liste_amis :")
+                raise ConnectionAbortedError
+            finally:
+                con.close()
+            if est_connecte_ami == 'True':
+                est_connecte_ami = 'Connecté'
+            elif est_connecte_ami == 'False':
+                est_connecte_ami = 'Deconnecté'
+            else:
+                est_connecte_ami = 'ni true ni false c est etrange'
+            liste.append((pseudo_ami, date_ami, est_connecte_ami))
+        return liste
+    else:
+        return liste_amis
+
+
+
+
