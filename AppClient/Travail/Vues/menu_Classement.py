@@ -17,7 +17,6 @@ class Menu_Classement(AbstractView):
                               'Afficher le classement général',
                               'Afficher le classement du jeu de l\'oie',
                               'Afficher le classement du puissance 4',
-                              'Accéder à ses statistiques personnelles',
                               inquirer.Separator(),
                               'Revenir au menu précédent',
                           ]
@@ -38,8 +37,6 @@ class Menu_Classement(AbstractView):
                 return self.aff_class_oie()
             elif self.reponse["menu_Classement"] == "Afficher le classement du puissance 4":
                 return self.aff_class_p4()
-            elif self.reponse["menu_Classement"] == "Accéder à ses statistiques personnelles":
-                return self.aff_stat_perso()
             elif self.reponse["menu_Classement"] == "Revenir au menu précédent":
                 import Vues.menu_Profil as MP
                 Retour = MP.Menu_Profil(self.pseudo)
@@ -104,9 +101,6 @@ class Menu_Classement(AbstractView):
             print("erreur non prévue : " + str(res.status_code))
             return self.make_choice_retour()
 
-    def aff_stat_perso(self):
-        print("*** API AFFICHE NBR DE PARTIES PAR JEU ET NBRE DE VICTOIRE (ET RATIO DE VICTOIRE) ***")
-        return self.make_choice()
 
 
 

@@ -7,6 +7,7 @@ from travailMDP.testmdp import *
 
 import requests
 import json
+from tabulate import tabulate
 #Création du menu de mofidification des informations.
 
 class Menu_Modif_Inf(AbstractView):
@@ -19,6 +20,8 @@ class Menu_Modif_Inf(AbstractView):
                           'choices' : [
                               'Modifier mon pseudo',
                               'Modifier mon mot de passe',
+                              'Accéder à ses statistiques personnelles',
+                              'Réinitialiser ses statistiques personnelles',
                               inquirer.Separator(),
                               'Revenir au menu précédent',
                           ]
@@ -35,6 +38,10 @@ class Menu_Modif_Inf(AbstractView):
                 return self.modif_pseudo()
             elif self.reponse["menu_Modif_Info"] == "Modifier mon mot de passe":
                 return self.modif_mdp()
+            elif self.reponse["menu_Modif_Info"] == "Accéder à ses statistiques personnelles" :
+                return self.affich_stat_perso()
+            elif self.reponse["menu_Modif_Info"] == "Réinitialiser ses statistiques personnelles" :
+                return self.reinit_stat_perso()
             elif self.reponse["menu_Modif_Info"] == "Revenir au menu précédent":
                 import Vues.menu_Profil as MP
                 Retour = MP.Menu_Profil(self.pseudo)
@@ -176,6 +183,65 @@ class Menu_Modif_Inf(AbstractView):
             else:
                 print("Erreur dans echec_modif_pseudo")
             break
+
+    def affich_stat_perso(self):
+        dataPost = {'pseudo': self.pseudo}
+        # -- connexion à l'API
+        res = requests.get('http://localhost:9090/home/main/profil/user/stat', data=json.dumps(dataPost))
+        if res.status_code == 200:
+            stat_perso = res.json()['Statistiques personelles']
+            parties_g = stat_perso[0][1]
+            parties_j = stat_perso[0][0]
+            pourc_partie_g = 0
+            if parties_j != 0:
+                pourc_partie_g = parties_g/parties_j*100
+            stat_perso[0].append("{} %".format(pourc_partie_g))
+            print("\n" + tabulate(stat_perso, headers=["Nombre de parties jouées", "Nombre de parties gagnées","Pourcentage de parties gagnées"], tablefmt="grid"))
+            return self.make_choice()
+        elif res.status_code == 404:
+            print("erreur, l'api n'a pas été trouvée")
+            return self.make_choice()
+        elif res.status_code == 500:
+            return print("erreur dans le code de l'api")
+        else:
+            print("erreur non prévue : " + str(res.status_code))
+            return self.make_choice_retour()
+    def reinit_stat_perso(self):
+        self.Verif_choixQ = [
+            {
+                'type': 'list',
+                'name': 'Retour',
+                'message': "Etes-vous sûr.e de vouloir réinitialiser vos statistiques personelles ?",
+                'choices': [
+                    'Oui',
+                    'Non',
+                ]
+            },
+        ]
+        while True:
+        #verif = inquirer.prompt("Etes-vous sûr.e de vouloir réinitialiser vos statistiques personelles? [Y/N]")
+            self.Verif_choixR = inquirer.prompt(self.Verif_choixQ)
+            if self.Verif_choixR["Retour"] == "Non" :
+                print("Abandon")
+                return self.make_choice()
+            elif self.Verif_choixR["Retour"] == "Oui" :
+                dataPost = {'pseudo': self.pseudo}
+                res = requests.put('http://localhost:9090/home/main/profil/user/stat', data=json.dumps(dataPost))
+                if res.status_code == 200:
+                    print(" Vos statistiques ont bien été réinitialisées")
+                    return self.make_choice()
+                elif res.status_code == 404:
+                    print("erreur, l'api n'a pas été trouvée")
+                    return self.make_choice()
+                elif res.status_code == 500:
+                    return print("erreur dans le code de l'api")
+                else:
+                    print("erreur non prévue : " + str(res.status_code))
+                    return self.make_choice_retour()
+            else:
+                print("erreur non prévue : " + str(res.status_code))
+                return self.make_choice_retour()
+
 
 
 
