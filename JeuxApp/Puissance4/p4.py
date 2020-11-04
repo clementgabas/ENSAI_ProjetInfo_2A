@@ -14,9 +14,9 @@ class Player:
     def __init__(self, name, color):
         self._name = name
         self._color = color
-        if self._color == "Jaune":
+        if self._color == "Jaune": #Rond A MODIFIER
             self._token = 1
-        elif self._color == "Rouge":
+        elif self._color == "Rouge": #Croix A MODIFIER
             self._token = 2
 
 
@@ -172,9 +172,9 @@ def printGrid(_grid):
 power4Grid = Grid(10, 10, 4) # nb lignes, nb colonnes, nb jetons alignés
 listOfPlayers = []
 numberOfPlayer = 2 # deux joueurs
-player = Player("Player1", "Rond") # écrit couleur dans classe A MODIFIER
+player = Player("Player1", "Jaune") # écrit couleur dans classe A MODIFIER
 listOfPlayers.append(player)
-player = Player("Player2", "Croix") # écrit couleur dans classe A MODIFIER
+player = Player("Player2", "Rouge") # écrit couleur dans classe A MODIFIER
 listOfPlayers.append(player)
 
 
