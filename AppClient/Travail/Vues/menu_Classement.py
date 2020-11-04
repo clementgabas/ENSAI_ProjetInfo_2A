@@ -46,14 +46,39 @@ class Menu_Classement(AbstractView):
                 print("erreur")
             break
 
+    def make_choice_retour(self):
+        self.questions_retour = [
+            {
+                'type': 'list',
+                'name': 'Retour',
+                'message': "Que souhaitez-vous faire ?",
+                    'choices': [
+                        'Réessayer',
+                        'Revenir au menu precedent',
+                    ]
+            },
+        ]
+        while True:
+            self.reponse_retour = inquirer.prompt(self.questions_retour)
+            if self.reponse_retour['Retour'] == "Réessayer":
+                return self.make_choice()
+            elif self.reponse_retour['Retour'] == "Revenir au menu precedent":
+                import Vues.menu_Profil as MP
+                Retour = MP.Menu_Accueil()
+                Retour.display_info()
+                return Retour.make_choice()
+            else:
+                print("Erreur dans menu_Classement.Menu_Classement.make_choice_retour")
+            break
 
     def aff_class_gen(self):
         # -- connexion à l'API
-        res = requests.get('http://localhost:9090/home/main/profil/classment')
+        dataPost = {"t": "t"}
+        res = requests.get('http://localhost:9090/home/main/profil/classment/general', data = json.dumps(dataPost))
 
         if res.status_code == 200:
             classement_general = res.json()["classement_general"]
-            print("\n" + tabulate(classement_general, headers=["Pseudo", "score"], tablefmt="grid"))
+            print(str(classement_general))
 
             return self.make_choice()
         elif res.status_code == 404:
@@ -67,11 +92,12 @@ class Menu_Classement(AbstractView):
 
     def aff_class_oie(self):
         # -- connexion à l'API
-        res = requests.get('http://localhost:9090/home/main/profil/classment')
+        dataPost = {"nom_jeu": "Oie"}
+        res = requests.get('http://localhost:9090/home/main/profil/classment/jeu', data = json.dumps(dataPost))
 
         if res.status_code == 200:
-            classement_jeu_oie = res.json()["classement_jeu_oie"]
-            print("\n" + tabulate(classement_jeu_oie, headers=["Pseudo", "score"], tablefmt="grid"))
+            classement_jeu = res.json()["classement_jeu"]
+            print(str(classement_jeu))
 
             return self.make_choice()
         elif res.status_code == 404:
@@ -85,11 +111,12 @@ class Menu_Classement(AbstractView):
 
     def aff_class_p4(self):
         # -- connexion à l'API
-        res = requests.get('http://localhost:9090/home/main/profil/classment')
+        dataPost = {"nom_jeu": "P4"}
+        res = requests.get('http://localhost:9090/home/main/profil/classment/jeu', data = json.dumps(dataPost))
 
         if res.status_code == 200:
-            classement_p4 = res.json()["classement_p4"]
-            print("\n" + tabulate(classement_p4, headers=["Pseudo", "score"], tablefmt="grid"))
+            classement_jeu = res.json()["classement_jeu"]
+            print(str(classement_jeu))
 
             return self.make_choice()
         elif res.status_code == 404:
@@ -100,10 +127,6 @@ class Menu_Classement(AbstractView):
         else:
             print("erreur non prévue : " + str(res.status_code))
             return self.make_choice_retour()
-
-
-
-
 
 
 if __name__ == "__main__": 
