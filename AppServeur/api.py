@@ -327,6 +327,24 @@ def creer_salle():
     response = {"status_code": http_codes.ok, "message": "Salle créée. Joueur ajouté à la salle.", "id_salle":id_partie}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
+@app.route('/home/game/room', methods=['PUT'])
+def rejoindre_salle():
+    request.get_json(force=True)
+    pseudo, id_salle = request.json.get('pseudo'), request.json.get("id_salle")
+
+    #-- on vérifie si il y a assez de place dans la salle
+    nb_places_libres = DAOparties.check_cb_places_libres(id_salle)
+    if nb_places_libres <1:
+        print("La salle est déjà pleine.")
+        response = {"status_code": http_codes.unauthorized, "message": "Salle déjà pleine.",
+                    "id_salle": id_partie}  # code 401
+        return make_reponse(response, http_codes.unauthorized)  # code 401
+
+    #-- on ajoute l'utilisateur a la salle
+    DAOparties.add_to_participation(id_salle, pseudo, nb_places_libres)
+    response = {"status_code": http_codes.ok, "message": "Utilisateur ajouté à la salle.",
+                "id_salle": id_salle}  # code 200
+    return make_reponse(response, http_codes.unauthorized)  # code 200
 
 
 

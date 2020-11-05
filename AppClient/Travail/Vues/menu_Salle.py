@@ -35,8 +35,7 @@ class Menu_Salle(AbstractView):
             if self.reponse["menu_Salle"] == "Créer une salle":
                 return self.creer_salle()
             elif self.reponse["menu_Salle"] == "Rejoindre une salle":
-                print("Vous avez décidé de rejoindre une salle")
-                print("*** On a pas encore la suite. On devrait donc quitter l'appli ***")
+                return self.rejoindre_salle()
             elif self.reponse["menu_Salle"] == "Revenir au menu précédent":
                 print("Vous allez être redirigé vers le menu précédent.")
                 import Vues.menu_Choix_Mode_Jeu as MCMJ
@@ -86,7 +85,55 @@ class Menu_Salle(AbstractView):
                 print("Erreur dans menu_salle.echec_creer_salle")
             break
 
+    def rejoindre_salle(self):
+        self.questions_rejoindre_salle = [
+            {
+                'type': 'input',
+                'name': 'ide_salle',
+                'message': "Quelle salle souhaitez vous rejoindre ?"
+            },
+        ]
+        self.reponse_rejoindre_salle = inquirer.prompt(self.questions_rejoindre_salle)
+        id_salle = self.reponse_rejoindre_salle["ide_salle"]
 
+        dataPost = {'pseudo': self.pseudo, 'id_salle': id_salle}
+        res = requests.put('http://localhost:9090/home/game/room', data=json.dumps(dataPost))
+
+        if res.status_code == 200:
+            print(f"Vous avez bien été ajouté à la salle {id_salle}.")
+        elif res.status_code == 401:
+            print(f"Vous ne pouvez pas rejoindre la salle {id_salle} car elle est déjà pleine.")
+            return self.echec_rejoindre_salle()
+        elif res.status_code == 404:
+            print("erreur, l'api n'a pas été trouvée")
+            return self.echec_rejoindre_salle()
+        elif res.status_code == 500:
+            return print("erreur dans le code de l'api")
+        else:
+            print("erreur non prévue : " + str(res.status_code))
+            return self.echec_rejoindre_salle()
+
+    def echec_rejoindre_salle(self):
+        self.questions_retour = [
+            {
+                'type': 'list',
+                'name': 'Retour',
+                'message': "Que souhaitez-vous faire ?",
+                'choices': [
+                    'Réessayer',
+                    'Revenir au menu précédent',
+                ]
+            },
+        ]
+        while True:
+            self.reponse_retour = inquirer.prompt(self.questions_retour)
+            if self.reponse_retour['Retour'] == "Réessayer":
+                return self.rejoindre_salle()
+            elif self.reponse_retour['Retour'] == "Revenir au menu précédent":
+                return self.make_choice()
+            else:
+                print("Erreur dans menu_salle.echec_rejoindre_salle")
+            break
 
 if __name__ == "__main__": 
     menu_Salle1 = Menu_Salle()
