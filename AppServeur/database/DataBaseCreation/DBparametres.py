@@ -3,5 +3,5 @@ CREATE TABLE "Parametres" (
 	"duree_tour"	INTEGER,
 	"condition_victoire"	INTEGER,
 	"taille_plateau"	TEXT,
-	PRIMARY KEY("id_parametres")
+	PRIMARY KEY("id_partie")
 );
