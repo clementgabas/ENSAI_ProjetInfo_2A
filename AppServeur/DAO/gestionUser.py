@@ -137,7 +137,7 @@ def add_user_score(pseudo):
     cursor = con.cursor()
     try:
         cursor.execute("INSERT INTO Scores (jeu, pseudo, nb_points, nb_parties_jouees, nb_parties_gagnees) VALUES ('P4', ?, 1000, 0, 0)", (pseudo,))
-        cursor.execute("INSERT INTO Scores (jeu, pseudo, score, nb_parties_jouees, nb_parties_gagnees) VALUES ('Oie', ?, 1000, 0, 0)", (pseudo,))
+        cursor.execute("INSERT INTO Scores (jeu, pseudo, nb_points, nb_parties_jouees, nb_parties_gagnees) VALUES ('Oie', ?, 1000, 0, 0)", (pseudo,))
         con.commit()
     except:
         print("erreur dans add_user_score")
