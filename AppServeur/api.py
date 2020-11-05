@@ -269,10 +269,9 @@ def afficher_stats_perso():
     print(f"Demande d'affichage des statistiques personnelles du pseudo = {pseudo}. ")
     #-- on recupere les statistique personnel de l'utilisateur 'pseudo'
     stat_perso = DAOuser.get_stat(pseudo)
-    print(f"Affichage des statistiques personnelles du pseudo = {pseudo}."
+    print(f"Affichage des statistiques personnelles du pseudo = {pseudo}.")
     #-- on renvoie un message de reussite
-    response = {"status_code": http_codes.ok, "message": "Statistiques personnelles récupérées.",
-                'Statistiques personnelles': stat_perso}  # code 200
+    response = {"status_code": http_codes.ok, "message": "Statistiques personnelles récupérées.",'Statistiques personnelles': stat_perso}  # code 200
     return make_reponse(response, http_codes.ok)
 
 @app.route('/home/main/profil/user/stat', methods=['PUT']) #reinitialiser stat perso
