@@ -241,23 +241,31 @@ class Tray(Dice):
         """
         # return tuple type/box/nextturn
         box = self._boxList[boxnumber]
+        
         if box._boxType == "Goose":
             return 1, boxnumber + self.sumofdices(), 1
+        
         elif box._boxType == "Bridge":
             foundbox = self.search_box(boxnumber + 1, self._nbBox, "Bridge")
             if foundbox != -1:
                 return 1, foundbox, 1;
             return boxnumber, 1
+        
         elif box._boxType == "Hotel":
             return 1, boxnumber, 4
+        
         elif box._boxType == "Jail":
             return 2, boxnumber, 0, previousbox, 1
+        
         elif box._boxType == "Well":
             return 2, boxnumber, 0, boxnumber, 1
+        
         elif box._boxType == "Labyrinth":
             return 1, boxnumber - 12, 1
+        
         elif box._boxType == "Skull":
             return 1, 0, 1
+        
         return 0, boxnumber, 1
 
 

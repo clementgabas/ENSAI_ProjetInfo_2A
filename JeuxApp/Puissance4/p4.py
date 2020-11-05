@@ -35,8 +35,8 @@ class Grid:
         self._numHeight = numHeight
         self._numWidth = numWidth
         self._tokenWinNumber = tokenWinNumber
-        # init grid a 0
         
+        # init grid a 0
         for k in range(self._numWidth):
             self._gridList.append([0] * self._numHeight)
 
@@ -127,10 +127,14 @@ class Grid:
 
 
     def TestEndOfGame(self):
-        result = 1
+        result = True
         for i in range(self._numWidth):
-            result = result and self._gridList[i][self._numHeight - 1] == 0
+            result = result and self._gridList[i][self._numHeight - 1] != 0
         return result
+
+
+    def TestEndColumn(self, column):
+        return self._gridList[column][self._numHeight - 1] != 0
 
 
     def ClearGrid(self):
@@ -202,18 +206,31 @@ while endOfGame == False:
         
         while test_input == False:
             column_input = input(currentplayer._name + " choisissez une colonne pour votre jeton (allant de 0 à " + str(nbcolumn-1) + "):")
+           
             try:
                 val_column_input = int(column_input)
                 if 0 <= val_column_input <= (nbcolumn-1):
-                    test_input = True
+                    if power4Grid.TestEndColumn(val_column_input):
+                        print("La colonne est pleine!")
+                    else:
+                        test_input = True
+                        
             except ValueError:
                 print("Le numero de colonne n'est pas valide !")
         power4Grid.Throw(val_column_input, currentplayer.Get_Token())
         printGrid(power4Grid.getGrid(), nbline, nbcolumn)
         
         if power4Grid.TestIfWin():
+            print(currentplayer._name + " gagne la partie!")
             endOfGame = True
             break
-print(currentplayer._name + " gagne la partie !")
+        
+        if power4Grid.TestEndOfGame():
+            print("Personne ne gagne")
+            endOfGame = True
+            break
+
+
+
 
 
