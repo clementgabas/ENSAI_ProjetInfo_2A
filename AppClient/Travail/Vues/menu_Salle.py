@@ -54,6 +54,10 @@ class Menu_Salle(AbstractView):
         if res.status_code == 200:
             id_salle = res.json()['id_salle']
             print(f"Une salle (numéro {id_salle}) vient d'être créée. Vos amis peuvent la rejoindre via son numéro.")
+            import Vues.menu_Salon as MS
+            salon = MS.Salon(self.pseudo, id_salle, self.game, True)
+            salon.display_info()
+            return salon.make_choice()
         elif res.status_code == 404:
             print("erreur, l'api n'a pas été trouvée")
             return self.echec_creer_salle()
@@ -101,6 +105,10 @@ class Menu_Salle(AbstractView):
 
         if res.status_code == 200:
             print(f"Vous avez bien été ajouté à la salle {id_salle}.")
+            import Vues.menu_Salon as MS
+            salon = MS.Salon(self.pseudo, id_salle, self.game, False)
+            salon.display_info()
+            return salon.make_choice()
         elif res.status_code == 401:
             print(f"Vous ne pouvez pas rejoindre la salle {id_salle} car elle est déjà pleine.")
             return self.echec_rejoindre_salle()
