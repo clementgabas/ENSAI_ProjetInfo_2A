@@ -189,7 +189,7 @@ class Menu_Modif_Inf(AbstractView):
         # -- connexion à l'API
         res = requests.get('http://localhost:9090/home/main/profil/user/stat', data=json.dumps(dataPost))
         if res.status_code == 200:
-            stat_perso = res.json()['Statistiques personelles']
+            stat_perso = res.json()['Statistiques personnelles']
             parties_g = stat_perso[0][1]
             parties_j = stat_perso[0][0]
             pourc_partie_g = 0
@@ -211,7 +211,7 @@ class Menu_Modif_Inf(AbstractView):
             {
                 'type': 'list',
                 'name': 'Retour',
-                'message': "Etes-vous sûr.e de vouloir réinitialiser vos statistiques personelles ?",
+                'message': "Etes-vous sûr.e de vouloir réinitialiser vos statistiques personnelles ?",
                 'choices': [
                     'Oui',
                     'Non',
@@ -219,7 +219,6 @@ class Menu_Modif_Inf(AbstractView):
             },
         ]
         while True:
-        #verif = inquirer.prompt("Etes-vous sûr.e de vouloir réinitialiser vos statistiques personelles? [Y/N]")
             self.Verif_choixR = inquirer.prompt(self.Verif_choixQ)
             if self.Verif_choixR["Retour"] == "Non" :
                 print("Abandon")
