@@ -419,3 +419,18 @@ def put_all_users_disconnected():
         raise ConnectionAbortedError
     finally:
         con.close()
+
+
+#-- delete
+def delete_user_pseudo(pseudo):
+    try:
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("DELETE FROM Utilisateur WHERE pseudo = ?", (pseudo,))
+        con.commit()
+    except:
+        print("erreur dans delete_user_pseudo")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
