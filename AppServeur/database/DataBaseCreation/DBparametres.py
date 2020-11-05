@@ -1,6 +1,5 @@
 CREATE TABLE "Parametres" (
-	"id_parametres"	INTEGER,
-	"jeu"	TEXT,
+	"id_partie"	INTEGER,
 	"duree_tour"	INTEGER,
 	"condition_victoire"	INTEGER,
 	"taille_plateau"	TEXT,
