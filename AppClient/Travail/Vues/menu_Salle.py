@@ -100,7 +100,7 @@ class Menu_Salle(AbstractView):
         self.reponse_rejoindre_salle = inquirer.prompt(self.questions_rejoindre_salle)
         id_salle = self.reponse_rejoindre_salle["ide_salle"]
 
-        dataPost = {'pseudo': self.pseudo, 'id_salle': id_salle}
+        dataPost = {'pseudo': self.pseudo, 'id_salle': id_salle, 'jeu':self.game}
         res = requests.put('http://localhost:9090/home/game/room', data=json.dumps(dataPost))
 
         if res.status_code == 200:

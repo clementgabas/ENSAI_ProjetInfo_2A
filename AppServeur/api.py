@@ -330,7 +330,7 @@ def creer_salle():
 @app.route('/home/game/room', methods=['PUT'])
 def rejoindre_salle():
     request.get_json(force=True)
-    pseudo, id_salle = request.json.get('pseudo'), request.json.get("id_salle")
+    pseudo, id_salle, jeu = request.json.get('pseudo'), request.json.get("id_salle"), request.json.get("jeu")
 
     #-- on vérifie si la salle existe
     if not DAOparties.does_partie_exist(id_salle):
@@ -345,7 +345,14 @@ def rejoindre_salle():
         response = {"status_code": http_codes.unauthorized, "message": "Salle déjà pleine.",
                     "id_salle": id_salle}  # code 401
         return make_reponse(response, http_codes.unauthorized)  # code 401
-
+    #-- on vérifie si le jeu de la salle correspond bien à notre jeu
+    jeu_salle = DAOparties.get_jeu_salle(id_salle)[0][0]
+    print(jeu_salle)
+    print(jeu)
+    if jeu != jeu_salle:
+        response = {"status_code": http_codes.not_found, "message": "Salle inexistante.",
+                    "id_salle": id_salle}  # code 404
+        return make_reponse(response, http_codes.not_found)  # code 404
     #-- on ajoute l'utilisateur a la salle
     DAOparties.add_to_participation(id_salle, pseudo, nb_places_libres)
     response = {"status_code": http_codes.ok, "message": "Utilisateur ajouté à la salle.",
@@ -363,6 +370,22 @@ def quitter_salle():
     response = {"status_code": http_codes.ok, "message": "Utilisateur supprimé de la salle.",
                 "id_salle": id_salle}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
+
+@app.route('/home/game/room', methods=['GET'])
+def voir_membres_salle():
+    request.get_json(force=True)
+    id_salle = request.json.get("id_salle")
+
+    #-- on affiche les membres de cette salle
+    membres = DAOparties.get_membres_salle(id_salle)
+    response = {"status_code": http_codes.ok, "message": "Liste des membres de la salle.",
+                "liste_membres": membres}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
+
+
+
+
+
 #---------------------------------------------------------
 @app.after_request
 def set_response_headers(response):

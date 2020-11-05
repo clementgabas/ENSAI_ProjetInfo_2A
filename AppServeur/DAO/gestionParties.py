@@ -93,5 +93,32 @@ def delete_from_participation(id_partie, pseudo, nb_places):
     finally:
         con.close()
 
+def get_membres_salle(id_salle):
+    try:
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("SELECT pseudo FROM Participation WHERE id_partie = ?;", (id_salle,))
+        membres = cursor.fetchall()
+    except:
+        print("erreur dans voir_membres_salle")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return membres
+
+def get_jeu_salle(id_salle):
+    try:
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("SELECT jeu FROM Parties WHERE id_partie = ?;", (id_salle,))
+        membres = cursor.fetchall()
+    except:
+        print("erreur dans get_jeu_salle")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return membres
+
+
 def choix_couleur(id_partie, pseudo, couleur):
     pass

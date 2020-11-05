@@ -4,6 +4,8 @@ from Vues.abstractView import AbstractView
 from printFunctions import timePrint as print
 import requests
 import json
+from tabulate import tabulate
+
 
 class Salon(AbstractView):
     def __init__(self, pseudo, id_salle, jeu, est_chef):
@@ -34,7 +36,7 @@ class Salon(AbstractView):
         while True:
             self.reponse = inquirer.prompt(self.question)
             if self.reponse["Salon_accueil"] == 'Voir les membres de la salle':
-                pass
+                return self.voir_membres_salle()
             elif self.reponse["Salon_accueil"] == 'Modifier les paramètres de la salle':
                 pass
             elif self.reponse["Salon_accueil"] == "Lancer la partie":
@@ -71,7 +73,12 @@ class Salon(AbstractView):
 
     def voir_membres_salle(self):
         dataPost = {'id_salle': self.id_salle}
-        #res = requests.get(f"http://localhost:9090/home/game/room/{self.id_salle}", data=json.dumps(dataPost))
+        res = requests.get("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
+
+        if res.status_code == 200:
+            liste_membres = res.json()["liste_membres"]
+            print("\n" + tabulate(liste_membres, headers=["Pseudo"], tablefmt="grid"))
+            return self.make_choice()
 
 
 
