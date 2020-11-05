@@ -367,6 +367,9 @@ def quitter_salle():
     #-- pas la peine de vérifier si la salle existe car cette méthode n'est disponible que depuis une salle
     #-- on retire le pseudo de la salle dans la salle participation et on ajoute une place de libre dans la salle dans la table Parties
     DAOparties.delete_from_participation(id_salle, pseudo, nb_places_libres)
+    #-- on vérifie si la salle est vide et si elle est vide on la supprime
+    if DAOparties.check_cb_places_libres(id_salle) == DAOparties.check_cb_places_tot(id_salle):
+        DAOparties.delete_partie(id_salle)
     response = {"status_code": http_codes.ok, "message": "Utilisateur supprimé de la salle.",
                 "id_salle": id_salle}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200

@@ -24,7 +24,7 @@ class Salon(AbstractView):
                               'Modifier les paramètres de la salle',
                               "Lancer la partie",
                               inquirer.Separator(),
-                              'Revenir au menu précédent',
+                              'Quitter la salle',
                           ]
             },
         ]
@@ -41,7 +41,7 @@ class Salon(AbstractView):
                 pass
             elif self.reponse["Salon_accueil"] == "Lancer la partie":
                 pass
-            else: #'Revenir au menu précédent'
+            else: #'Quitter la salle'
                 return self.retour()
             break
 

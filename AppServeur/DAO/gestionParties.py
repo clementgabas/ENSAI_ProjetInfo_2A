@@ -49,6 +49,19 @@ def check_cb_places_libres(id_partie):
         con.close()
         return nb
 
+def check_cb_places_tot(id_partie):
+    try:
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("SELECT places_total FROM Parties WHERE id_partie = ?", (id_partie,))
+        nb = cursor.fetchone()[0]
+    except:
+        print("erreur dans check_cb_places_total")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+        return nb
+
 def update_parties_nb_place(id_partie, nb_places_restantes):
     try:
         con = sqlite3.connect("database/apijeux.db")
@@ -92,6 +105,20 @@ def delete_from_participation(id_partie, pseudo, nb_places):
         raise ConnectionAbortedError
     finally:
         con.close()
+
+def delete_partie(id_partie):
+    try:
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("DELETE FROM Parties WHERE id_partie = ?;", (id_partie,))
+        con.commit()
+    except:
+        print("erreur dans delete_partie")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
 
 def get_membres_salle(id_salle):
     try:
