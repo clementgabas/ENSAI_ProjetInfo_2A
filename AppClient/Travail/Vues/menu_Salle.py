@@ -113,7 +113,7 @@ class Menu_Salle(AbstractView):
             print(f"Vous ne pouvez pas rejoindre la salle {id_salle} car elle est déjà pleine.")
             return self.echec_rejoindre_salle()
         elif res.status_code == 404:
-            print("erreur, l'api n'a pas été trouvée")
+            print("La salle demandée n'existe pas.")
             return self.echec_rejoindre_salle()
         elif res.status_code == 500:
             return print("erreur dans le code de l'api")

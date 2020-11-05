@@ -332,13 +332,19 @@ def rejoindre_salle():
     request.get_json(force=True)
     pseudo, id_salle = request.json.get('pseudo'), request.json.get("id_salle")
 
+    #-- on vérifie si la salle existe
+    if not DAOparties.does_partie_exist(id_salle):
+        print("La salle a rejoindre n'existe pas.")
+        response = {"status_code": http_codes.not_found, "message": "Salle inexistante.",
+                    "id_salle": id_salle}  # code 404
+        return make_reponse(response, http_codes.not_found)  # code 404
     #-- on vérifie si il y a assez de place dans la salle
     nb_places_libres = DAOparties.check_cb_places_libres(id_salle)
     print(nb_places_libres)
     if nb_places_libres == 0:
         print("La salle est déjà pleine.")
         response = {"status_code": http_codes.unauthorized, "message": "Salle déjà pleine.",
-                    "id_salle": id_partie}  # code 401
+                    "id_salle": id_salle}  # code 401
         return make_reponse(response, http_codes.unauthorized)  # code 401
 
     #-- on ajoute l'utilisateur a la salle

@@ -20,6 +20,22 @@ def add_partie(pseudo_chef, jeu, nb_places_tot):
         con.close()
     return id_partie
 
+def does_partie_exist(id_partie):
+    try:
+        Bool = True
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("SELECT jeu FROM Parties where id_partie = ?", (id_partie,))
+        id_partie = cursor.fetchone()
+    except:
+        print("erreur dans does_partie_exist")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    if id_partie == None:
+        Bool = False
+    return Bool
+
 def check_cb_places_libres(id_partie):
     try:
         con = sqlite3.connect("database/apijeux.db")
