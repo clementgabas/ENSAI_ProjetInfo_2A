@@ -292,8 +292,9 @@ def modifier_stats_perso():
 def afficher_classement():
     request.get_json(force=True)
     nom_jeu = request.json.get("nom_jeu")
+    pseudo = request.json.get("pseudo")
     #-- on récupère le classement du jeu de l'oie
-    classement_jeu = DAOclassement.afficher_classement_jeu(nom_jeu)
+    classement_jeu = DAOclassement.afficher_classement_jeu(nom_jeu,pseudo)
     #-- on renvoit le code ok, le message et le classement du jeu de l'oie
     response = {"status_code": http_codes.ok, "message": "Classement jeu de l'oie récupéré.", 'classement_jeu': classement_jeu} #code 200
     return make_reponse(response, http_codes.ok)  # code 200
@@ -301,8 +302,10 @@ def afficher_classement():
 @app.route('/home/main/profil/classment/general', methods=['GET']) #affichage classement général
 def afficher_classement_general():
     request.get_json(force=True)
+    pseudo = request.json.get("pseudo")
+
     #-- on récupère le classement général
-    classement_general = DAOclassement.afficher_classement_general()
+    classement_general = DAOclassement.afficher_classement_general(pseudo)
     #-- on renvoit le code ok, le message et le classement général
     response = {"status_code": http_codes.ok, "message": "Classement général récupéré.", "classement_general": classement_general} #code 200
     return make_reponse(response, http_codes.ok)  # code 200

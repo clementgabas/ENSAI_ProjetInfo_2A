@@ -5,6 +5,7 @@ from Vues.abstractView import AbstractView
 from printFunctions import timePrint as print
 import requests
 import json
+from tabulate import tabulate
 
 #Création du menu des classements.
 
@@ -75,12 +76,12 @@ class Menu_Classement(AbstractView):
 
     def aff_class_gen(self):
         # -- connexion à l'API
-        dataPost = {"t": "t"}
+        dataPost = {"pseudo": self.pseudo}
         res = requests.get('http://localhost:9090/home/main/profil/classment/general', data = json.dumps(dataPost))
 
         if res.status_code == 200:
             classement_general = res.json()["classement_general"]
-            print(str(classement_general))
+            print("\n" + tabulate(classement_general, headers=["classement", "Pseudo", "nombre de point"], tablefmt="grid"))
 
             return self.make_choice()
         elif res.status_code == 404:
@@ -94,12 +95,14 @@ class Menu_Classement(AbstractView):
 
     def aff_class_oie(self):
         # -- connexion à l'API
-        dataPost = {"nom_jeu": "Oie"}
+        dataPost = {"nom_jeu": "Oie",
+                    "pseudo" : self.pseudo
+                    }
         res = requests.get('http://localhost:9090/home/main/profil/classment/jeu', data = json.dumps(dataPost))
 
         if res.status_code == 200:
             classement_jeu = res.json()["classement_jeu"]
-            print(str(classement_jeu))
+            print("\n" + tabulate(classement_jeu, headers=["classement", "Pseudo", "nombre de point"], tablefmt="grid"))
 
             return self.make_choice()
         elif res.status_code == 404:
@@ -113,12 +116,15 @@ class Menu_Classement(AbstractView):
 
     def aff_class_p4(self):
         # -- connexion à l'API
-        dataPost = {"nom_jeu": "P4"}
+        dataPost = {"nom_jeu": "P4",
+                    "pseudo": self.pseudo
+                    }
+
         res = requests.get('http://localhost:9090/home/main/profil/classment/jeu', data = json.dumps(dataPost))
 
         if res.status_code == 200:
             classement_jeu = res.json()["classement_jeu"]
-            print(str(classement_jeu))
+            print("\n" + tabulate(classement_jeu, headers=["classement", "Pseudo", "nombre de point"], tablefmt="grid"))
 
             return self.make_choice()
         elif res.status_code == 404:
@@ -129,7 +135,6 @@ class Menu_Classement(AbstractView):
         else:
             print("erreur non prévue : " + str(res.status_code))
             return self.make_choice_retour()
-
 
 if __name__ == "__main__": 
     menu_Classement1 = Menu_Classement()
