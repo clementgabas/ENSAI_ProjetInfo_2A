@@ -49,6 +49,18 @@ def check_cb_places_libres(id_partie):
         con.close()
         return nb
 
+def update_parties_nb_place(id_partie, nb_places_restantes):
+    try:
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("UPDATE Parties SET places_dispo = ? WHERE id_partie = ?", (nb_places_restantes, id_partie))
+        con.commit()
+    except:
+        print("erreur dans update_parties_nb_places")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
 
 def add_to_participation(id_partie, pseudo, nb_places):
     if nb_places <1:
@@ -58,10 +70,24 @@ def add_to_participation(id_partie, pseudo, nb_places):
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
         cursor.execute("INSERT INTO Participation (pseudo, id_partie) VALUES (?, ?);",(pseudo, id_partie))
-        cursor.execute("UPDATE Parties SET places_dispo = ? WHERE id_partie = ?", (nb_places-1, id_partie))
         con.commit()
+        update_parties_nb_place(id_partie, nb_places-1)
     except:
         print("erreur dans add_to_participation")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
+def delete_from_participation(id_partie, pseudo, nb_places):
+    try:
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("DELETE FROM Participation WHERE pseudo = ? AND id_partie = ?;", (pseudo, id_partie))
+        con.commit()
+        update_parties_nb_place(id_partie, nb_places+1)
+    except:
+        print("erreur dans delete_from_participation")
         con.rollback()
         raise ConnectionAbortedError
     finally:

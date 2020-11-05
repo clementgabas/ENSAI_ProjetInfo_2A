@@ -40,18 +40,38 @@ class Salon(AbstractView):
             elif self.reponse["Salon_accueil"] == "Lancer la partie":
                 pass
             else: #'Revenir au menu précédent'
-                print("Vous allez être redirigés vers le menu précédent.")
+                return self.retour()
+            break
+
+    def retour(self):
+        self.question_retour = [
+            {
+                'type' : 'list',
+                'name' : 'salon_retour',
+                'message' : f"Vous allez retourner au menu précédant. Vous allez donc quitter la salle {self.id_salle}. Etes vous sur? ",
+                          'choices' : [
+                              "Oui",
+                              "Non"
+                          ]
+            },
+        ]
+        while True:
+            self.reponse_retour = inquirer.prompt(self.question_retour)
+            if self.reponse_retour["salon_retour"] == "Oui":
+                dataPost = {"pseudo":self.pseudo, "id_salle": self.id_salle}
+                res = requests.delete("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
+
                 import Vues.menu_Choix_Mode_Jeu as MCMJ
                 Retour = MCMJ.Menu_Choix_Mode_Jeu_Connecte(pseudo=self.pseudo, jeu=self.game)
                 Retour.display_info()
                 return Retour.make_choice()
-            break
-
-        def voir_membres_salle(self):
-            dataPost = {'id_salle': self.id_salle}
-            #res = requests.get(f"http://localhost:9090/home/game/room/{self.id_salle}", data=json.dumps(dataPost))
+            else: #'non'
+                return self.make_choice()
 
 
+    def voir_membres_salle(self):
+        dataPost = {'id_salle': self.id_salle}
+        #res = requests.get(f"http://localhost:9090/home/game/room/{self.id_salle}", data=json.dumps(dataPost))
 
 
 
