@@ -1,3 +1,5 @@
+import sqlite3
+
 def afficher_classement_jeu(nom_jeu,pseudo):
     try:
         con = sqlite3.connect("database/apijeux.db")
