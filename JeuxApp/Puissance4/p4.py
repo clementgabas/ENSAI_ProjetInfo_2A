@@ -198,6 +198,9 @@ gameturn = 0  # indique le tour de jeu
 
 
 while endOfGame == False:
+    if gameturn == 0:
+        print ("\n Début de partieeeeeeeeee ! \n")
+        printGrid(power4Grid.getGrid(), nbline, nbcolumn)
     gameturn = gameturn + 1  # incrémente le tour
     print("\n**********")
     print("* tour", gameturn, "*")
@@ -206,7 +209,7 @@ while endOfGame == False:
     for j in range(numberOfPlayer):
         currentplayer = listOfPlayers[j]  # récupère le joueur actuel (celui qui joue)
         test_input = False
-        
+                
         while test_input == False:
             column_input = input(currentplayer._name + " choisissez une colonne pour votre jeton (allant de 0 à " + str(nbcolumn-1) + "):")
            
