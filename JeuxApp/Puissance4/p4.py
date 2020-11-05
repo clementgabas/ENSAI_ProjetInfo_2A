@@ -159,8 +159,10 @@ class Grid:
 def printGrid(_grid, nbline, nbcol):
     line = "|"
     separator = "-"
+    abscisse = "  "
     for k in range(nbcol):
         separator = separator + "----"
+        abscisse = abscisse + str(k) + "   "
     print(separator)
     for i in range(nbline - 1, -1, -1):
         for j in range(nbcol):
@@ -173,6 +175,7 @@ def printGrid(_grid, nbline, nbcol):
         print(line)
         print(separator)
         line = "|"
+    print(abscisse)
     
     
     

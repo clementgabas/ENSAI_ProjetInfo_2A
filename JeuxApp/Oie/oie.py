@@ -209,11 +209,13 @@ class Tray(Dice):
         dice1 = 0
         dice2 = 0
         # recherche de la combinaison 6 + 3
+        
         for i in range(self._numofdice):
             if self._diceresult[i] == 6:
                 dice1 = 1
             elif self._diceresult[i] == 3:
                 dice2 = 1
+                
         if dice1 == 1 and dice2 == 1:
             # on recherche la case Dice63
             foundbox = self.search_box(0, self._nbBox, "Dice63")
@@ -221,17 +223,20 @@ class Tray(Dice):
                 return foundbox, 1  # retourne le tuple: index de la case Dice63 , combinaison speciale trouve == 1
         dice1 = 0
         dice2 = 0
+        
         # recherche de la combinaison 5 + 4
         for i in range(self._numofdice):
             if self._diceresult[i] == 5:
                 dice1 = 1
             elif self._diceresult[i] == 4:
                 dice2 = 1
+                
         if dice1 == 1 and dice2 == 1:
             # on recherche la case Dice54
             foundbox = self.search_box(0, self._nbBox, "Dice54")
             if foundbox != -1:
                 return foundbox, 1  # retourne le tuple: index de la case Dice54 , combinaison speciale trouve == 1
+            
         return -1, 0  # retourne le tuple: index fictif , combinaison speciale non trouve == 0
 
 
@@ -244,8 +249,8 @@ class Tray(Dice):
         
         if box._boxType == "Goose":
             return 1, boxnumber + self.sumofdices(), 1
-        
         elif box._boxType == "Bridge":
+            
             foundbox = self.search_box(boxnumber + 1, self._nbBox, "Bridge")
             if foundbox != -1:
                 return 1, foundbox, 1;
@@ -334,18 +339,18 @@ gameturn = 0  # indique le tour de jeu
 while endOfGame == 0:
 
     gameturn = gameturn + 1  # incrémente le tour
-    print("\n**********")
+    print("**********")
     print("* tour", gameturn, "*")
     print("**********")
-
+    
     # Pour chaque joueur on exécute le code (un par un)
     for j in range(numberOfPlayer):
         currentplayer = listOfPlayers[j]  # récupère le joueur actuel (celui qui joue)
-
-        input(currentplayer._name + " appuyez sur entrée pour lancer les dés!")
-        print("Tour du joueur : " + currentplayer._name)
         
-        if currentplayer.test_waitingturn() == 1:  # test si le joeur ne doit pas passer son tour
+        print("Tour du joueur : " + currentplayer._name)
+        input(currentplayer._name + " appuyez sur entrée pour lancer les dés!")
+        
+        if currentplayer.test_waitingturn() == 1:  # test si le joueur ne doit pas passer son tour
             actualBox = currentplayer.get_actualbox()  # récupère sa case actuelle
             gooseTray.throw()  # lancer les dés
             print("    lancer de dés:", gooseTray._diceresult[0], "+", gooseTray._diceresult[1], "=",
@@ -379,18 +384,18 @@ while endOfGame == 0:
                     
                     if resultBoxRules[0] != 0:
                         print("        case spéciale:", gooseTray.get_type(currentplayer.get_actualbox()))
-                  
+                        
                     if resultBoxRules[0] == 1:  # case speciale concerne seulement le joueur
                         currentplayer.set_actualbox(gooseTray.compute_lastbox(resultBoxRules[1]))
                         currentplayer.set_waitingturn(resultBoxRules[2])
                         ruletest = currentplayer.get_waitingturn() == 1
                         print("        Va sur la case:", currentplayer.get_actualbox())
-                 
+                        
                     elif resultBoxRules[0] == 2:  # case speciale concerne aussi un autre joueur
                         currentplayer.set_actualbox(resultBoxRules[1])
                         currentplayer.freeze_waiting()
-                  
-                    for k in range(numberOfPlayer):
+                        
+                        for k in range(numberOfPlayer):
                             if k != j:  # il ne s'agit pas du joueur en cours
                                 player = listOfPlayers[k]
                                 if player.get_actualbox() == currentplayer.get_actualbox():
@@ -403,11 +408,11 @@ while endOfGame == 0:
                                         player.set_actualbox(resultBoxRules[3])
                                         print("        Joueur " + player._name + " va sur case:", player.get_actualbox())
                                         break
-           
+                                    
             if gooseTray.test_If_Win(currentplayer.get_actualbox()) == 1:
                 print("*******", currentplayer._name, " a gagné!!!! *******")
                 endOfGame = 1
                 break
         else:
-            print("    pas de lancer - attente:", currentplayer.get_waitingturn(), "tours")
+            print("    pas de lancer - attente:", currentplayer.get_waitingturn() - 1, "tours")
         print("        Termine le tour sur la case: ", currentplayer.get_actualbox())
