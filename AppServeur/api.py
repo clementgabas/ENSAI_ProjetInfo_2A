@@ -340,7 +340,6 @@ def rejoindre_salle():
         return make_reponse(response, http_codes.not_found)  # code 404
     #-- on vérifie si il y a assez de place dans la salle
     nb_places_libres = DAOparties.check_cb_places_libres(id_salle)
-    print(nb_places_libres)
     if nb_places_libres == 0:
         print("La salle est déjà pleine.")
         response = {"status_code": http_codes.unauthorized, "message": "Salle déjà pleine.",
@@ -353,8 +352,17 @@ def rejoindre_salle():
                 "id_salle": id_salle}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
-
-
+@app.route('/home/game/room', methods=['DELETE'])
+def quitter_salle():
+    request.get_json(force=True)
+    pseudo, id_salle = request.json.get('pseudo'), request.json.get("id_salle")
+    nb_places_libres = DAOparties.check_cb_places_libres(id_salle)
+    #-- pas la peine de vérifier si la salle existe car cette méthode n'est disponible que depuis une salle
+    #-- on retire le pseudo de la salle dans la salle participation et on ajoute une place de libre dans la salle dans la table Parties
+    DAOparties.delete_from_participation(id_salle, pseudo, nb_places_libres)
+    response = {"status_code": http_codes.ok, "message": "Utilisateur supprimé de la salle.",
+                "id_salle": id_salle}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
 #---------------------------------------------------------
 @app.after_request
 def set_response_headers(response):
