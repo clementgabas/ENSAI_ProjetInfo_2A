@@ -20,15 +20,18 @@ def add_partie(pseudo_chef, jeu, nb_places_tot):
         con.close()
     return id_partie
 
-def create_coup(id_partie):
+def add_to_participation(id_partie, pseudo):
     try:
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
-        cursor.execute(f"CREATE TABLE Coup{id_partie} ('id_partie'	INTEGER, 'num_coup' INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 'pseudo_joueur' INTEGER,'position' INTEGER, 'prochain_tour' INTEGER);",())
+        cursor.execute("INSERT INTO Participation (pseudo, id_partie) VALUES (?, ?);",(pseudo, id_partie))
         con.commit()
     except:
-        print("erreur dans create_coup")
+        print("erreur dans add_to_participation")
         con.rollback()
         raise ConnectionAbortedError
     finally:
         con.close()
+
+def choix_couleur(id_partie, pseudo, couleur):
+    pass

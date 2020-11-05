@@ -366,11 +366,11 @@ def update_pseudo(old_pseudo, new_pseudo):
     update_pseudo_table_score(old_pseudo, new_pseudo)
 
 
-def update_password(pseudo, new_password):
+def update_password(pseudo, new_hpassword):
     try:  # on update le mdp dans la table utilisateur
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
-        cursor.execute("UPDATE Utilisateur SET mdp = ? WHERE pseudo = ?", (new_password, pseudo))
+        cursor.execute("UPDATE Utilisateur SET mdp = ? WHERE pseudo = ?", (new_hpassword, pseudo))
         con.commit()
     except:
         print("erreur dans update_password")
@@ -383,7 +383,7 @@ def get_stat(pseudo):
     try:  # on récupère les info interessante
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
-        cursor.execute("SELECT nbr_parties_jouees, nbr_parties_gagnees FROM Utilisateur WHERE pseudo = ?", (pseudo,))
+        cursor.execute("SELECT nb_parties_jouees, nb_parties_gagnees FROM Scores WHERE pseudo = ?", (pseudo,))
         stat_perso = cursor.fetchall()
     except:
         print("ERROR : API.afficher stat perso :")
@@ -396,7 +396,7 @@ def update_stat(pseudo):
     try:  # on update le mdp dans la table utilisateur
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
-        cursor.execute("UPDATE Utilisateur SET nbr_parties_jouees = 0, nbr_parties_gagnees = 0 WHERE pseudo = ?", (pseudo,))
+        cursor.execute("UPDATE Scores SET nb_parties_jouees = 0, nb_parties_gagnees = 0 WHERE pseudo = ?", (pseudo,))
         con.commit()
     except:
         print("erreur dans update_stat")
