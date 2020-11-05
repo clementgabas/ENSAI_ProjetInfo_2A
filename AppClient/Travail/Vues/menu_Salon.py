@@ -60,13 +60,17 @@ class Salon(AbstractView):
         while True:
             self.reponse_retour = inquirer.prompt(self.question_retour)
             if self.reponse_retour["salon_retour"] == "Oui":
-                dataPost = {"pseudo":self.pseudo, "id_salle": self.id_salle}
+                dataPost = {"pseudo":self.pseudo, "id_salle": self.id_salle, "est_chef_salle": self.est_chef}
                 res = requests.delete("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
+                if res.status_code == 401:
+                    print("Vous êtes le chef de la salle! Vous ne pouvez pas la quitter tant qu'un autre utilisateur s'y trouve encore. Un capitaine quitte toujours son navire en dernier n'est-ce pas?")
+                    return self.make_choice()
+                elif res.status_code == 200:
+                    import Vues.menu_Choix_Mode_Jeu as MCMJ
+                    Retour = MCMJ.Menu_Choix_Mode_Jeu_Connecte(pseudo=self.pseudo, jeu=self.game)
+                    Retour.display_info()
+                    return Retour.make_choice()
 
-                import Vues.menu_Choix_Mode_Jeu as MCMJ
-                Retour = MCMJ.Menu_Choix_Mode_Jeu_Connecte(pseudo=self.pseudo, jeu=self.game)
-                Retour.display_info()
-                return Retour.make_choice()
             else: #'non'
                 return self.make_choice()
 
