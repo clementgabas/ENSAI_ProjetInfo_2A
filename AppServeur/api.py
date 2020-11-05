@@ -320,11 +320,13 @@ def creer_salle():
 
     #-- fonction qui créé la partie dans la table et qui renvoit son id
     id_partie = DAOparties.add_partie(pseudo_chef, game, total_places)
-    #-- procedure qui créé la table coups associée
-    DAOparties.add_to_participation(id_partie, pseudo_chef)
+    #-- on ajoute le joueur directement à sa salle dans la table participation
+    nb_places_libres = DAOparties.check_cb_places_libres(id_partie)
+    DAOparties.add_to_participation(id_partie, pseudo_chef, nb_places_libres)
     # -- on renvoit le code ok, le message et l'id de la partie créée.
-    response = {"status_code": http_codes.ok, "message": "Salle créé et joueur ajouté à la salle.", "id_salle":id_partie}  # code 200
+    response = {"status_code": http_codes.ok, "message": "Salle créée. Joueur ajouté à la salle.", "id_salle":id_partie}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
+
 
 
 
