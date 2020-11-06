@@ -6,7 +6,6 @@ import requests
 import json
 from tabulate import tabulate
 
-
 class Salon(AbstractView):
     def __init__(self, pseudo, id_salle, jeu, est_chef):
         self.pseudo = pseudo.lower()
@@ -38,7 +37,9 @@ class Salon(AbstractView):
             if self.reponse["Salon_accueil"] == 'Voir les membres de la salle':
                 return self.voir_membres_salle()
             elif self.reponse["Salon_accueil"] == 'Modifier les paramètres de la salle':
-                pass
+                import Vues.menu_Parametres as MPara
+                MParametre1 = MPara.Menu_Parametre(self.pseudo, self.id_salle, self.game,  self.est_chef)
+                return MParametre1.make_choice()
             elif self.reponse["Salon_accueil"] == "Lancer la partie":
                 pass
             else: #'Quitter la salle'
@@ -83,7 +84,3 @@ class Salon(AbstractView):
             liste_membres = res.json()["liste_membres"]
             print("\n" + tabulate(liste_membres, headers=["Pseudo"], tablefmt="grid"))
             return self.make_choice()
-
-
-
-
