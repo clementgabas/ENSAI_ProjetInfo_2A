@@ -25,6 +25,7 @@ import DAO.gestionUser as DAOuser
 import DAO.gestionAmis as DAOfriend
 import DAO.gestionClassement as DAOclassement
 import DAO.gestionParties as DAOparties
+import DAO.gestionParametres as DAOparametres
 
 CACHE_TTL = 60  # 60 seconds
 
@@ -406,8 +407,14 @@ def voir_membres_salle():
                 "liste_membres": membres}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
-
-
+@app.route('/home/game/room/settings', methods=['POST']) #ajout de parametre
+def ajout_param_partie_P4():
+    request.get_json(force=True)
+    id_Partie, duree_tour, condition_victoire, Taille_plateau  = request.json.get('id_Partie'), request.json.get('duree_tour'), request.json.get('condition_victoire'),  request.json.get('Taille_plateau')
+    DAOparametres.add_parametre(id_Partie, duree_tour, condition_victoire, Taille_plateau)
+    print(f"Les paramètres suivants : Durée d'un tour : {duree_tour} secondes \n Condition de victoire : aligner {condition_victoire} jetons \n Taille du plateau : {Taille_plateau} \n ont a bien été définis pour la partie {id_Partie}")
+    response = {"status_code": http_codes.ok, "message": "Paramètres enregistrés."}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
 
 
 #---------------------------------------------------------
