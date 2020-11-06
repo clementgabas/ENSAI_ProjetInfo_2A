@@ -282,7 +282,7 @@ def modifier_stats_perso():
     print(f"Demande de réitialisation des statistiques personnelles du pseudo = {pseudo}.")
     # -- on réinitialise les statistique personnel de l'utilisateur 'pseudo'
     DAOuser.update_stat(pseudo)
-    print(f"Statistiques personnelles du pseudo = {pseudo} effectué.")
+    print(f"Statistiques personnelles du pseudo = {pseudo} réinitialisées.")
     # -- on renvoie un msg de réussite
     response = {"status_code": http_codes.ok, "message": "Statistiques personnelles réinitialisées."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
@@ -294,9 +294,12 @@ def afficher_classement():
     request.get_json(force=True)
     nom_jeu = request.json.get("nom_jeu")
     pseudo = request.json.get("pseudo")
+    print(f" Demande de {pseudo} d'accès au classement du jeu : {nom_jeu}")
     #-- on récupère le classement du jeu de l'oie
     classement_jeu = DAOclassement.afficher_classement_jeu(nom_jeu,pseudo)
+    print(f"Récupération classement mondial du jeu : {nom_jeu}")
     classement_jeu_amis = DAOclassement.afficher_classement_jeu_friends(nom_jeu, pseudo)
+    print(f"Récupération classement amis de {pseudo} du jeu : {nom_jeu}")
     #-- on renvoit le code ok, le message et le classement du jeu de l'oie
     response = {"status_code": http_codes.ok, "message": "Classement du jeu récupéré.",
                 'classement_jeu': classement_jeu,'classement_jeu_amis': classement_jeu_amis}
@@ -308,10 +311,12 @@ def afficher_classement():
 def afficher_classement_general():
     request.get_json(force=True)
     pseudo = request.json.get("pseudo")
-
+    print(f" Demande de {pseudo} d'accès au classement général")
     #-- on récupère le classement général
     classement_general = DAOclassement.afficher_classement_general(pseudo)
+    print(f"Récupération classement mondial")
     classement_general_amis = DAOclassement.afficher_classement_general_friends(pseudo)
+    print(f"Récupération classement amis de {pseudo}")
     # -- on renvoit le code ok, le message et le classement général
     response = {"status_code": http_codes.ok, "message": "Classement général récupéré.",
                 "classement_general": classement_general, "classement_general_amis"
