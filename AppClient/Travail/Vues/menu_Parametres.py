@@ -98,7 +98,10 @@ class Menu_Parametre():
         res = requests.post('http://localhost:9090/home/game/room/settings', data=json.dumps(dataPost))
         if res.status_code == 200:
             print("Votre partie est définie  selon des paramètres standard.")
-            #Instancier un nouveau salon.
+            import Vues.menu_Salon as MS
+            Retour = MS.Salon(self.pseudo, self.id_salle, self.game, self.est_chef)
+            Retour.display_info()
+            return Retour.make_choice()
 
         elif res.status_code == 404:
             print("erreur, l'api n'a pas été trouvée")
