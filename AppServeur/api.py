@@ -79,8 +79,10 @@ def get():
 @app.route('/home/users', methods = ['POST']) #creation d'un nouvel utilisateur
 def new_user():
     request.get_json(force=True)
-    username, hpassword, pseudo = request.json.get('username'), request.json.get('hpassword'), request.json.get('pseudo')
-    print(f"Demande de création d'un nouvel utilisateur (username = {username}, pseudo = {pseudo}) dans la base de données.")
+    username, hpassword, pseudo = request.json.get('username'), request.json.get('hpassword'),\
+                                  request.json.get('pseudo')
+    print(f"Demande de création d'un nouvel utilisateur (username = {username}, "
+          f"pseudo = {pseudo}) dans la base de données.")
 
     #-- on vérifie si un tel username n'existe pas déjà dans la DB
     if DAOuser.does_username_exist(username):
@@ -242,7 +244,8 @@ def modif_pseudo():
 @app.route('/home/main/profil/user/password', methods=['PUT']) #modification du mot de passe
 def modif_password():
     request.get_json(force=True)
-    pseudo, old_password, new_password = request.json.get('pseudo'), request.json.get('old_password'), request.json.get('new_password')
+    pseudo, old_password, new_password = request.json.get('pseudo'), request.json.get('old_password'),\
+                                         request.json.get('new_password')
     print(f"Demande de modification de mot de passe du pseudo = {pseudo}.")
     #-- on vérifie si l'ancien mdp correspond bien au mdp enregistré pour le pseudo
         #-- on recupere le hpass stocké
@@ -272,7 +275,8 @@ def afficher_stats_perso():
     stat_perso = DAOuser.get_stat(pseudo)
     print(f"Affichage des statistiques personnelles du pseudo = {pseudo}.")
     #-- on renvoie un message de reussite
-    response = {"status_code": http_codes.ok, "message": "Statistiques personnelles récupérées.",'Statistiques personnelles': stat_perso}  # code 200
+    response = {"status_code": http_codes.ok, "message": "Statistiques personnelles récupérées.",
+                'Statistiques personnelles': stat_perso}  # code 200
     return make_reponse(response, http_codes.ok)
 
 @app.route('/home/main/profil/user/stat', methods=['PUT']) #reinitialiser stat perso
@@ -390,7 +394,8 @@ def rejoindre_salle():
 @app.route('/home/game/room', methods=['DELETE'])
 def quitter_salle():
     request.get_json(force=True)
-    pseudo, id_salle, est_chef_salle = request.json.get('pseudo'), request.json.get("id_salle"), request.json.get("est_chef_salle")
+    pseudo, id_salle, est_chef_salle = request.json.get('pseudo'), \
+                                       request.json.get("id_salle"), request.json.get("est_chef_salle")
     nb_places_libres = DAOparties.check_cb_places_libres(id_salle)
     print(f"Le joueur {pseudo} demande à quitter la partie {id_salle}")
     #-- pas la peine de vérifier si la salle existe car cette méthode n'est disponible que depuis une salle
@@ -421,9 +426,11 @@ def quitter_salle():
 def voir_membres_salle():
     request.get_json(force=True)
     id_salle = request.json.get("id_salle")
-
+    print(f"Demande d'affichage des membres de la salle {id_salle}")
     #-- on affiche les membres de cette salle
     membres = DAOparties.get_membres_salle(id_salle)
+    print(f"Les membres de la salle {id_salle} sont : {membres}")
+
     response = {"status_code": http_codes.ok, "message": "Liste des membres de la salle.",
                 "liste_membres": membres}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
@@ -431,9 +438,14 @@ def voir_membres_salle():
 @app.route('/home/game/room/settings', methods=['POST']) #ajout de parametre
 def ajout_param_partie_P4():
     request.get_json(force=True)
-    id_Partie, duree_tour, condition_victoire, Taille_plateau  = request.json.get('id_Partie'), request.json.get('duree_tour'), request.json.get('condition_victoire'),  request.json.get('Taille_plateau')
+    id_Partie, duree_tour, condition_victoire, Taille_plateau  = request.json.get('id_Partie'), \
+                                                                 request.json.get('duree_tour'), \
+                                                                 request.json.get('condition_victoire'),  \
+                                                                 request.json.get('Taille_plateau')
     DAOparametres.add_parametre(id_Partie, duree_tour, condition_victoire, Taille_plateau)
-    print(f"Les paramètres suivants : Durée d'un tour : {duree_tour} secondes \n Condition de victoire : aligner {condition_victoire} jetons \n Taille du plateau : {Taille_plateau} \n ont a bien été définis pour la partie {id_Partie}")
+    print(f"Les paramètres suivants : Durée d'un tour : {duree_tour} secondes \n Condition de victoire : aligner "
+          f"{condition_victoire} jetons \n Taille du plateau : {Taille_plateau} \n "
+          f"ont a bien été définis pour la partie {id_Partie}")
     response = {"status_code": http_codes.ok, "message": "Paramètres enregistrés."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
