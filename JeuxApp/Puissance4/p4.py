@@ -172,19 +172,33 @@ class Game:
     def printGrid(self, _grid):
         line = "|"
         separator = "-"
-        abscisse = "  "
+        abscisse = " "
+        
         for k in range(self.nbcolumn):
             separator = separator + "----"
-            abscisse = abscisse + str(k) + "   "
+            
+            if k ==0:
+                abscisse = 2*abscisse + str(k) + "   "
+                
+            elif k>=10:
+                abscisse = abscisse + str(k) + "  "
+                
+            else:
+                abscisse = abscisse + str(k) + "   "
+                
         print(separator)
         for i in range(self.nbline - 1, -1, -1):
             for j in range(self.nbcolumn):
+                
                 if _grid[j][i] == 0:
                     line = line + "   |"
+                    
                 elif _grid[j][i] == 1:
                     line = line + " X |"
+                    
                 elif _grid[j][i] == 2:
                     line = line + " O |"
+                    
             print(line)
             print(separator)
             line = "|"
