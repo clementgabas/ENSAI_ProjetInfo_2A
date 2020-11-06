@@ -83,10 +83,14 @@ class Menu_Classement(AbstractView):
             classement_general = res.json()["classement_general"]
             classement_general_amis = res.json()["classement_general_amis"]
             print("Classement mondial \n" + tabulate(classement_general,
-                                                     headers=["classement", "Pseudo", "nombre de point"],
+                                                     headers=["Classement", "Pseudo", "nombre de point",
+                                                              "Nombre de parties jouées",
+                                                              "Nombre de parties gagnées"],
                                                      tablefmt="grid"))
             print("Classement entre amis \n" + tabulate(classement_general_amis,
-                                                        headers=["classement", "Pseudo", "nombre de point"],
+                                                        headers=["Classement", "Pseudo", "nombre de point",
+                                                                 "Nombre de parties jouées",
+                                                                 "Nombre de parties gagnées"],
                                                         tablefmt="grid"))
             return self.make_choice()
         elif res.status_code == 404:
@@ -108,11 +112,16 @@ class Menu_Classement(AbstractView):
         if res.status_code == 200:
             classement_jeu = res.json()["classement_jeu"]
             classement_jeu_amis = res.json()["classement_jeu_amis"]
-            print("Classement mondial :\n" + tabulate(classement_jeu,
-                                                      headers=["Classement", "Pseudo", "nombre de point"],
-                                                      tablefmt="grid"))
+            print(
+                "Classement mondial :\n" + tabulate(classement_jeu,
+                                                    headers=["Classement", "Pseudo", "nombre de point",
+                                                             "Nombre de parties jouées",
+                                                             "Nombre de parties gagnées"],
+                                                    tablefmt="grid"))
             print("Classement entre amis :\n" + tabulate(classement_jeu_amis,
-                                                         headers=["Classement", "Pseudo", "nombre de point"],
+                                                         headers=["Classement", "Pseudo", "nombre de point",
+                                                                  "Nombre de parties jouées",
+                                                                  "Nombre de parties gagnées"],
                                                          tablefmt="grid"))
 
             return self.make_choice()
@@ -137,10 +146,15 @@ class Menu_Classement(AbstractView):
             classement_jeu = res.json()["classement_jeu"]
             classement_jeu_amis = res.json()["classement_jeu_amis"]
             print(
-                "Classement mondial :\n" + tabulate(classement_jeu, headers=["Classement", "Pseudo", "nombre de point"],
+                "Classement mondial :\n" + tabulate(classement_jeu,
+                                                    headers=["Classement", "Pseudo", "nombre de point",
+                                                             "Nombre de parties jouées",
+                                                             "Nombre de parties gagnées"],
                                                     tablefmt="grid"))
             print("Classement entre amis :\n" + tabulate(classement_jeu_amis,
-                                                         headers=["Classement", "Pseudo", "nombre de point"],
+                                                         headers=["Classement", "Pseudo", "nombre de point",
+                                                                  "Nombre de parties jouées",
+                                                                  "Nombre de parties gagnées"],
                                                          tablefmt="grid"))
 
             return self.make_choice()
