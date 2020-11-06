@@ -69,7 +69,7 @@ class Menu_Parametre():
                         {
                             'type': 'list',
                             'name': 'menu_Taille_Plateau_Perso',
-                            'message': "Veuilliez choisir la durée d'un tour.",
+                            'message': "Veuilliez choisir la taille du plateau.",
                             'choices': [
                                 '6 x 5',
                                 '7 x 6',
