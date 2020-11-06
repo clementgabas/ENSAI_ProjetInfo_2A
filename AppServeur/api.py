@@ -326,6 +326,8 @@ def creer_salle():
     #-- on ajoute le joueur directement à sa salle dans la table participation
     nb_places_libres = DAOparties.check_cb_places_libres(id_partie)
     DAOparties.add_to_participation(id_partie, pseudo_chef, nb_places_libres)
+    #-- on update le statut du joueur en_partie a True dans la table Utilisateur
+    DAOuser.update_en_partie_pseudo(pseudo_chef, "True")
     # -- on renvoit le code ok, le message et l'id de la partie créée.
     response = {"status_code": http_codes.ok, "message": "Salle créée. Joueur ajouté à la salle.", "id_salle":id_partie}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
@@ -358,6 +360,8 @@ def rejoindre_salle():
         return make_reponse(response, http_codes.not_found)  # code 404
     #-- on ajoute l'utilisateur a la salle
     DAOparties.add_to_participation(id_salle, pseudo, nb_places_libres)
+    # -- on update le statut du joueur en_partie a True dans la table Utilisateur
+    DAOuser.update_en_partie_pseudo(pseudo, "True")
     response = {"status_code": http_codes.ok, "message": "Utilisateur ajouté à la salle.",
                 "id_salle": id_salle}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
@@ -380,6 +384,8 @@ def quitter_salle():
 
     #-- on retire le pseudo de la salle dans la salle participation et on ajoute une place de libre dans la salle dans la table Parties
     DAOparties.delete_from_participation(id_salle, pseudo, nb_places_libres)
+    # -- on update le statut du joueur en_partie a False dans la table Utilisateur
+    DAOuser.update_en_partie_pseudo(pseudo, "False")
 
     #-- on vérifie si la salle est vide et si elle est vide on la supprime
     if DAOparties.check_cb_places_libres(id_salle) == DAOparties.check_cb_places_tot(id_salle):

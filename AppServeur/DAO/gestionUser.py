@@ -319,6 +319,21 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
         finally:
             con.close()
 
+def update_en_partie_pseudo(pseudo, nouvel_etat):
+    if not nouvel_etat in ("True", "False"):
+        print("nouvel_etat doit prendre la valeur 'True' ou 'False'!")
+        raise ValueError
+    try:  # on update le statut "en_partie" à True de l'utilisateur ayant le pseudo
+        con = sqlite3.connect("database/apijeux.db")
+        cursor = con.cursor()
+        cursor.execute("UPDATE Utilisateur SET en_partie = ? WHERE pseudo = ?", (nouvel_etat, pseudo,))
+        con.commit()
+    except:
+        print("erreur dans update_en_partie")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
 
 def update_pseudo_table_utilisateur(old_pseudo, new_pseudo):
     try:  # on update le pseudo de l'utilisateur dans la table utilisateur
