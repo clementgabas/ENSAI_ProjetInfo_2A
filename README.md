@@ -1,3 +1,8 @@
+=====================
+On bosse en python 3.8.6 et supérieur.
+Attention, werzeuk doit etre en 0.16.1!
+
+
 Mettez ici les avancées de vos derniers commit svp, qu'on sache où on en est à chaque fois que l'on pull ou clone.
 Merci
 
