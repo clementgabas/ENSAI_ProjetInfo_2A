@@ -81,8 +81,13 @@ class Menu_Classement(AbstractView):
 
         if res.status_code == 200:
             classement_general = res.json()["classement_general"]
-            print("\n" + tabulate(classement_general, headers=["classement", "Pseudo", "nombre de point"], tablefmt="grid"))
-
+            classement_general_amis = res.json()["classement_general_amis"]
+            print("Classement mondial \n" + tabulate(classement_general,
+                                                     headers=["classement", "Pseudo", "nombre de point"],
+                                                     tablefmt="grid"))
+            print("Classement entre amis \n" + tabulate(classement_general_amis,
+                                                        headers=["classement", "Pseudo", "nombre de point"],
+                                                        tablefmt="grid"))
             return self.make_choice()
         elif res.status_code == 404:
             print("erreur, l'api n'a pas été trouvée")
@@ -102,7 +107,13 @@ class Menu_Classement(AbstractView):
 
         if res.status_code == 200:
             classement_jeu = res.json()["classement_jeu"]
-            print("\n" + tabulate(classement_jeu, headers=["classement", "Pseudo", "nombre de point"], tablefmt="grid"))
+            classement_jeu_amis = res.json()["classement_jeu_amis"]
+            print("Classement mondial :\n" + tabulate(classement_jeu,
+                                                      headers=["Classement", "Pseudo", "nombre de point"],
+                                                      tablefmt="grid"))
+            print("Classement entre amis :\n" + tabulate(classement_jeu_amis,
+                                                         headers=["Classement", "Pseudo", "nombre de point"],
+                                                         tablefmt="grid"))
 
             return self.make_choice()
         elif res.status_code == 404:
@@ -124,7 +135,13 @@ class Menu_Classement(AbstractView):
 
         if res.status_code == 200:
             classement_jeu = res.json()["classement_jeu"]
-            print("\n" + tabulate(classement_jeu, headers=["classement", "Pseudo", "nombre de point"], tablefmt="grid"))
+            classement_jeu_amis = res.json()["classement_jeu_amis"]
+            print(
+                "Classement mondial :\n" + tabulate(classement_jeu, headers=["Classement", "Pseudo", "nombre de point"],
+                                                    tablefmt="grid"))
+            print("Classement entre amis :\n" + tabulate(classement_jeu_amis,
+                                                         headers=["Classement", "Pseudo", "nombre de point"],
+                                                         tablefmt="grid"))
 
             return self.make_choice()
         elif res.status_code == 404:

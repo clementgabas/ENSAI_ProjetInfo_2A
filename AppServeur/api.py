@@ -296,9 +296,13 @@ def afficher_classement():
     pseudo = request.json.get("pseudo")
     #-- on récupère le classement du jeu de l'oie
     classement_jeu = DAOclassement.afficher_classement_jeu(nom_jeu,pseudo)
+    classement_jeu_amis = DAOclassement.afficher_classement_jeu_friends(nom_jeu, pseudo)
     #-- on renvoit le code ok, le message et le classement du jeu de l'oie
-    response = {"status_code": http_codes.ok, "message": "Classement jeu de l'oie récupéré.", 'classement_jeu': classement_jeu} #code 200
+    response = {"status_code": http_codes.ok, "message": "Classement du jeu récupéré.",
+                'classement_jeu': classement_jeu,'classement_jeu_amis': classement_jeu_amis}
+    #response2 = {"status_code": http_codes.ok, "message": "Classement du l'oie récupéré.", 'classement_jeu_amis': classement_jeu_amis} #code 200#code 200 #####
     return make_reponse(response, http_codes.ok)  # code 200
+
 
 @app.route('/home/main/profil/classment/general', methods=['GET']) #affichage classement général
 def afficher_classement_general():
@@ -307,8 +311,11 @@ def afficher_classement_general():
 
     #-- on récupère le classement général
     classement_general = DAOclassement.afficher_classement_general(pseudo)
-    #-- on renvoit le code ok, le message et le classement général
-    response = {"status_code": http_codes.ok, "message": "Classement général récupéré.", "classement_general": classement_general} #code 200
+    classement_general_amis = DAOclassement.afficher_classement_general_friends(pseudo)
+    # -- on renvoit le code ok, le message et le classement général
+    response = {"status_code": http_codes.ok, "message": "Classement général récupéré.",
+                "classement_general": classement_general, "classement_general_amis"
+                                                          "": classement_general_amis}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
 #------------------------home/game----------------------------------
