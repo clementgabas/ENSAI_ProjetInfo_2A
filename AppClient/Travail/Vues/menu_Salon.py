@@ -21,7 +21,7 @@ class Salon(AbstractView):
                           'choices' : [
                               'Voir les membres de la salle',
                               'Modifier les paramètres de la salle',
-                              "Lancer la partie",
+                              "Être prêt",
                               inquirer.Separator(),
                               'Quitter la salle',
                           ]
@@ -40,7 +40,7 @@ class Salon(AbstractView):
                 import Vues.menu_Parametres as MPara
                 MParametre1 = MPara.Menu_Parametre(self.pseudo, self.id_salle, self.game,  self.est_chef)
                 return MParametre1.make_choice()
-            elif self.reponse["Salon_accueil"] == "Lancer la partie":
+            elif self.reponse["Salon_accueil"] == "Être prêt":
                 pass
             else: #'Quitter la salle'
                 return self.retour()
