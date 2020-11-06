@@ -211,13 +211,13 @@ class Game:
         while not endRequest:
             request = input("Quel type de partie ? Standard (S) ou Modifiée (M) :")
             
-            while (request not in ("S","M")) :
+            while (request not in ("S","M","s","m")) :
                 request = input("Quel type de partie ? Standard (S) ou Modifiée (M) :")
                 
-            if request == "S":
+            if request in ("S","s"):
                 endRequest = True
                 
-            elif request == "M":   
+            elif request in ("M","m"):   
                 while not endRequest:
                     endRequestCol = False
                     while not endRequestCol:
