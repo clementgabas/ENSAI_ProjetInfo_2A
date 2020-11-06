@@ -153,20 +153,30 @@ def get_est_connecte_liste_amis(liste_amis):
             try:
                 con = sqlite3.connect("database/apijeux.db")
                 cursor = con.cursor()
-                cursor.execute("SELECT est_connecte FROM Utilisateur WHERE pseudo = ?", (pseudo_ami,))
-                est_connecte_ami = cursor.fetchone()[0]
+                cursor.execute("SELECT est_connecte, en_partie FROM Utilisateur WHERE pseudo = ?", (pseudo_ami,))
+                res = cursor.fetchone()
+                est_connecte_ami = res[0]
+                en_partie_ami = res[1]
             except:
                 print("ERROR : API.get_est_connecte_liste_amis :")
                 raise ConnectionAbortedError
             finally:
                 con.close()
+
             if est_connecte_ami == 'True':
                 est_connecte_ami = 'Connecté'
             elif est_connecte_ami == 'False':
-                est_connecte_ami = 'Deconnecté'
+                est_connecte_ami = 'Déconnecté'
             else:
                 est_connecte_ami = 'ni true ni false c est etrange'
-            liste.append((pseudo_ami, date_ami, est_connecte_ami))
+
+            if en_partie_ami == 'True':
+                en_partie_ami = "En partie"
+            elif en_partie_ami == 'False':
+                en_partie_ami = "Pas en partie"
+            else:
+                en_partie_ami = 'ni true ni false c est etrange2'
+            liste.append((pseudo_ami, date_ami, est_connecte_ami, en_partie_ami))
         return liste
     else:
         return liste_amis
