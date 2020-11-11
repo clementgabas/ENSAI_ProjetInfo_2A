@@ -8,6 +8,7 @@ Created on Fri Oct 09 11:08:42 2020
 
 import random
 
+
 class Player():
     """
     Classe qui gère les paramètres du joueur
@@ -209,13 +210,13 @@ class Tray(Dice):
         dice1 = 0
         dice2 = 0
         # recherche de la combinaison 6 + 3
-        
+
         for i in range(self._numofdice):
             if self._diceresult[i] == 6:
                 dice1 = 1
             elif self._diceresult[i] == 3:
                 dice2 = 1
-                
+
         if dice1 == 1 and dice2 == 1:
             # on recherche la case Dice63
             foundbox = self.search_box(0, self._nbBox, "Dice63")
@@ -223,20 +224,20 @@ class Tray(Dice):
                 return foundbox, 1  # retourne le tuple: index de la case Dice63 , combinaison speciale trouve == 1
         dice1 = 0
         dice2 = 0
-        
+
         # recherche de la combinaison 5 + 4
         for i in range(self._numofdice):
             if self._diceresult[i] == 5:
                 dice1 = 1
             elif self._diceresult[i] == 4:
                 dice2 = 1
-                
+
         if dice1 == 1 and dice2 == 1:
             # on recherche la case Dice54
             foundbox = self.search_box(0, self._nbBox, "Dice54")
             if foundbox != -1:
                 return foundbox, 1  # retourne le tuple: index de la case Dice54 , combinaison speciale trouve == 1
-            
+
         return -1, 0  # retourne le tuple: index fictif , combinaison speciale non trouve == 0
 
 
@@ -246,34 +247,34 @@ class Tray(Dice):
         """
         # return tuple type/box/nextturn
         box = self._boxList[boxnumber]
-        
+
         if box._boxType == "Goose":
             return 1, boxnumber + self.sumofdices(), 1
         elif box._boxType == "Bridge":
-            
+
             foundbox = self.search_box(boxnumber + 1, self._nbBox, "Bridge")
             if foundbox != -1:
                 return 1, foundbox, 1;
             return boxnumber, 1
-        
+
         elif box._boxType == "Hotel":
             return 1, boxnumber, 4
-        
+
         elif box._boxType == "Jail":
             return 2, boxnumber, 0, previousbox, 1
-        
+
         elif box._boxType == "Well":
             return 2, boxnumber, 0, boxnumber, 1
-        
+
         elif box._boxType == "Labyrinth":
             return 1, boxnumber - 12, 1
-        
+
         elif box._boxType == "Skull":
             return 1, 0, 1
-        
+
         return 0, boxnumber, 1
-
-
+    
+    
     def compute_lastbox(self, boxnumber):
         """
         Gérer fin du plateau pour qu'un dé trop grand revienne en arrière
@@ -310,30 +311,114 @@ class Box:
         self._boxType = boxType
 
 
+
+def Get_Color(_color):
+    if _color == "Rouge":
+        return "\033[30;41;1m \033[0m"
+    
+    elif _color == "Vert":
+        return "\033[30;42;1m \033[0m"
+    
+    elif _color == "Jaune":
+        return "\033[30;43;1m \033[0m"
+    
+    elif _color == "Bleu":
+        return "\033[30;44;1m \033[0m"
+    
+    elif _color == "Magenta":
+        return "\033[30;45;1m \033[0m"
+    
+    elif _color == "Cyan":
+        return "\033[30;46;1m \033[0m"
+    
+    elif _color == "Noir":
+        return "\033[30;40;1m \033[0m"
+
+
+
 # ***************************MAIN*******************************
+def printGrid(nbBox):
+    caseWidth = 11
+    lineType = "|"
+    linePlayer = "|"
+    lineNumber = "|"
+    separator = "-"
+    l = nbBox
+    
+    for k in range(nbBox):
+        separator = separator + "------------"
+        
+    for i in range(len(gooseTray._boxList) - 1, 0, -1):
+        addType = " "
+        box = gooseTray._boxList[i]
+        
+        if box._boxType != "None":
+            addType = addType + box._boxType
+            
+        for h in range(caseWidth - len(addType)):
+            addType = addType + " "
+        lineType = lineType + addType + "|"
+
+        #creation des joueurs
+        addPlayer = " "
+        nbPlayer = 0 #compte le nombre de joueur pour decrementer de 1 la largeur de case
+        for player in listOfPlayers:
+            
+            if player.get_actualbox() == i + 1:
+                addPlayer = addPlayer + Get_Color(player._color) + " "
+                nbPlayer = nbPlayer + 2
+                
+        for h in range(caseWidth - nbPlayer - 2):
+            addPlayer = addPlayer + " "
+        linePlayer = linePlayer + addPlayer + " |"
+
+        #creation du numero de case
+        addNumber = "    " + str(i)
+        
+        for h in range(caseWidth - len(addNumber)):
+            addNumber = addNumber + " "
+        lineNumber = lineNumber + addNumber + "|"
+
+        l = l - 1
+        if l == 0:
+            print(separator)
+            print(lineType)
+            print(linePlayer)
+            print(lineNumber)
+            lineType = "|"
+            linePlayer = "|"
+            lineNumber = "|"
+            l = nbBox
+            
+    print(separator)
+    print(lineType)
+    print(linePlayer)
+    print(lineNumber)
+    print(separator)
+
+
 # Règles par défaut, à écraser si l'on souhaite personnaliser une partie
 gooseTray = Tray(2, 6, 63)  # 2 dés, 6 face, 63 cases
 gooseTray.Set_GameByDefault()
+nb_col_display = 8 # nb col of the tray
 
 
 # Tableau des joueurs (avec pseudo et couleur)
 listOfPlayers = []
 numberOfPlayer = 4
-player = Player("Player1", "rouge")
+player = Player("Player1", "Rouge")
 listOfPlayers.append(player)
-player = Player("Player2", "bleu")
+player = Player("Player2", "Bleu")
 listOfPlayers.append(player)
-player = Player("Player3", "jaune")
+player = Player("Player3", "Jaune")
 listOfPlayers.append(player)
-player = Player("Player4", "vert")
+player = Player("Player4", "Vert")
 listOfPlayers.append(player)
-
 
 # Le jeu commence
 gooseTray.throw()
 endOfGame = 0  # Booléen pour continuer la partie en fct de si elle est terminée (s'arrête à 1)
 gameturn = 0  # indique le tour de jeu
-
 
 # Tant que la partie n'est pas temrinée (aucun joueur n'a gagné), la partie continue
 while endOfGame == 0:
@@ -342,14 +427,14 @@ while endOfGame == 0:
     print("**********")
     print("* tour", gameturn, "*")
     print("**********")
-    
+
     # Pour chaque joueur on exécute le code (un par un)
     for j in range(numberOfPlayer):
         currentplayer = listOfPlayers[j]  # récupère le joueur actuel (celui qui joue)
-        
-        print("Tour du joueur : " + currentplayer._name)
+
+        print("Tour du joueur : " + currentplayer._name + " - " + currentplayer._color)
         input(currentplayer._name + " appuyez sur entrée pour lancer les dés!")
-        
+
         if currentplayer.test_waitingturn() == 1:  # test si le joueur ne doit pas passer son tour
             actualBox = currentplayer.get_actualbox()  # récupère sa case actuelle
             gooseTray.throw()  # lancer les dés
@@ -362,7 +447,7 @@ while endOfGame == 0:
 
             # Teste victoire joueur ?
             if gooseTray.test_If_Win(currentplayer.get_actualbox()) == 1:
-                print("*******", currentplayer._name, " a gagné!!!! *******")
+                print("*******", currentplayer._name  + " - " + currentplayer._color, " a gagné!!!! *******")
                 endOfGame = 1
                 break
 
@@ -374,27 +459,27 @@ while endOfGame == 0:
                 print("        dé spécial:", resultDiceRules)
                 currentplayer.set_actualbox(resultDiceRules[0])
                 print("        Va sur la case:", currentplayer.get_actualbox())
-                
+
             else:
                 ruletest = 1
                 while ruletest > 0:
                     resultBoxRules = gooseTray.compute_rule(currentplayer.get_actualbox(), actualBox)
                     ruletest = resultBoxRules[0] == 1 and resultBoxRules[1] != actualBox and resultBoxRules[
                         1] < gooseTray._nbBox
-                    
+
                     if resultBoxRules[0] != 0:
                         print("        case spéciale:", gooseTray.get_type(currentplayer.get_actualbox()))
-                        
+
                     if resultBoxRules[0] == 1:  # case speciale concerne seulement le joueur
                         currentplayer.set_actualbox(gooseTray.compute_lastbox(resultBoxRules[1]))
                         currentplayer.set_waitingturn(resultBoxRules[2])
                         ruletest = currentplayer.get_waitingturn() == 1
                         print("        Va sur la case:", currentplayer.get_actualbox())
-                        
+
                     elif resultBoxRules[0] == 2:  # case speciale concerne aussi un autre joueur
                         currentplayer.set_actualbox(resultBoxRules[1])
                         currentplayer.freeze_waiting()
-                        
+
                         for k in range(numberOfPlayer):
                             if k != j:  # il ne s'agit pas du joueur en cours
                                 player = listOfPlayers[k]
@@ -406,13 +491,15 @@ while endOfGame == 0:
                                     if resultBoxRules[3] == 0:
                                         player.set_waitingturn(resultBoxRules[4])  # le joueur redemarre
                                         player.set_actualbox(resultBoxRules[3])
-                                        print("        Joueur " + player._name + " va sur case:", player.get_actualbox())
+                                        print("        Joueur " + player._name   + " - " + currentplayer._color + " va sur case:",
+                                              player.get_actualbox())
                                         break
-                                    
+
             if gooseTray.test_If_Win(currentplayer.get_actualbox()) == 1:
-                print("*******", currentplayer._name, " a gagné!!!! *******")
+                print("*******", currentplayer._name  + " - " + currentplayer._color, " a gagné!!!! *******")
                 endOfGame = 1
                 break
         else:
             print("    pas de lancer - attente:", currentplayer.get_waitingturn() - 1, "tours")
         print("        Termine le tour sur la case: ", currentplayer.get_actualbox())
+    printGrid(nb_col_display)
