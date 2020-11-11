@@ -9,7 +9,7 @@ import Vues.menu_Choix_Jeu as MCJ
 
 from printFunctions import timePrint as print
 
-# Création du menu_Principal
+# Création du menu_Principal pour les utilisateurs
 
 class Menu_Accueil(AbstractView):
     def __init__(self):
