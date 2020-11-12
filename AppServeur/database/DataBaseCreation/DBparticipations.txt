@@ -2,5 +2,6 @@ CREATE TABLE "Participation" (
 	"pseudo"	TEXT,
 	"id_partie"	INTEGER,
 	"couleur"	INTEGER,
+	"est_pret"	TEXT,
 	PRIMARY KEY("pseudo","id_partie")
 );

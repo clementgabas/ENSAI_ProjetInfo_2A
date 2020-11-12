@@ -75,7 +75,6 @@ class Salon(AbstractView):
             else: #'non'
                 return self.make_choice()
 
-
     def voir_membres_salle(self):
         dataPost = {'id_salle': self.id_salle}
         res = requests.get("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
@@ -84,3 +83,20 @@ class Salon(AbstractView):
             liste_membres = res.json()["liste_membres"]
             print("\n" + tabulate(liste_membres, headers=["Pseudo"], tablefmt="grid"))
             return self.make_choice()
+
+    def etre_pret(self):
+        dataPost = {'pseudo':self.pseudo,'id_salle':self.id_salle, 'est_chef':self.est_chef}
+        res = requests.post("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
+        if res.status_code == 200:
+            print("Vous êtes pret!")
+            return self.demander_tour()
+
+    def demander_tour(self):
+        mon_tour = False
+        dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle}
+        while not mon_tour:
+            res = requests.get("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
+            if res.json()["message"] == "ton tour":
+                mon_tour = True
+            time.sleep(2)
+        return mon_tour

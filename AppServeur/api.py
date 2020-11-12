@@ -26,6 +26,7 @@ import DAO.gestionAmis as DAOfriend
 import DAO.gestionClassement as DAOclassement
 import DAO.gestionParties as DAOparties
 import DAO.gestionParametres as DAOparametres
+import DAO.gestionparticipation as DAOparticipation
 
 CACHE_TTL = 60  # 60 seconds
 
@@ -448,6 +449,32 @@ def ajout_param_partie_P4():
           f"ont a bien été définis pour la partie {id_Partie}")
     response = {"status_code": http_codes.ok, "message": "Paramètres enregistrés."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
+
+@app.route('/home/game/room/turns', methods=['POST']) #dire qu'on est pret à jouer
+def je_suis_pret():
+    request.get_json(force=True)
+    pseudo, id_salle, est_chef = request.json.get('pseudo'), request.json.get('id_salle'), request.json.get('est_chef')
+    DAOparticipation.update_est_pret(pseudo,id_salle, 'True')
+    response = {"status_code": http_codes.ok, "message": "Utilisateur pret."}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
+
+@app.route('/home/game/room/turns', methods=['GET']) #savoir si c'est notre tour de jouer
+def est_ce_mon_tour():
+    request.get_json(force=True)
+    pseudo, id_salle = request.json.get('pseudo'), request.json.get('id_salle')
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
 
 #---------------------------------------------------------
