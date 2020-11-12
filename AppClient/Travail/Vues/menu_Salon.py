@@ -41,7 +41,7 @@ class Salon(AbstractView):
                 MParametre1 = MPara.Menu_Parametre(self.pseudo, self.id_salle, self.game,  self.est_chef)
                 return MParametre1.make_choice()
             elif self.reponse["Salon_accueil"] == "Être prêt":
-                pass
+                return self.etre_pret()
             else: #'Quitter la salle'
                 return self.retour()
             break
@@ -86,7 +86,7 @@ class Salon(AbstractView):
 
     def etre_pret(self):
         dataPost = {'pseudo':self.pseudo,'id_salle':self.id_salle, 'est_chef':self.est_chef}
-        res = requests.post("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
+        res = requests.post("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
         if res.status_code == 200:
             print("Vous êtes pret!")
             return self.demander_tour()
@@ -95,7 +95,7 @@ class Salon(AbstractView):
         mon_tour = False
         dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle}
         while not mon_tour:
-            res = requests.get("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
+            res = requests.get("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
             if res.json()["message"] == "ton tour":
                 mon_tour = True
             time.sleep(2)

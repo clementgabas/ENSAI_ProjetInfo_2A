@@ -3,5 +3,6 @@ CREATE TABLE "Participation" (
 	"id_partie"	INTEGER,
 	"couleur"	INTEGER,
 	"est_pret"	TEXT,
+	"ordre"	INTEGER,
 	PRIMARY KEY("pseudo","id_partie")
 );

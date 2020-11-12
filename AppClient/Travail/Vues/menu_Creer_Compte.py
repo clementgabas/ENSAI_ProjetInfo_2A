@@ -46,7 +46,7 @@ class Menu_Creer_Compte(AbstractView):
             if mdp != mdp2:
                 print("Les mot de passes ne correspondent pas.")
                 return self.make_choice_retour()
-            if identifiant is "" or mdp is "":
+            if identifiant == "" or mdp == "":
                 print("L'identifiant ou le mot de passe n'a pas été précisé.")
                 return self.make_choice_retour()
             if not anti_SQl_injection(identifiant) or not anti_SQl_injection(mdp):

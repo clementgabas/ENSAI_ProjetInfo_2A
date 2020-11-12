@@ -82,7 +82,7 @@ def add_to_participation(id_partie, pseudo, nb_places):
     try:
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
-        cursor.execute("INSERT INTO Participation (pseudo, id_partie) VALUES (?, ?);",(pseudo, id_partie))
+        cursor.execute("INSERT INTO Participation (pseudo, id_partie, ordre) VALUES (?, ?, 0);",(pseudo, id_partie))
         con.commit()
         update_parties_nb_place(id_partie, nb_places-1)
     except:

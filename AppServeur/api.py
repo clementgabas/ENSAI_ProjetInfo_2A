@@ -26,7 +26,7 @@ import DAO.gestionAmis as DAOfriend
 import DAO.gestionClassement as DAOclassement
 import DAO.gestionParties as DAOparties
 import DAO.gestionParametres as DAOparametres
-import DAO.gestionparticipation as DAOparticipation
+import DAO.gestionParticipation as DAOparticipation
 
 CACHE_TTL = 60  # 60 seconds
 
@@ -454,7 +454,13 @@ def ajout_param_partie_P4():
 def je_suis_pret():
     request.get_json(force=True)
     pseudo, id_salle, est_chef = request.json.get('pseudo'), request.json.get('id_salle'), request.json.get('est_chef')
-    DAOparticipation.update_est_pret(pseudo,id_salle, 'True')
+    #-- on update le est_pret a True dans la table Participation
+    DAOparticipation.update_est_pret(pseudo, id_salle, 'True')
+    print(f"L'utilisateur {pseudo} est pret dans la table Participation pour la partie {id_salle}.")
+    #-- on update l'ordre de jeu dans la table Participation
+    DAOparticipation.update_ordre(pseudo, id_salle)
+    print(f"L'utilisateur {pseudo} s'est vu attribué son ordre de jeu pour la partie {id_salle}.")
+
     response = {"status_code": http_codes.ok, "message": "Utilisateur pret."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
@@ -463,7 +469,7 @@ def est_ce_mon_tour():
     request.get_json(force=True)
     pseudo, id_salle = request.json.get('pseudo'), request.json.get('id_salle')
 
-    
+
 
 
 

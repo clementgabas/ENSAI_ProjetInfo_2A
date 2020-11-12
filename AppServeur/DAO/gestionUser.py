@@ -426,7 +426,7 @@ def put_all_users_disconnected():
     try:
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
-        cursor.execute("UPDATE Utilisateur SET est_connecte = 'False' WHERE est_connecte = 'True'", ())
+        cursor.execute("UPDATE Utilisateur SET est_connecte = 'False', en_file = 'False', en_partie = 'False' WHERE est_connecte = 'True'", ())
         con.commit()
     except:
         print("erreur dans put_all_users_disconnected")
