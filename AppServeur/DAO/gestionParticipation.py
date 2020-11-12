@@ -63,12 +63,16 @@ def get_used_color(id_partie):
         raise ConnectionAbortedError
     finally:
         con.close()
-    return liste_couleur
+    liste = []
+    for elem in liste_couleur:
+        liste.append(elem[0])
+    return liste
 
 def get_free_color(id_partie):
     used_colors = get_used_color(id_partie)
     free_color_list = []
     for col in liste_couleurs_autorisees:
+        print(col)
         if col not in used_colors:
             free_color_list.append(col)
     return free_color_list
