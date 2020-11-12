@@ -447,8 +447,43 @@ def ajout_param_partie_P4():
     print(f"Les paramètres suivants : Durée d'un tour : {duree_tour} secondes \n Condition de victoire : aligner "
           f"{condition_victoire} jetons \n Taille du plateau : {Taille_plateau} \n "
           f"ont a bien été définis pour la partie {id_Partie}")
-    response = {"status_code": http_codes.ok, "message": "Paramètres enregistrés."}  # code 200
+    response = {"status_code": http_codes.ok, "message": ""}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
+
+@app.route("/home/game/room/colors", methods=["GET"])
+def get_liste_couleur_dispos():
+    request.get_json(force=True)
+    id_partie = request.json.get("id_salle")
+    print(f"La liste des couleurs disponibles pour la partie {id_partie} a été demandée.")
+
+    #-- on récupère la liste des couleurs dispo
+    liste_couleurs_dispos = DAOparticipation.get_free_color(id_partie)
+    print(f"La liste des couleurs disponibles pour la partie {id_partie} a été transmise.")
+
+    response = {"status_code": http_codes.ok, "message": "", "liste_couleurs_dispos":liste_couleurs_dispos}
+    return make_reponse(response, http_codes.ok)
+
+@app.route("/home/game/room/colors", methods=["POST"])
+def ajout_couleur():
+    request.get_json(force=True)
+    id_partie, pseudo, couleur = request.json.get("id_salle"), request.json.get("pseudo"), request.json.get("couleur")
+
+    #-- on vérifie d'abord que la couleur est tjrs libre
+    if not DAOparticipation.is_color_free(id_partie, couleur):
+        print(f"La couleur {couleur} a été prise par un autre joueur entre temps dans la partie {id_partie}.")
+        liste_couleurs_dispos = DAOparticipation.get_free_color(id_partie)
+        response = {"status_code": http_codes.conflict, "message": "La couleur été libre mais a été sélectionnée par un autre joueur entre temps.",
+                    "liste_couleurs_dispos": liste_couleurs_dispos}
+        return make_reponse(response, http_codes.conflict) #code 409 conflict
+
+    #-- on update la db pour mettre la couleur
+    DAOparticipation.update_color(pseudo, id_partie, couleur)
+    print(f"Le joueur {pseudo} a choisi la couleur {couleur} dans la partie {id_partie}.")
+    response = {"status_code": http_codes.ok, "message": ""}
+    return make_reponse(response, http_codes.ok)
+
+
+
 
 @app.route('/home/game/room/turns', methods=['POST']) #dire qu'on est pret à jouer
 def je_suis_pret():
@@ -456,7 +491,8 @@ def je_suis_pret():
     pseudo, id_salle, est_chef = request.json.get('pseudo'), request.json.get('id_salle'), request.json.get('est_chef')
     #-- on update le est_pret a True dans la table Participation
     DAOparticipation.update_est_pret(pseudo, id_salle, 'True')
-    print(f"L'utilisateur {pseudo} est pret dans la table Participation pour la partie {id_salle}.")
+    couleur = DAOparticipation.get_couleur(pseudo, id_salle)
+    print(f"L'utilisateur {pseudo} est pret dans la table Participation pour la partie {id_salle} avec la couleur {couleur}.")
     #-- on update l'ordre de jeu dans la table Participation
     DAOparticipation.update_ordre(pseudo, id_salle)
     print(f"L'utilisateur {pseudo} s'est vu attribué son ordre de jeu pour la partie {id_salle}.")
@@ -468,6 +504,9 @@ def je_suis_pret():
 def est_ce_mon_tour():
     request.get_json(force=True)
     pseudo, id_salle = request.json.get('pseudo'), request.json.get('id_salle')
+
+    #-- on vérifie si la partie est lancée
+
 
 
 

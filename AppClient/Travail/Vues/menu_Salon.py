@@ -41,6 +41,7 @@ class Salon(AbstractView):
                 MParametre1 = MPara.Menu_Parametre(self.pseudo, self.id_salle, self.game,  self.est_chef)
                 return MParametre1.make_choice()
             elif self.reponse["Salon_accueil"] == "Être prêt":
+                self.choix_couleur(self.get_liste_couleurs_dispo())
                 return self.etre_pret()
             else: #'Quitter la salle'
                 return self.retour()
@@ -89,7 +90,34 @@ class Salon(AbstractView):
         res = requests.post("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
         if res.status_code == 200:
             print("Vous êtes pret!")
-            return self.demander_tour()
+            #return self.demander_tour()
+
+
+    def get_liste_couleurs_dispo(self):
+        dataPost = {'id_salle':self.id_salle}
+        res = requests.get("http://localhost:9090/home/game/room/colors", data=json.dumps(dataPost))
+
+        if res.status_code == 200:
+            liste_couleurs_dispos = res.json()["liste_couleurs_dispos"]
+            return liste_couleurs_dispos
+
+    def choix_couleur(self, liste_couleurs_dispos):
+        answer = inquirer.prompt([
+            {
+                'type': 'list',
+                'name': 'couleur',
+                'message': 'Quelle couleur voulez vous choisir pour jouer?',
+                'choices': liste_couleurs_dispos,
+            },
+        ])
+        couleur_choisie = answer['couleur']
+
+        dataPost = {'id_salle':self.id_salle, 'pseudo':self.pseudo, 'couleur':couleur_choisie}
+        res = requests.post("http://localhost:9090/home/game/room/colors", data=json.dumps(dataPost))
+
+        if res.status_code == 409: #la couleur a été choisie entre temps
+            print("La couleur demandée a été choisie entre temps par un autre utilisateur. Veuillez réessayer svp.")
+            return self.choix_couleur(self.get_liste_couleurs_dispo())
 
     def demander_tour(self):
         mon_tour = False

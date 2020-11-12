@@ -1,5 +1,6 @@
 import sqlite3
 db_address = "database/apijeux.db"
+liste_couleurs_autorisees = ['bleu', 'rouge', 'vert', 'jaune', 'magenta', 'cyan', 'gris']
 
 def update_est_pret(pseudo, id_partie, TrueOrFalse):
     TrueOrFalse = TrueOrFalse.lower()
@@ -37,9 +38,7 @@ def get_ordre(id_partie):
 
 def update_ordre(pseudo, id_partie):
     ordre_dernier_joueur_actuel = get_ordre(id_partie)[-1][1]
-    print(ordre_dernier_joueur_actuel)
     ordre_pseudo = ordre_dernier_joueur_actuel+1
-    print(ordre_pseudo)
 
     try:
         con = sqlite3.connect(db_address)
@@ -52,3 +51,56 @@ def update_ordre(pseudo, id_partie):
         raise ConnectionAbortedError
     finally:
         con.close()
+
+def get_used_color(id_partie):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT couleur FROM Participation WHERE id_partie = ?", (id_partie,))
+        liste_couleur = cursor.fetchall()
+    except:
+        print("erreur dans get_used_color")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return liste_couleur
+
+def get_free_color(id_partie):
+    used_colors = get_used_color(id_partie)
+    free_color_list = []
+    for col in liste_couleurs_autorisees:
+        if col not in used_colors:
+            free_color_list.append(col)
+    return free_color_list
+
+def is_color_free(id_partie, color):
+    used_colors = get_used_color(id_partie)
+    if color in used_colors:
+        return False
+    return True
+
+def update_color(pseudo, id_partie, color):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("UPDATE Participation SET couleur = ? WHERE pseudo = ? AND id_partie = ? ", (color, pseudo, id_partie))
+        con.commit()
+    except:
+        print("erreur dans update_color")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
+def get_couleur(pseudo, id_partie):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT couleur FROM Participation WHERE pseudo = ? AND id_partie = ? ", (pseudo, id_partie))
+        couleur = cursor.fetchone()[0]
+    except:
+        print("erreur dans get_couleur")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return couleur

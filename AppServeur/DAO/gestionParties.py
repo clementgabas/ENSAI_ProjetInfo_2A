@@ -145,7 +145,3 @@ def get_jeu_salle(id_salle):
     finally:
         con.close()
     return membres
-
-
-def choix_couleur(id_partie, pseudo, couleur):
-    pass
