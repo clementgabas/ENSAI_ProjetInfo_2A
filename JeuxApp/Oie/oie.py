@@ -7,7 +7,9 @@ Created on Fri Oct 09 11:08:42 2020
 """
 
 import random
-
+#-- gestion de l'affichage couleur dans le cmd.exe de Windows. Si vous utilisez ansicon.exe ou un terminal de commande prennant en charge les séquences ANSI, ce package n'est pas nécessaire.
+import colorama
+colorama.init() 
 
 class Player():
     """
