@@ -72,7 +72,6 @@ def get_free_color(id_partie):
     used_colors = get_used_color(id_partie)
     free_color_list = []
     for col in liste_couleurs_autorisees:
-        print(col)
         if col not in used_colors:
             free_color_list.append(col)
     return free_color_list
@@ -108,3 +107,16 @@ def get_couleur(pseudo, id_partie):
     finally:
         con.close()
     return couleur
+
+def number_of_ready(id_partie):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT COUNT(est_pret) FROM Participation WHERE est_pret = 'True' AND id_partie = ?", (id_partie,))
+        nombre = cursor.fetchone()[0]
+    except:
+        print("erreur dans number_of_ready")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return nombre

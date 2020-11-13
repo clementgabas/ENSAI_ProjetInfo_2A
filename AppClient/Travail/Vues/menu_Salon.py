@@ -5,6 +5,7 @@ from printFunctions import timePrint as print
 import requests
 import json
 from tabulate import tabulate
+import time
 
 class Salon(AbstractView):
     def __init__(self, pseudo, id_salle, jeu, est_chef):
@@ -42,7 +43,11 @@ class Salon(AbstractView):
                 return MParametre1.make_choice()
             elif self.reponse["Salon_accueil"] == "Être prêt":
                 self.choix_couleur(self.get_liste_couleurs_dispo())
-                return self.etre_pret()
+                if self.est_chef == True:
+                    self.etre_pret_chef()
+                else:
+                    self.etre_pret()
+                return self.demander_tour()
             else: #'Quitter la salle'
                 return self.retour()
             break
@@ -85,13 +90,6 @@ class Salon(AbstractView):
             print("\n" + tabulate(liste_membres, headers=["Pseudo"], tablefmt="grid"))
             return self.make_choice()
 
-    def etre_pret(self):
-        dataPost = {'pseudo':self.pseudo,'id_salle':self.id_salle, 'est_chef':self.est_chef}
-        res = requests.post("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
-        if res.status_code == 200:
-            print("Vous êtes pret!")
-            #return self.demander_tour()
-
 
     def get_liste_couleurs_dispo(self):
         dataPost = {'id_salle':self.id_salle}
@@ -100,6 +98,9 @@ class Salon(AbstractView):
         if res.status_code == 200:
             liste_couleurs_dispos = res.json()["liste_couleurs_dispos"]
             return liste_couleurs_dispos
+        elif res.status_code == 403:
+            print("Vous ne pouvez pas être pret car vous êtes seuls dans la salle. Il faut être au moins 2.")
+            return self.make_choice()
 
     def choix_couleur(self, liste_couleurs_dispos):
         answer = inquirer.prompt([
@@ -118,6 +119,42 @@ class Salon(AbstractView):
         if res.status_code == 409: #la couleur a été choisie entre temps
             print("La couleur demandée a été choisie entre temps par un autre utilisateur. Veuillez réessayer svp.")
             return self.choix_couleur(self.get_liste_couleurs_dispo())
+
+
+    def etre_pret(self):
+        dataPost = {'pseudo':self.pseudo,'id_salle':self.id_salle, 'est_chef':self.est_chef}
+        res = requests.post("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
+        if res.status_code == 200:
+            print("Vous êtes prets!")
+
+    def is_everyone_ready(self):
+        tout_le_monde_pret = False
+        dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle, 'est_chef': self.est_chef}
+        while not tout_le_monde_pret:
+            # -- on requete pour savoir si tout le monde est pret dans la salle
+            res = requests.get("http://localhost:9090/home/game/room/launch", data=json.dumps(dataPost))
+            # -- si on récupère un "tout le monde est pret", on lance la partie
+            if res.status_code == 200:
+                tout_le_monde_pret = True
+            else:
+                print('en attente que tous les participants soient prets pour lancer la partie.')
+                time.sleep(2)
+        return tout_le_monde_pret
+
+    def etre_pret_chef(self):
+        self.etre_pret()
+        everyone_ready = False
+        while not everyone_ready:
+            if self.is_everyone_ready():
+                everyone_ready = True
+                print("Tous les participants sont pret. La partie va pouvoir démarer.")
+
+        dataPost = {'id_salle': self.id_salle}
+        res = requests.post("http://localhost:9090/home/game/room/launch", data=json.dumps(dataPost))  # dao pour modifier dans la table Partie le statut à en cours
+        if res.status_code == 200:
+            #la partie est lancée, on peut requeter pour savoir si c'est son tour
+            print("jusque la tout va bien, plus qu'a demander son tour sans arret")
+
 
     def demander_tour(self):
         mon_tour = False

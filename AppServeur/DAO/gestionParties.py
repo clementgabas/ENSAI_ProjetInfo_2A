@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+db_address = "database/apijeux.db"
 
 
 def add_partie(pseudo_chef, jeu, nb_places_tot):
@@ -8,7 +9,7 @@ def add_partie(pseudo_chef, jeu, nb_places_tot):
         cursor = con.cursor()
         heure = str(datetime.now())
         cursor.execute(
-            "INSERT INTO Parties (jeu, date_debut, pseudo_proprietaire, places_total, places_dispo) VALUES (?,?,?,?,?)", (jeu, heure, pseudo_chef, nb_places_tot, nb_places_tot,))
+            "INSERT INTO Parties (jeu, date_debut, pseudo_proprietaire, places_total, places_dispo, statut) VALUES (?,?,?,?,?, 'en préparation')", (jeu, heure, pseudo_chef, nb_places_tot, nb_places_tot,))
         cursor.execute("SELECT id_partie from Parties WHERE pseudo_proprietaire = ? AND date_debut = ?", (pseudo_chef, heure))
         id_partie = cursor.fetchone()[0]
         con.commit()
@@ -61,6 +62,9 @@ def check_cb_places_tot(id_partie):
     finally:
         con.close()
         return nb
+    
+def get_nbr_participants(id_partie):
+    return check_cb_places_tot(id_partie) - check_cb_places_libres(id_partie)
 
 def update_parties_nb_place(id_partie, nb_places_restantes):
     try:
@@ -145,3 +149,16 @@ def get_jeu_salle(id_salle):
     finally:
         con.close()
     return membres
+
+def lancer_partie(id_salle):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("UPDATE Parties SET statut = 'en cours' WHERE id_partie = ?", (id_salle,))
+        con.commit()
+    except:
+        print("erreur dans lancer_partie")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()

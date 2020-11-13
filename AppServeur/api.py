@@ -454,6 +454,13 @@ def ajout_param_partie_P4():
 def get_liste_couleur_dispos():
     request.get_json(force=True)
     id_partie = request.json.get("id_salle")
+    # -- on vérifie si il y a au moins 2 personnes dans la salle sinon il pourrait lancer une partie solo, ce qui casserait tout
+    if DAOparties.get_nbr_participants(id_partie) < 2:
+        print(f"L'utilisateur ne peut pas être prêt dans la salle {id_partie} car il y est tout seul.")
+        response = {"status_code": http_codes.forbidden,
+                    "message": "Pas assez d'utilisateurs dans la salle."}  # code 403
+        return make_reponse(response, http_codes.forbidden)  # code 403
+
     print(f"La liste des couleurs disponibles pour la partie {id_partie} a été demandée.")
 
     #-- on récupère la liste des couleurs dispo
@@ -489,6 +496,8 @@ def ajout_couleur():
 def je_suis_pret():
     request.get_json(force=True)
     pseudo, id_salle, est_chef = request.json.get('pseudo'), request.json.get('id_salle'), request.json.get('est_chef')
+    print(f"L'utilisateur {pseudo} demande à être prêt dans la salle {id_salle}.")
+
     #-- on update le est_pret a True dans la table Participation
     DAOparticipation.update_est_pret(pseudo, id_salle, 'True')
     couleur = DAOparticipation.get_couleur(pseudo, id_salle)
@@ -500,14 +509,38 @@ def je_suis_pret():
     response = {"status_code": http_codes.ok, "message": "Utilisateur pret."}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
-@app.route('/home/game/room/turns', methods=['GET']) #savoir si c'est notre tour de jouer
-def est_ce_mon_tour():
+@app.route('/home/game/room/launch', methods=['GET']) #savoir si on peut lancer la partie pour le chef
+def gestion_tour_lancement_partie():
     request.get_json(force=True)
-    pseudo, id_salle = request.json.get('pseudo'), request.json.get('id_salle')
+    pseudo, id_salle, est_chef = request.json.get('pseudo'), request.json.get('id_salle'), request.json.get('est_chef')
 
-    #-- on vérifie si la partie est lancée
+    if est_chef:
+        print(f"{pseudo}, chef de la salle {id_salle} aimerait savoir si tout le monde est pret pour pouvoir lancer la partie.")
+        #-- on DAO pour savoir si tout le monde est pret dans la salle
+        if DAOparticipation.number_of_ready(id_salle) == DAOparties.get_nbr_participants(id_salle): #tout les participants sont prets
+            print(f"Tout le monde est pret dans la partie {id_salle}")
+            response = {"status_code": http_codes.ok, "message": "Tous les participants sont prets."}  # code 200
+            return make_reponse(response, http_codes.ok)  # code 200
+        else: #au moins 1 participant n'est pas pret
+            print(f"Tout le monde n'est pas pret dans la partie {id_salle}")
+            response = {"status_code": http_codes.not_acceptable, "message": "Au moins un participant n'est pas pret."}  # code 406
+            return make_reponse(response, http_codes.not_acceptable)  # code 406
+
+    else:
+        print(f"{pseudo} n'est pas chef de la salle {id_salle} et n'a donc rien à faire ici..")
+        response = {"status_code": http_codes.unauthorized, "message": "Vous n'etes pas chef de salle. Vous ne devriez pas être ici comme dirait Hagrid."}  # code 401
+        return make_reponse(response, http_codes.unauthorized)  # code 401
 
 
+@app.route('/home/game/room/launch', methods=['POST'])
+def lancer_partie():
+    request.get_json(force=True)
+    id_partie = request.json.get('id_salle')
+    #-- on DAO pour update la table partie et mettre statut = 'en cours'
+    DAOparties.lancer_partie(id_partie)
+    response = {"status_code": http_codes.ok,
+                "message": "Partie lancée"}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
 
 
 
