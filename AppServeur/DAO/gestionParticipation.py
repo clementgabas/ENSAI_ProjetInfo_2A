@@ -36,6 +36,19 @@ def get_ordre(id_partie):
         con.close()
     return ordre
 
+def get_position_ordre(pseudo, id_partie):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT ordre FROM Participation WHERE id_partie = ? AND pseudo = ?", (id_partie,pseudo,))
+        ordre = cursor.fetchall()[0][0]
+    except:
+        print("erreur dans get_position_ordre")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return ordre
+
 def update_ordre(pseudo, id_partie):
     ordre_dernier_joueur_actuel = get_ordre(id_partie)[-1][1]
     ordre_pseudo = ordre_dernier_joueur_actuel+1

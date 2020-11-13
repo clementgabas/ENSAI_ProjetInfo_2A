@@ -47,7 +47,7 @@ class Salon(AbstractView):
                     self.etre_pret_chef()
                 else:
                     self.etre_pret()
-                return self.demander_tour()
+                return self.jouer()
             else: #'Quitter la salle'
                 return self.retour()
             break
@@ -138,7 +138,7 @@ class Salon(AbstractView):
                 tout_le_monde_pret = True
             else:
                 print('en attente que tous les participants soient prets pour lancer la partie.')
-                time.sleep(2)
+                time.sleep(0.5)
         return tout_le_monde_pret
 
     def etre_pret_chef(self):
@@ -156,12 +156,30 @@ class Salon(AbstractView):
             print("jusque la tout va bien, plus qu'a demander son tour sans arret")
 
 
+
+
+    def jouer(self):
+        monTour = False
+        while not monTour:
+            monTour = self.demander_tour()
+            time.sleep(0.5)
+        print("à votre tour de jouer ----- blabla on simmule que je jouez --- on simmule que vous passez votre tour. ----------- Faudra mettre un autre menu avec un inquirer des actions réalisables etc...")
+        return self.passer_tour()
+
+
+
     def demander_tour(self):
-        mon_tour = False
         dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle}
-        while not mon_tour:
-            res = requests.get("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
-            if res.json()["message"] == "ton tour":
-                mon_tour = True
-            time.sleep(2)
+        res = requests.get("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
+        if res.status_code == 200:
+            mon_tour = True
+            print("C'est votre tour de jouer.")
+        elif res.status_code == 449:
+            mon_tour = False
+            print("ce n'est pas votre tour de jouer")
+        else:
+            print("erreur dans demander_tour")
         return mon_tour
+
+    def passer_tour(self):
+        pass

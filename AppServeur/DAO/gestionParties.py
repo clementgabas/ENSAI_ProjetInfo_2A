@@ -154,7 +154,7 @@ def lancer_partie(id_salle):
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
-        cursor.execute("UPDATE Parties SET statut = 'en cours' WHERE id_partie = ?", (id_salle,))
+        cursor.execute("UPDATE Parties SET statut = 'en cours', aquiltour = 1 WHERE id_partie = ?", (id_salle,))
         con.commit()
     except:
         print("erreur dans lancer_partie")
@@ -162,3 +162,16 @@ def lancer_partie(id_salle):
         raise ConnectionAbortedError
     finally:
         con.close()
+
+def get_aquiltour(id_salle):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT aquiltour FROM Parties WHERE id_partie = ?", (id_salle,))
+        aquiltour = cursor.fetchone()[0]
+    except:
+        print("erreur dans get_aquiltour")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return aquiltour

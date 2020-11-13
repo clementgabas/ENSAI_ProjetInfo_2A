@@ -538,22 +538,26 @@ def lancer_partie():
     id_partie = request.json.get('id_salle')
     #-- on DAO pour update la table partie et mettre statut = 'en cours'
     DAOparties.lancer_partie(id_partie)
-    response = {"status_code": http_codes.ok,
-                "message": "Partie lancée"}  # code 200
+    response = {"status_code": http_codes.ok, "message": "Partie lancée"}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
+@app.route('/home/game/room/turns', methods=['GET']) #dsavoir si c'est son tour de jouer
+def est_ce_mon_tour():
+    request.get_json(force=True)
+    id_partie, pseudo = request.json.get('id_salle'), request.json.get('pseudo')
+    print(f"L'utilisateur {pseudo} demande si c'est son tour dans la salle {id_partie}.")
+    aquiltour = DAOparties.get_aquiltour(id_partie)
+    self_ordre = DAOparticipation.get_position_ordre(pseudo, id_partie)
 
+    if aquiltour == self_ordre: #c'est le tour du joueur qui demande
+        print(f"C'est bien le tour de l'utilisateur {pseudo} dans la salle {id_partie}.")
+        response = {"status_code": http_codes.ok, "message": "C'est ton tour"}  # code 200
+        return make_reponse(response, http_codes.ok)  # code 200
 
-
-
-
-
-
-
-
-
-
-
+    else: #ce n'est pas son tour de jouer
+        print(f"Ce n'est pas le tour de l'utilisateur {pseudo} dans la salle {id_partie}.")
+        response = {"status_code": http_codes.retry_with, "message": "Ce n'est pas votre tour"}  # code 449
+        return make_reponse(response, http_codes.retry_with)  # code 449
 
 #---------------------------------------------------------
 @app.after_request
