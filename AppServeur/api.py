@@ -559,6 +559,25 @@ def est_ce_mon_tour():
         response = {"status_code": http_codes.retry_with, "message": "Ce n'est pas votre tour"}  # code 449
         return make_reponse(response, http_codes.retry_with)  # code 449
 
+@app.route('/home/game/room/turns', methods=['PUT']) #passer son tour et maj la db pour savoir a qui ca sera le tour apres
+def passer_son_tour():
+    request.get_json(force=True)
+    id_partie, pseudo = request.json.get('id_salle'), request.json.get('pseudo')
+
+    #-- on update aquiltour en faisant bien attention a ce qu'un foie que le dernier à jouer ça revient au premier
+    DAOparties.update_aquiltour(id_partie)
+    response = {"status_code": http_codes.ok, "message": "Aquiltour updaté"}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
+
+
+
+
+
+
+
+
+
+
 #---------------------------------------------------------
 @app.after_request
 def set_response_headers(response):

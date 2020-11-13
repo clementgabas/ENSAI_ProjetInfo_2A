@@ -182,4 +182,6 @@ class Salon(AbstractView):
         return mon_tour
 
     def passer_tour(self):
-        pass
+        dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle}
+        requests.put("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
+        return self.jouer()

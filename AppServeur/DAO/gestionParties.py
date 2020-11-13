@@ -175,3 +175,21 @@ def get_aquiltour(id_salle):
     finally:
         con.close()
     return aquiltour
+
+def update_aquiltour(id_salle):
+    current_aquiltour, nbr_participant = get_aquiltour(id_salle), get_nbr_participants(id_salle)
+    if current_aquiltour == nbr_participant:
+        new_aquiltour = 1
+    else:
+        new_aquiltour = current_aquiltour+1
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("UPDATE Parties SET aquiltour = ? WHERE id_partie = ?", (new_aquiltour,id_salle))
+        con.commit()
+    except:
+        print("erreur dans update_aquiltour")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
