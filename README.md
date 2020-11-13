@@ -16,4 +16,9 @@ Flask_Cors==3.0.9
 loguru==0.5.3
 Flask_Caching==1.9.0
 PyYAML==5.3.1
-werzeuk==0.16.1 (sinon conflits)
+werzeuk==0.16.1 (et pas une version plus récente sinon conflits)
+
+Jeux :
+
+colorama==0.4.4 (pour l'affichage des couleurs dans cmd.exe de windows. Ce n'est pas nécessaire dans le terminal de base Apple ni en utilisant le terminal ansicon.exe sur windows)
+
