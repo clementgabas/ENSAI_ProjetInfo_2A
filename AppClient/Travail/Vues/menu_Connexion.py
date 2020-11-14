@@ -30,39 +30,17 @@ class Menu_Connexion(AbstractView):
         ]
         while True:
             self.reponse = inquirer.prompt(self.questions)
-            identifiant, mdp = self.reponse["Identifiant"].lower(), self.reponse["Password"]
+            from Player.UserBaseClass import UserBase
+            UserBase1 = UserBase()
+            Resultat = UserBase1.connexion(self.reponse["Identifiant"].lower(), self.reponse["Password"])
 
-            if identifiant == "" or mdp == "":
-                print("L'identifiant ou le mot de passe n'a pas été précisé.")
-                return self.make_choice_retour()
-            if not anti_SQl_injection(identifiant) or not anti_SQl_injection(mdp):
-                return self.make_choice_retour()
-
-            dataPost = {'username': identifiant, "password": mdp}
-
-            # -- connexion à l'API
-            res = requests.get('http://localhost:9090/home/connexion', data=json.dumps(dataPost))
-
-            if res.status_code == 200 :
-                pseudo = res.json()["pseudo"]
-                print("Connection réussie")
-                Co = MUC.Menu_User_Co(pseudo)
+            if Resultat["Statut"] == False:
+                return (self.make_choice_retour())
+            elif Resultat["Statut"] == True:
+                import Vues.menu_Utilisateur_Co as MUC
+                Co = MUC.Menu_User_Co(Resultat["pseudo"])
                 Co.display_info()
                 return Co.make_choice()
-            elif res.status_code == 404:
-                print("erreur, l'api n'a pas été trouvée")
-                return self.make_choice_retour()
-            elif res.status_code == 500:
-                return print("erreur dans le code de l'api")
-            elif res.status_code == 401:
-                print("Identifiant ou mot de passe incorrect.")
-                return self.make_choice_retour()
-            elif res.status_code == 403:
-                print("L'utilisateur est déjà conecté.")
-                return self.make_choice_retour()
-            else:
-                print("erreur non prévue : "+ str(res.status_code))
-                return self.make_choice_retour()
 
     def make_choice_retour(self):
         self.questions_retour = [
@@ -89,7 +67,7 @@ class Menu_Connexion(AbstractView):
                 print("Erreur dans menu_Connexion.Menu_Connexion.make_choice_retour")
             break
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     menu_Connexion1 = Menu_Connexion()
     menu_Connexion1.display_info()
     menu_Connexion1.make_choice()
@@ -97,3 +75,4 @@ if __name__ == "__main__":
 
 # Les réponses des utilisateurs sont stockés dans : menu_Connexion1.reponse["Identifiant"] et (menu_Connexion1.reponse["Password"]) il faudra ensuite les comparer aux id et mdp stockés en base avant
 #de permttre l'authentification.
+

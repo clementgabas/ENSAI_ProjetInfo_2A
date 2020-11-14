@@ -35,13 +35,13 @@ class Menu_Modif_Inf(AbstractView):
         while True:
             self.reponse = inquirer.prompt(self.questions)
             if self.reponse["menu_Modif_Info"] == "Modifier mon pseudo":
-                return self.modif_pseudo()
+                return self.menu_modif_pseudo()
             elif self.reponse["menu_Modif_Info"] == "Modifier mon mot de passe":
-                return self.modif_mdp()
+                return self.menu_modif_mdp()
             elif self.reponse["menu_Modif_Info"] == "Accéder à ses statistiques personnelles" :
-                return self.affich_stat_perso()
+                return self.menu_affich_stat_perso()
             elif self.reponse["menu_Modif_Info"] == "Réinitialiser ses statistiques personnelles" :
-                return self.reinit_stat_perso()
+                return self.menu_reinit_stat_perso()
             elif self.reponse["menu_Modif_Info"] == "Revenir au menu précédent":
                 import Vues.menu_Profil as MP
                 Retour = MP.Menu_Profil(self.pseudo)
@@ -51,7 +51,7 @@ class Menu_Modif_Inf(AbstractView):
                 print("Une erreur est survenur dans menu_Mod_Inf.make_choice")
             break
 
-    def modif_mdp(self):
+    def menu_modif_mdp(self):
         self.mdpQ = [
             {
                 'type' : 'password',
@@ -74,37 +74,18 @@ class Menu_Modif_Inf(AbstractView):
             old_mdp = self.mdpR["Old_Password"]
             new_mdp1, new_mdp2 = self.mdpR["New_Password"], self.mdpR["Password_Check"]
 
-            if new_mdp1 != new_mdp2:
-                print("Les deux nouveaux mots de passes ne correspondent pas.")
-                return self.echec_modif_mdp()
-            if new_mdp1 == "":
-                print("Veuillez fournir un nouveau mot de passe svp.")
-                return self.echec_modif_mdp()
-            if not anti_SQl_injection(new_mdp1):
-                return self.echec_modif_mdp()
-
-            #if not is_mdp_legal(new_mdp1):
-                #return self.echec_modif_mdp()
-
-            dataPost = {'pseudo': self.pseudo, 'old_password': old_mdp, 'new_password': new_mdp1}
-            res = requests.put('http://localhost:9090/home/main/profil/user/password', data=json.dumps(dataPost))
-
-            if res.status_code == 401:
-                print("Le mot de passe fournit ne correspond pas.")
-                return self.echec_modif_mdp()
-            if res.status_code == 200:
-                print("Le mot de passe a bien été modifié.")
-                return self.make_choice()
-            elif res.status_code == 404:
-                print("erreur, l'api n'a pas été trouvée")
-                return self.echec_modif_mdp()
-            elif res.status_code == 500:
-                return print("erreur dans le code de l'api")
+            from Player.UserClass import User
+            User1 = User(self.pseudo)
+            Resultat = User1.modifier_mdp(old_mdp,new_mdp1,new_mdp2)
+            if Resultat["Statut"] == True:
+                return (self.make_choice())
+            elif Resultat["Statut"] == False:
+                return (self.menu_echec_modif_mdp())
             else:
-                print("erreur non prévue : "+ str(res.status_code))
-                return self.echec_modif_mdp()
+                print("Erreur non prévue")
+                return (self.menu_echec_modif_mdp())
 
-    def echec_modif_mdp(self):
+    def menu_echec_modif_mdp(self):
         self.echecMdpQ = [
             {
                 'type': 'list',
@@ -119,14 +100,14 @@ class Menu_Modif_Inf(AbstractView):
         while True:
             self.echecMdpR = inquirer.prompt(self.echecMdpQ)
             if self.echecMdpR["Retour"] == "Réessayer":
-                return self.modif_mdp()
+                return self.menu_modif_mdp()
             elif self.echecMdpR["Retour"] == "Retourner au menu des informations personnelles":
                 return self.make_choice()
             else:
                 print("Erreur dans echec_modif_mdp")
             break
 
-    def modif_pseudo(self):
+    def menu_modif_pseudo(self):
             self.mdpQ = [
                 {
                     'type' : 'input',
@@ -139,30 +120,19 @@ class Menu_Modif_Inf(AbstractView):
                 self.mdpR = inquirer.prompt(self.mdpQ)
                 new_pseudo = self.mdpR["New_Pseudo"].lower()
 
-                if new_pseudo == self.pseudo:
-                    print("Le nouveau pseudo est identique à l'ancien.")
-                    return self.echec_modif_pseudo()
-
-                dataPost = {'old_pseudo': self.pseudo, 'new_pseudo': new_pseudo}
-                res = requests.put('http://localhost:9090/home/main/profil/user/pseudo', data=json.dumps(dataPost))
-
-                if res.status_code == 409:
-                    print("Le pseudo demandé est déjà utilisé.")
-                    return self.echec_modif_pseudo()
-                elif res.status_code == 200:
-                    print("Le pseudo a été mis à jour.")
+                from Player.UserClass import User
+                User1 = User(self.pseudo)
+                Resultat = User1.modifier_pseudo(new_pseudo)
+                if Resultat["Statut"] == True:
                     self.pseudo = new_pseudo
-                    return self.make_choice()
-                elif res.status_code == 404:
-                    print("erreur, l'api n'a pas été trouvée")
-                    return self.echec_modif_pseudo()
-                elif res.status_code == 500:
-                    return print("erreur dans le code de l'api")
+                    return(self.make_choice())
+                elif Resultat["Statut"] == False:
+                    return(self.menu_echec_modif_pseudo())
                 else:
-                    print("erreur non prévue : " + str(res.status_code))
-                    return self.echec_modif_pseudo()
+                    print("Erreur non prévue")
+                    return (self.menu_echec_modif_pseudo())
 
-    def echec_modif_pseudo(self):
+    def menu_echec_modif_pseudo(self):
         self.echecPseudoQ = [
             {
                 'type': 'list',
@@ -177,36 +147,27 @@ class Menu_Modif_Inf(AbstractView):
         while True:
             self.echecPseudoR = inquirer.prompt(self.echecPseudoQ)
             if self.echecPseudoR["Retour"] == "Réessayer":
-                return self.modif_pseudo()
+                return self.menu_modif_pseudo()
             elif self.echecPseudoR["Retour"] == "Retourner au menu des informations personnelles":
                 return self.make_choice()
             else:
                 print("Erreur dans echec_modif_pseudo")
             break
 
-    def affich_stat_perso(self):
-        dataPost = {'pseudo': self.pseudo}
-        # -- connexion à l'API
-        res = requests.get('http://localhost:9090/home/main/profil/user/stat', data=json.dumps(dataPost))
-        if res.status_code == 200:
-            stat_perso = res.json()['Statistiques personnelles']
-            parties_g = stat_perso[0][1]
-            parties_j = stat_perso[0][0]
-            pourc_partie_g = 0
-            if parties_j != 0:
-                pourc_partie_g = parties_g/parties_j*100
-            stat_perso[0].append("{} %".format(pourc_partie_g))
-            print("\n" + tabulate(stat_perso, headers=["Nombre de parties jouées", "Nombre de parties gagnées","Pourcentage de parties gagnées"], tablefmt="grid"))
-            return self.make_choice()
-        elif res.status_code == 404:
-            print("erreur, l'api n'a pas été trouvée")
-            return self.make_choice()
-        elif res.status_code == 500:
-            return print("erreur dans le code de l'api")
+    def menu_affich_stat_perso(self):
+
+        from Player.UserClass import User
+        User1 = User(self.pseudo)
+        Resultat = User1.acceder_stats_perso()
+        if Resultat["Statut"] == True:
+            return (self.make_choice())
+        elif Resultat["Statut"] == False:
+            return (self.make_choice())
         else:
-            print("erreur non prévue : " + str(res.status_code))
-            return self.make_choice_retour()
-    def reinit_stat_perso(self):
+            print("Erreur non prévue")
+            return (self.make_choice())
+
+    def menu_reinit_stat_perso(self):
         self.Verif_choixQ = [
             {
                 'type': 'list',
@@ -224,23 +185,19 @@ class Menu_Modif_Inf(AbstractView):
                 print("Abandon")
                 return self.make_choice()
             elif self.Verif_choixR["Retour"] == "Oui" :
-                dataPost = {'pseudo': self.pseudo}
-                res = requests.put('http://localhost:9090/home/main/profil/user/stat', data=json.dumps(dataPost))
-                if res.status_code == 200:
-                    print(" Vos statistiques ont bien été réinitialisées")
-                    return self.make_choice()
-                elif res.status_code == 404:
-                    print("erreur, l'api n'a pas été trouvée")
-                    return self.make_choice()
-                elif res.status_code == 500:
-                    return print("erreur dans le code de l'api")
+                from Player.UserClass import User
+                User1 = User(self.pseudo)
+                Resultat = User1.reinitialiser_stats_perso()
+                if Resultat["Statut"] == True:
+                    return (self.make_choice())
+                elif Resultat["Statut"] == False:
+                    return (self.make_choice())
                 else:
-                    print("erreur non prévue : " + str(res.status_code))
-                    return self.make_choice_retour()
+                    print("Erreur non prévue")
+                    return (self.make_choice())
             else:
                 print("erreur non prévue : " + str(res.status_code))
-                return self.make_choice_retour()
-
+                return(self.make_choice())
 
 
 

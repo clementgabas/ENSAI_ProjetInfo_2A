@@ -75,99 +75,44 @@ class Menu_Classement(AbstractView):
             break
 
     def aff_class_gen(self):
-        # -- connexion à l'API
-        dataPost = {"pseudo": self.pseudo}
-        res = requests.get('http://localhost:9090/home/main/profil/classment/general', data = json.dumps(dataPost))
-
-        if res.status_code == 200:
-            classement_general = res.json()["classement_general"]
-            classement_general_amis = res.json()["classement_general_amis"]
-            print("Classement mondial \n" + tabulate(classement_general,
-                                                     headers=["Classement", "Pseudo", "nombre de point",
-                                                              "Nombre de parties jouées",
-                                                              "Nombre de parties gagnées"],
-                                                     tablefmt="grid"))
-            print("Classement entre amis \n" + tabulate(classement_general_amis,
-                                                        headers=["Classement", "Pseudo", "nombre de point",
-                                                                 "Nombre de parties jouées",
-                                                                 "Nombre de parties gagnées"],
-                                                        tablefmt="grid"))
-            return self.make_choice()
-        elif res.status_code == 404:
-            print("erreur, l'api n'a pas été trouvée")
-            return self.make_choice()
-        elif res.status_code == 500:
-            return print("erreur dans le code de l'api")
+        from Player.UserClass import User
+        User1 = User(self.pseudo)
+        Resultat = User1.aff_classement_general()
+        if Resultat["Statut"] == True:
+            return(self.make_choice())
+        elif Resultat["Statut"] == False:
+            return(self.make_choice_retour())
         else:
-            print("erreur non prévue : " + str(res.status_code))
-            return self.make_choice_retour()
+            print("Erreur non prévue")
+            return(self.make_choice_retour())
 
     def aff_class_oie(self):
-        # -- connexion à l'API
-        dataPost = {"nom_jeu": "Oie",
-                    "pseudo" : self.pseudo
-                    }
-        res = requests.get('http://localhost:9090/home/main/profil/classment/jeu', data = json.dumps(dataPost))
-
-        if res.status_code == 200:
-            classement_jeu = res.json()["classement_jeu"]
-            classement_jeu_amis = res.json()["classement_jeu_amis"]
-            print(
-                "Classement mondial :\n" + tabulate(classement_jeu,
-                                                    headers=["Classement", "Pseudo", "nombre de point",
-                                                             "Nombre de parties jouées",
-                                                             "Nombre de parties gagnées"],
-                                                    tablefmt="grid"))
-            print("Classement entre amis :\n" + tabulate(classement_jeu_amis,
-                                                         headers=["Classement", "Pseudo", "nombre de point",
-                                                                  "Nombre de parties jouées",
-                                                                  "Nombre de parties gagnées"],
-                                                         tablefmt="grid"))
-
-            return self.make_choice()
-        elif res.status_code == 404:
-            print("erreur, l'api n'a pas été trouvée")
-            return self.make_choice()
-        elif res.status_code == 500:
-            return print("erreur dans le code de l'api")
+        from Player.UserClass import User
+        User1 = User(self.pseudo)
+        Resultat = User1.aff_classement_jeu_oie()
+        if Resultat["Statut"] == True:
+            return (self.make_choice())
+        elif Resultat["Statut"] == False:
+            return (self.make_choice_retour())
         else:
-            print("erreur non prévue : " + str(res.status_code))
-            return self.make_choice_retour()
+            print("Erreur non prévue")
+            return (self.make_choice_retour())
 
     def aff_class_p4(self):
-        # -- connexion à l'API
-        dataPost = {"nom_jeu": "P4",
-                    "pseudo": self.pseudo
-                    }
-
-        res = requests.get('http://localhost:9090/home/main/profil/classment/jeu', data = json.dumps(dataPost))
-
-        if res.status_code == 200:
-            classement_jeu = res.json()["classement_jeu"]
-            classement_jeu_amis = res.json()["classement_jeu_amis"]
-            print(
-                "Classement mondial :\n" + tabulate(classement_jeu,
-                                                    headers=["Classement", "Pseudo", "nombre de point",
-                                                             "Nombre de parties jouées",
-                                                             "Nombre de parties gagnées"],
-                                                    tablefmt="grid"))
-            print("Classement entre amis :\n" + tabulate(classement_jeu_amis,
-                                                         headers=["Classement", "Pseudo", "nombre de point",
-                                                                  "Nombre de parties jouées",
-                                                                  "Nombre de parties gagnées"],
-                                                         tablefmt="grid"))
-
-            return self.make_choice()
-        elif res.status_code == 404:
-            print("erreur, l'api n'a pas été trouvée")
-            return self.make_choice()
-        elif res.status_code == 500:
-            return print("erreur dans le code de l'api")
+        from Player.UserClass import User
+        User1 = User(self.pseudo)
+        Resultat = User1.aff_classement_P4()
+        if Resultat["Statut"] == True:
+            return (self.make_choice())
+        elif Resultat["Statut"] == False:
+            return (self.make_choice_retour())
         else:
-            print("erreur non prévue : " + str(res.status_code))
-            return self.make_choice_retour()
+            print("Erreur non prévue")
+            return (self.make_choice_retour())
 
-if __name__ == "__main__": 
+
+if __name__ == "__main__":
     menu_Classement1 = Menu_Classement()
     menu_Classement1.display_info()
     menu_Classement1.make_choice()
+
