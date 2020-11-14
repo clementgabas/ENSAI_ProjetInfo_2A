@@ -178,6 +178,9 @@ class Salon(AbstractView):
         if res.status_code == 200:
             mon_tour = True
             print("C'est votre tour de jouer.")
+        elif res.status_code == 403:
+            mon_tour = False
+            print("C'est votre tour de jouer, mais vous ne pouvez pas le jouer")
         elif res.status_code == 449:
             mon_tour = False
             print("ce n'est pas votre tour de jouer")

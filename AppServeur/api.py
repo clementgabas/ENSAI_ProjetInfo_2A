@@ -27,6 +27,7 @@ import DAO.gestionClassement as DAOclassement
 import DAO.gestionParties as DAOparties
 import DAO.gestionParametres as DAOparametres
 import DAO.gestionParticipation as DAOparticipation
+import DAO.gestionCoups as DAOcoups
 
 CACHE_TTL = 60  # 60 seconds
 
@@ -541,6 +542,7 @@ def lancer_partie():
     response = {"status_code": http_codes.ok, "message": "Partie lancée"}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
+
 @app.route('/home/game/room/turns', methods=['GET']) #dsavoir si c'est son tour de jouer
 def est_ce_mon_tour():
     request.get_json(force=True)
@@ -548,11 +550,21 @@ def est_ce_mon_tour():
     print(f"L'utilisateur {pseudo} demande si c'est son tour dans la salle {id_partie}.")
     aquiltour = DAOparties.get_aquiltour(id_partie)
     self_ordre = DAOparticipation.get_position_ordre(pseudo, id_partie)
-
+    #mettre condition prochain tour != 1
     if aquiltour == self_ordre: #c'est le tour du joueur qui demande
         print(f"C'est bien le tour de l'utilisateur {pseudo} dans la salle {id_partie}.")
-        response = {"status_code": http_codes.ok, "message": "C'est ton tour"}  # code 200
-        return make_reponse(response, http_codes.ok)  # code 200
+        old_coup = DAOcoups.get_old_coup(id_partie,pseudo)
+        last_coup = DAOcoups.get_last_coup(id_partie)[0]
+        if old_coup[4] == 1 :
+            print(f"L'utilisateur {pseudo} peut jouer son tour dans la salle {id_partie}")
+            response = {"status_code": http_codes.ok, "message": "C'est ton tour"}  # code 200
+            return make_reponse(response, http_codes.ok)  # code 200
+        else :
+            print(f"L'utilisateur {pseudo} n'a pas le droit de jouer son tour dans la salle {id_partie}")
+            DAOcoups.add_new_coup(id_partie, last_coup+1 , pseudo, old_coup[3], old_coup[4]+1)
+            response = {"status_code": http_codes.forbidden,
+                        "message": "C'est votre tour, mais vous ne pouvez pas jouer"}  # code 403
+            return make_reponse(response, http_codes.forbidden)   # code 403
 
     else: #ce n'est pas son tour de jouer
         print(f"Ce n'est pas le tour de l'utilisateur {pseudo} dans la salle {id_partie}.")
