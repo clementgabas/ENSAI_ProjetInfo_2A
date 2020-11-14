@@ -7,7 +7,8 @@ Created on Fri Oct 09 11:08:42 2020
 """
 
 import random
-
+import colorama
+colorama.init()
 
 class Player():
     """

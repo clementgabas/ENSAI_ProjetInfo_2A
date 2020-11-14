@@ -164,7 +164,7 @@ class Salon(AbstractView):
         while not monTour:
             monTour = self.demander_tour()
             time.sleep(0.5)
-        Action = Play.Jeu(self.pseudo, self.id_salle, self.game,  self.est_chef)
+        Action = Play.Jouer(self.pseudo, self.id_salle, self.game,  self.est_chef)
         Action.jouer()
         return self.passer_tour()
 

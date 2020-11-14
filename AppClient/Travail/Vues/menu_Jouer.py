@@ -77,7 +77,8 @@ class Jouer(AbstractView):
             print(f"La partie est finie, le vainqueur est {winner}!")
 
     def jouer(self):
-        self.jouer_son_tour()
-        self.get_etat_partie()
+        print("la tu joues tkt")
+        #self.jouer_son_tour()
+        #self.get_etat_partie()
 
 
