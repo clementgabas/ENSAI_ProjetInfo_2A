@@ -1,5 +1,6 @@
 import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
+import Vues.menu_Jouer as Play
 
 from printFunctions import timePrint as print
 import requests
@@ -163,7 +164,8 @@ class Salon(AbstractView):
         while not monTour:
             monTour = self.demander_tour()
             time.sleep(0.5)
-        print("à votre tour de jouer ----- blabla on simmule que je jouez --- on simmule que vous passez votre tour. ----------- Faudra mettre un autre menu avec un inquirer des actions réalisables etc...")
+        Action = Play.Jeu(self.pseudo, self.id_salle, self.game,  self.est_chef)
+        Action.jouer()
         return self.passer_tour()
 
 
