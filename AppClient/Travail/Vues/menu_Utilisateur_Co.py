@@ -26,6 +26,7 @@ class Menu_User_Co(AbstractView):
             },
         ]
         self.pseudo = pseudo
+
     def display_info(self):
         print(f"{self.pseudo}, vous êtes connectés. Bienvenue!")
 
@@ -44,30 +45,26 @@ class Menu_User_Co(AbstractView):
                 return Profil.make_choice()
 
             elif self.reponse["Menu_Co"] == "Se déconnecter":
-
-                dataPost = {'pseudo': self.pseudo}
-                # -- connexion à l'API
-                res = requests.get('http://localhost:9090/home/deconnexion', data=json.dumps(dataPost))
-
-                if res.status_code == 200:
+                from Player.UserClass import User
+                User1 = User(self.pseudo)
+                Resultat = User1.deconnexion()
+                if Resultat["Statut"] == True:
                     import Vues.menu_Accueil as MA
                     Deco = MA.Menu_Accueil()
                     print("Déconnexion réussie")
                     Deco.display_info()
                     return Deco.make_choice()
-                elif res.status_code == 404:
-                    print("erreur, l'api n'a pas été trouvée")
-                    return self.make_choice()
-                elif res.status_code == 500:
-                    return print("erreur dans le code de l'api")
+                elif Resultat["Statut"] == False:
+                    return(self.make_choice())
                 else:
-                    print("erreur non prévue : " + str(res.status_code))
-                    return self.make_choice()
+                    print("Erreur non prévue")
+                    return (self.make_choice())
             else:
                 print("Réponse invalide dans le menu_Utilisateur.Menu_User_Co.make_choice() ... Boucle break")
             break
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     menu_User_Co1 = Menu_User_Co()
     menu_User_Co1.display_info()
     menu_User_Co1.make_choice()
+

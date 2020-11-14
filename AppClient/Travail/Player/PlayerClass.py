@@ -5,7 +5,7 @@ from Player.UserClass import User
 
 class Player(User):
 
-    def __init__(self, pseudo, id_salle, chef_salle, jeu):
+    def __init__(self, pseudo, jeu, id_salle, chef_salle):
         self.pseudo = pseudo
         self.id_salle = id_salle
         self.chef_salle = chef_salle

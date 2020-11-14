@@ -37,23 +37,18 @@ class Salon(AbstractView):
         while True:
             self.reponse = inquirer.prompt(self.question)
             if self.reponse["Salon_accueil"] == 'Voir les membres de la salle':
-                return self.voir_membres_salle()
+                return self.menu_voir_membres_salle()
             elif self.reponse["Salon_accueil"] == 'Modifier les paramètres de la salle':
                 import Vues.menu_Parametres as MPara
                 MParametre1 = MPara.Menu_Parametre(self.pseudo, self.id_salle, self.game,  self.est_chef)
                 return MParametre1.make_choice()
             elif self.reponse["Salon_accueil"] == "Être prêt":
-                self.choix_couleur(self.get_liste_couleurs_dispo())
-                if self.est_chef == True:
-                    self.etre_pret_chef()
-                else:
-                    self.etre_pret()
-                return self.jouer()
+                pass
             else: #'Quitter la salle'
-                return self.retour()
+                return self.menu_retour()
             break
 
-    def retour(self):
+    def menu_retour(self):
         self.question_retour = [
             {
                 'type' : 'list',
@@ -68,28 +63,35 @@ class Salon(AbstractView):
         while True:
             self.reponse_retour = inquirer.prompt(self.question_retour)
             if self.reponse_retour["salon_retour"] == "Oui":
-                dataPost = {"pseudo":self.pseudo, "id_salle": self.id_salle, "est_chef_salle": self.est_chef}
-                res = requests.delete("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
-                if res.status_code == 401:
-                    print("Vous êtes le chef de la salle! Vous ne pouvez pas la quitter tant qu'un autre utilisateur s'y trouve encore. Un capitaine quitte toujours son navire en dernier n'est-ce pas?")
-                    return self.make_choice()
-                elif res.status_code == 200:
+                from Player.PlayerClass import Player
+                Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+                Resultat = Player1.quitter_salle()
+                if Resultat["Statut"] == True:
                     import Vues.menu_Choix_Mode_Jeu as MCMJ
                     Retour = MCMJ.Menu_Choix_Mode_Jeu_Connecte(pseudo=self.pseudo, jeu=self.game)
                     Retour.display_info()
                     return Retour.make_choice()
+                elif Resultat["Statut"] == False:
+                    return (self.make_choice())
+                else:
+                    print("Erreur non prévue")
+                    return (self.make_choice())
 
             else: #'non'
                 return self.make_choice()
 
-    def voir_membres_salle(self):
-        dataPost = {'id_salle': self.id_salle}
-        res = requests.get("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
 
-        if res.status_code == 200:
-            liste_membres = res.json()["liste_membres"]
-            print("\n" + tabulate(liste_membres, headers=["Pseudo"], tablefmt="grid"))
-            return self.make_choice()
+    def menu_voir_membres_salle(self):
+        from Player.PlayerClass import Player
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.voir_membres_salle()
+        if Resultat["Statut"] == True:
+            return(self.make_choice())
+        elif Resultat["Statut"] == False:
+            return (self.make_choice())
+        else:
+            print("Erreur non prévue")
+            return (self.make_choice())
 
 
     def get_liste_couleurs_dispo(self):

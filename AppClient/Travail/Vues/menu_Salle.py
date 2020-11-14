@@ -33,9 +33,9 @@ class Menu_Salle(AbstractView):
         while True:
             self.reponse = inquirer.prompt(self.questions)
             if self.reponse["menu_Salle"] == "Créer une salle":
-                return self.creer_salle()
+                return self.menu_creer_salle()
             elif self.reponse["menu_Salle"] == "Rejoindre une salle":
-                return self.rejoindre_salle()
+                return self.menu_rejoindre_salle()
             elif self.reponse["menu_Salle"] == "Revenir au menu précédent":
                 print("Vous allez être redirigé vers le menu précédent.")
                 import Vues.menu_Choix_Mode_Jeu as MCMJ
@@ -47,27 +47,22 @@ class Menu_Salle(AbstractView):
             break
 
 
-    def creer_salle(self):
-        dataPost = {'pseudo_chef_salle': self.pseudo, 'game': self.game}
-        res = requests.post('http://localhost:9090/home/game/room', data=json.dumps(dataPost))
-
-        if res.status_code == 200:
-            id_salle = res.json()['id_salle']
-            print(f"Une salle (numéro {id_salle}) vient d'être créée. Vos amis peuvent la rejoindre via son numéro.")
+    def menu_creer_salle(self):
+        from Player.PlayerClass import Player
+        Player1 = Player(self.pseudo, self.game, None, None)
+        Resultat = Player1.creer_salle()
+        if Resultat["Statut"] == True:
             import Vues.menu_Salon as MS
-            salon = MS.Salon(self.pseudo, id_salle, self.game, True)
+            salon = MS.Salon(self.pseudo, Resultat["id_salle"], self.game, True)
             salon.display_info()
-            return salon.make_choice()
-        elif res.status_code == 404:
-            print("erreur, l'api n'a pas été trouvée")
-            return self.echec_creer_salle()
-        elif res.status_code == 500:
-            return print("erreur dans le code de l'api")
+            return(salon.make_choice())
+        elif Resultat["Statut"] == False:
+            return(self.menu_echec_creer_salle())
         else:
-            print("erreur non prévue : " + str(res.status_code))
-            return self.echec_creer_salle()
+            print("Erreur non prévue")
+            return(self.menu_echec_creer_salle())
 
-    def echec_creer_salle(self):
+    def menu_echec_creer_salle(self):
         self.questions_retour = [
             {
                 'type': 'list',
@@ -82,14 +77,14 @@ class Menu_Salle(AbstractView):
         while True:
             self.reponse_retour = inquirer.prompt(self.questions_retour)
             if self.reponse_retour['Retour'] == "Réessayer":
-                return self.creer_salle()
+                return self.menu_creer_salle()
             elif self.reponse_retour['Retour'] == "Revenir au menu précédent":
                 return self.make_choice()
             else:
                 print("Erreur dans menu_salle.echec_creer_salle")
             break
 
-    def rejoindre_salle(self):
+    def menu_rejoindre_salle(self):
         self.questions_rejoindre_salle = [
             {
                 'type': 'input',
@@ -100,28 +95,21 @@ class Menu_Salle(AbstractView):
         self.reponse_rejoindre_salle = inquirer.prompt(self.questions_rejoindre_salle)
         id_salle = self.reponse_rejoindre_salle["ide_salle"]
 
-        dataPost = {'pseudo': self.pseudo, 'id_salle': id_salle, 'jeu':self.game}
-        res = requests.put('http://localhost:9090/home/game/room', data=json.dumps(dataPost))
-
-        if res.status_code == 200:
-            print(f"Vous avez bien été ajouté à la salle {id_salle}.")
+        from Player.PlayerClass import Player
+        Player1 = Player(self.pseudo, self.game, None, None)
+        Resultat = Player1.rejoindre_salle(id_salle)
+        if Resultat["Statut"] == True:
             import Vues.menu_Salon as MS
-            salon = MS.Salon(self.pseudo, id_salle, self.game, False)
+            salon = MS.Salon(self.pseudo, Resultat["id_salle"], self.game, False)
             salon.display_info()
-            return salon.make_choice()
-        elif res.status_code == 401:
-            print(f"Vous ne pouvez pas rejoindre la salle {id_salle} car elle est déjà pleine.")
-            return self.echec_rejoindre_salle()
-        elif res.status_code == 404:
-            print("La salle demandée n'existe pas.")
-            return self.echec_rejoindre_salle()
-        elif res.status_code == 500:
-            return print("erreur dans le code de l'api")
+            return (salon.make_choice())
+        elif Resultat["Statut"] == False:
+            return (self.menu_echec_rejoindre_salle())
         else:
-            print("erreur non prévue : " + str(res.status_code))
-            return self.echec_rejoindre_salle()
+            print("Erreur non prévue")
+            return (self.menu_echec_rejoindre_salle())
 
-    def echec_rejoindre_salle(self):
+    def menu_echec_rejoindre_salle(self):
         self.questions_retour = [
             {
                 'type': 'list',
@@ -136,7 +124,7 @@ class Menu_Salle(AbstractView):
         while True:
             self.reponse_retour = inquirer.prompt(self.questions_retour)
             if self.reponse_retour['Retour'] == "Réessayer":
-                return self.rejoindre_salle()
+                return self.menu_rejoindre_salle()
             elif self.reponse_retour['Retour'] == "Revenir au menu précédent":
                 return self.make_choice()
             else:
