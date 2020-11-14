@@ -10,6 +10,7 @@ import random
 import colorama
 colorama.init()
 
+
 class Player():
     """
     Classe qui gère les paramètres du joueur
