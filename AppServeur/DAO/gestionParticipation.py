@@ -1,5 +1,6 @@
 import sqlite3
-db_address = "database/apijeux.db"
+import DAO.gestion as DBgestion
+db_address = DBgestion.get_db_address()
 liste_couleurs_autorisees = ['bleu', 'rouge', 'vert', 'jaune', 'magenta', 'cyan', 'gris']
 
 def update_est_pret(pseudo, id_partie, TrueOrFalse):

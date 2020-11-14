@@ -1,5 +1,7 @@
 import sqlite3
 from datetime import datetime
+import DAO.gestion as DBgestion
+db_address = DBgestion.get_db_address()
 
 def are_pseudos_friends(pseudo1, pseudo2):
     """
@@ -25,7 +27,7 @@ def are_pseudos_friends(pseudo1, pseudo2):
     """
     Bool = False
     try:  # on vérifie si le lien d'amitié n'existe pas déjà
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("SELECT date_ajout FROM Liste_Amis WHERE pseudo = ? and pseudo_ami = ?", (pseudo1, pseudo2,))
         pse = cursor.fetchone()
@@ -62,7 +64,7 @@ def add_amitie(pseudo1, pseudo2):
 
     """
     try:  # on ajoute le lien d'amitié
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         date = str(datetime.now())
         cursor.execute("INSERT INTO Liste_Amis (pseudo, pseudo_ami, date_ajout) VALUES (?, ?, ?)", (pseudo1, pseudo2, date,))
@@ -96,7 +98,7 @@ def sup_amitie(pseudo1, pseudo2):
 
     """
     try:  # on supprime le lien d'amitié
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("DELETE from Liste_Amis WHERE pseudo = ? and pseudo_ami = ?", (pseudo1, pseudo2))
         con.commit()
@@ -132,7 +134,7 @@ def get_liste_amis(pseudo):
 
     """
     try: #on affiche la liste des amis
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor= con.cursor()
         cursor.execute("SELECT pseudo_ami, date_ajout FROM Liste_Amis WHERE pseudo = ?", (pseudo,))
         liste_amis = cursor.fetchall()
@@ -151,7 +153,7 @@ def get_est_connecte_liste_amis(liste_amis):
             pseudo_ami = couple[0]
             date_ami = couple[1]
             try:
-                con = sqlite3.connect("database/apijeux.db")
+                con = sqlite3.connect(db_address)
                 cursor = con.cursor()
                 cursor.execute("SELECT est_connecte, en_partie FROM Utilisateur WHERE pseudo = ?", (pseudo_ami,))
                 res = cursor.fetchone()

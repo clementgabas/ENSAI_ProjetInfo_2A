@@ -1,11 +1,12 @@
 import sqlite3
 from datetime import datetime
-db_address = "database/apijeux.db"
+import DAO.gestion as DBgestion
+db_address = DBgestion.get_db_address()
 
 
 def add_partie(pseudo_chef, jeu, nb_places_tot):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         heure = str(datetime.now())
         cursor.execute(
@@ -24,7 +25,7 @@ def add_partie(pseudo_chef, jeu, nb_places_tot):
 def does_partie_exist(id_partie):
     try:
         Bool = True
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("SELECT jeu FROM Parties where id_partie = ?", (id_partie,))
         id_partie = cursor.fetchone()
@@ -39,7 +40,7 @@ def does_partie_exist(id_partie):
 
 def check_cb_places_libres(id_partie):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("SELECT places_dispo FROM Parties WHERE id_partie = ?", (id_partie,))
         nb = cursor.fetchone()[0]
@@ -52,7 +53,7 @@ def check_cb_places_libres(id_partie):
 
 def check_cb_places_tot(id_partie):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("SELECT places_total FROM Parties WHERE id_partie = ?", (id_partie,))
         nb = cursor.fetchone()[0]
@@ -68,7 +69,7 @@ def get_nbr_participants(id_partie):
 
 def update_parties_nb_place(id_partie, nb_places_restantes):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("UPDATE Parties SET places_dispo = ? WHERE id_partie = ?", (nb_places_restantes, id_partie))
         con.commit()
@@ -84,7 +85,7 @@ def add_to_participation(id_partie, pseudo, nb_places):
         print("il n'y a pas assez de place, erreur dans add_to_participation")
         raise ValueError
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("INSERT INTO Participation (pseudo, id_partie, ordre) VALUES (?, ?, 0);",(pseudo, id_partie))
         con.commit()
@@ -98,7 +99,7 @@ def add_to_participation(id_partie, pseudo, nb_places):
 
 def delete_from_participation(id_partie, pseudo, nb_places):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("DELETE FROM Participation WHERE pseudo = ? AND id_partie = ?;", (pseudo, id_partie))
         con.commit()
@@ -112,7 +113,7 @@ def delete_from_participation(id_partie, pseudo, nb_places):
 
 def delete_partie(id_partie):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("DELETE FROM Parties WHERE id_partie = ?;", (id_partie,))
         con.commit()
@@ -126,7 +127,7 @@ def delete_partie(id_partie):
 
 def get_membres_salle(id_salle):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("SELECT pseudo FROM Participation WHERE id_partie = ?;", (id_salle,))
         membres = cursor.fetchall()
@@ -139,7 +140,7 @@ def get_membres_salle(id_salle):
 
 def get_jeu_salle(id_salle):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("SELECT jeu FROM Parties WHERE id_partie = ?;", (id_salle,))
         membres = cursor.fetchall()

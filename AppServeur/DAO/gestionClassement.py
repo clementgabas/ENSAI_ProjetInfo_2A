@@ -1,8 +1,11 @@
 import sqlite3
+import DAO.gestion as DBgestion
+db_address = DBgestion.get_db_address()
+
 
 def afficher_classement_jeu(nom_jeu,pseudo):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor= con.cursor()
         cursor2 = con.cursor()
         cursor.execute("SELECT RANK () OVER ( ORDER BY nb_points DESC, nb_parties_jouees ASC ) as rang,"
@@ -32,7 +35,7 @@ def afficher_classement_jeu(nom_jeu,pseudo):
 
 def afficher_classement_general(pseudo):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor= con.cursor()
         cursor.execute("SELECT RANK () OVER ( ORDER BY SUM(nb_points) DESC, nb_parties_jouees ASC ) as rang,"
                        " pseudo, SUM(nb_points) AS nb_tot, nb_parties_jouees ,nb_parties_gagnees "
@@ -61,7 +64,7 @@ def afficher_classement_general(pseudo):
 
 def afficher_classement_jeu_friends(nom_jeu,pseudo):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor= con.cursor()
         cursor2 = con.cursor()
         #cursor.execute("SELECT nb_points FROM Scores WHERE jeu = ? ORDER BY nb_points DESC LIMIT 10", (nom_jeu,))
@@ -97,7 +100,7 @@ def afficher_classement_jeu_friends(nom_jeu,pseudo):
 
 def afficher_classement_general_friends(pseudo):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor= con.cursor()
         cursor.execute("SELECT RANK () OVER ( ORDER BY nb_points DESC ) AS rang, pseudo, SUM(nb_points) AS nb_tot,"
                        " nb_parties_jouees ,nb_parties_gagnees FROM "

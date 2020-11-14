@@ -1,4 +1,6 @@
 import sqlite3
+import DAO.gestion as DBgestion
+db_address = DBgestion.get_db_address()
 
 #-- does .. exist
 def does_pseudo_exist(pseudo):
@@ -23,7 +25,7 @@ def does_pseudo_exist(pseudo):
     """
     Bool = False
     try: #on vérifie si le pseudo existe
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("SELECT identifiant FROM Utilisateur WHERE pseudo = ?", (pseudo,))
         ide = cursor.fetchone()
@@ -60,7 +62,7 @@ def does_username_exist(username):
     """
     Bool = False
     try: #on vérifie si l'identifiant existe
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("SELECT pseudo FROM Utilisateur WHERE identifiant = ?", (username,))
         pse = cursor.fetchone()
@@ -100,7 +102,7 @@ def add_user(username, pseudo, hpassword):
     None.
 
     """
-    con = sqlite3.connect("database/apijeux.db")
+    con = sqlite3.connect(db_address)
     cursor = con.cursor()
     try:
         cursor.execute(
@@ -133,7 +135,7 @@ def add_user_score(pseudo):
         None.
 
         """
-    con = sqlite3.connect("database/apijeux.db")
+    con = sqlite3.connect(db_address)
     cursor = con.cursor()
     try:
         cursor.execute("INSERT INTO Scores (jeu, pseudo, nb_points, nb_parties_jouees, nb_parties_gagnees) VALUES ('P4', ?, 1000, 0, 0)", (pseudo,))
@@ -171,7 +173,7 @@ def get_hpass_username(username):
 
     """
     try: #on récupère le hpass
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor= con.cursor()
         cursor.execute("SELECT mdp FROM Utilisateur WHERE identifiant = ?", (username,))
         hpass = cursor.fetchone()
@@ -187,7 +189,7 @@ def get_hpass_username(username):
 
 def get_hpass_pseudo(pseudo):
     try: #on récupère le hpass
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor= con.cursor()
         cursor.execute("SELECT mdp FROM Utilisateur WHERE pseudo = ?", (pseudo,))
         hpass = cursor.fetchone()
@@ -224,7 +226,7 @@ def get_pseudo(username):
 
     """
     try: #on récupère le pseudo
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor= con.cursor()
         cursor.execute("SELECT pseudo FROM Utilisateur WHERE identifiant = ?", (username,))
         pseudo = cursor.fetchone()
@@ -240,7 +242,7 @@ def get_pseudo(username):
 
 def get_est_connecte(username):
     try: #on récupère le pseudo
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor= con.cursor()
         cursor.execute("SELECT est_connecte FROM Utilisateur WHERE identifiant = ?", (username,))
         est_co = cursor.fetchone()
@@ -296,7 +298,7 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
         raise ValueError
     if username_or_pseudo == 'username':
         try: #on update le statut "est_connecte" à True de l'utilisateur ayant l'username
-            con = sqlite3.connect("database/apijeux.db")
+            con = sqlite3.connect(db_address)
             cursor= con.cursor()
             cursor.execute("UPDATE Utilisateur SET est_connecte = ? WHERE identifiant = ?", (nouvel_etat, ide,))
             con.commit()
@@ -308,7 +310,7 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
             con.close()
     elif username_or_pseudo == 'pseudo':
         try: #on update le statut "est_connecte" à True de l'utilisateur ayant le pseudo
-            con = sqlite3.connect("database/apijeux.db")
+            con = sqlite3.connect(db_address)
             cursor= con.cursor()
             cursor.execute("UPDATE Utilisateur SET est_connecte = ? WHERE pseudo = ?", (nouvel_etat, ide,))
             con.commit()
@@ -324,7 +326,7 @@ def update_en_partie_pseudo(pseudo, nouvel_etat):
         print("nouvel_etat doit prendre la valeur 'True' ou 'False'!")
         raise ValueError
     try:  # on update le statut "en_partie" à True de l'utilisateur ayant le pseudo
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("UPDATE Utilisateur SET en_partie = ? WHERE pseudo = ?", (nouvel_etat, pseudo,))
         con.commit()
@@ -337,7 +339,7 @@ def update_en_partie_pseudo(pseudo, nouvel_etat):
 
 def update_pseudo_table_utilisateur(old_pseudo, new_pseudo):
     try:  # on update le pseudo de l'utilisateur dans la table utilisateur
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("UPDATE Utilisateur SET pseudo = ? WHERE pseudo = ?", (new_pseudo, old_pseudo,))
         con.commit()
@@ -350,7 +352,7 @@ def update_pseudo_table_utilisateur(old_pseudo, new_pseudo):
 
 def update_pseudo_table_liste_amis(old_pseudo, new_pseudo):
     try:  # on update le pseudo de l'utilisateur dans la table liste amis
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("UPDATE Liste_Amis SET pseudo = ? WHERE pseudo = ?", (new_pseudo, old_pseudo,))
         cursor.execute("UPDATE Liste_Amis SET pseudo_ami = ? WHERE pseudo_ami = ?", (new_pseudo, old_pseudo,))
@@ -364,7 +366,7 @@ def update_pseudo_table_liste_amis(old_pseudo, new_pseudo):
 
 def update_pseudo_table_score(old_pseudo, new_pseudo):
     try:  # on update le pseudo de l'utilisateur dans la table score
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("UPDATE Scores SET pseudo = ? WHERE pseudo = ?", (new_pseudo, old_pseudo,))
         con.commit()
@@ -383,7 +385,7 @@ def update_pseudo(old_pseudo, new_pseudo):
 
 def update_password(pseudo, new_hpassword):
     try:  # on update le mdp dans la table utilisateur
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("UPDATE Utilisateur SET mdp = ? WHERE pseudo = ?", (new_hpassword, pseudo))
         con.commit()
@@ -396,7 +398,7 @@ def update_password(pseudo, new_hpassword):
 
 def get_stat(pseudo):
     try:  # on récupère les info interessante
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("SELECT nb_parties_jouees, nb_parties_gagnees FROM Scores WHERE pseudo = ?", (pseudo,))
         stat_perso = cursor.fetchall()
@@ -409,7 +411,7 @@ def get_stat(pseudo):
 
 def update_stat(pseudo):
     try:  # on update le mdp dans la table utilisateur
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("UPDATE Scores SET nb_parties_jouees = 0, nb_parties_gagnees = 0 WHERE pseudo = ?", (pseudo,))
         con.commit()
@@ -424,7 +426,7 @@ def update_stat(pseudo):
 #-- put
 def put_all_users_disconnected():
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("UPDATE Utilisateur SET est_connecte = 'False', en_file = 'False', en_partie = 'False' WHERE est_connecte = 'True'", ())
         con.commit()
@@ -439,7 +441,7 @@ def put_all_users_disconnected():
 #-- delete
 def delete_user_pseudo(pseudo):
     try:
-        con = sqlite3.connect("database/apijeux.db")
+        con = sqlite3.connect(db_address)
         cursor = con.cursor()
         cursor.execute("DELETE FROM Utilisateur WHERE pseudo = ?", (pseudo,))
         con.commit()
