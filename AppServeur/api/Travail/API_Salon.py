@@ -25,20 +25,49 @@ import DAO.gestionParties as DAOparties
 import DAO.gestionParametres as DAOparametres
 import DAO.gestionParticipation as DAOparticipation
 
+from api.Travail.Base import *
 
+#@app.route('/home/game/room/settings', methods=['GET']) #ajout de parametre
+def get_param_p4():
+    request.get_json(force=True)
+    id_partie, duree_tour, condition_victoire, Taille_plateau = request.json.get('id_partie'), \
+                                                                request.json.get('duree_tour'), \
+                                                                request.json.get('condition_victoire'), \
+                                                                request.json.get('Taille_plateau')
+    if DAOparametres.verif_parametre(id_partie) == False:
+        response = {"status_code": http_codes.ok, "message": "Il n'y a pas de parametres actuellement"}  # code 200
+        return make_reponse(response, http_codes.ok)  # code 200
+    elif DAOparametres.verif_parametre(id_partie) == True :
+        response = {"status_code": http_codes.conflict, "message": "Il y a déja des parametre à cette partie, methode PUT conséillé"} #code409
+        return make_reponse(response, http_codes.conflict) #code409
 
 #@app.route('/home/game/room/settings', methods=['POST']) #ajout de parametre
 def ajout_param_partie_P4():
     request.get_json(force=True)
-    id_Partie, duree_tour, condition_victoire, Taille_plateau  = request.json.get('id_Partie'), \
+    id_partie, duree_tour, condition_victoire, Taille_plateau  = request.json.get('id_partie'), \
                                                                  request.json.get('duree_tour'), \
                                                                  request.json.get('condition_victoire'),  \
                                                                  request.json.get('Taille_plateau')
-    DAOparametres.add_parametre(id_Partie, duree_tour, condition_victoire, Taille_plateau)
+
+    DAOparametres.add_parametre(id_partie, duree_tour, condition_victoire, Taille_plateau)
     print(f"Les paramètres suivants : Durée d'un tour : {duree_tour} secondes \n Condition de victoire : aligner "
           f"{condition_victoire} jetons \n Taille du plateau : {Taille_plateau} \n "
-          f"ont a bien été définis pour la partie {id_Partie}")
-    response = {"status_code": http_codes.ok, "message": ""}  # code 200
+          f"ont a bien été définis pour la partie {id_partie}")
+    response = {"status_code": http_codes.ok, "message": "Parametre bien ajouté"}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
+
+#@app.route('/home/game/room/settings', methods=['PUT']) #modif de parametre
+def maj_param_partie_p4():
+    request.get_json(force=True)
+    id_partie, duree_tour, condition_victoire, Taille_plateau = request.json.get('id_partie'), \
+                                                                request.json.get('duree_tour'), \
+                                                                request.json.get('condition_victoire'), \
+                                                                request.json.get('Taille_plateau')
+    DAOparametres.put_parametre(id_partie, duree_tour, condition_victoire, Taille_plateau)
+    print(f"Les paramètres suivants : Durée d'un tour : {duree_tour} secondes \n Condition de victoire : aligner "
+          f"{condition_victoire} jetons \n Taille du plateau : {Taille_plateau} \n "
+          f"ont a bien été mis à jour pour la partie {id_partie}")
+    response = {"status_code": http_codes.ok, "message": "Parametre bien mis à jour"}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
 #----------------------------- param/ game -------------------------------------------
@@ -142,18 +171,3 @@ def lancer_partie():
 
 
 
-def make_reponse(p_object=None, status_code=http_codes.OK):
-    if p_object is None and status_code == http_codes.NOT_FOUND:
-        p_object = {
-            "status": {
-                "status_content": [
-                    {"code": "404 - Not Found", "message": "Resource not found"}
-                ]
-            }
-        }
-
-    json_response = jsonify(p_object)
-    json_response.status_code = status_code
-    json_response.content_type = "application/json;charset=utf-8"
-    json_response.headers["Cache-Control"] = "max-age=3600"
-    return json_response

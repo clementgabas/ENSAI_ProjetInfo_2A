@@ -62,7 +62,8 @@ class Menu_Parametre():
                             ]
                         },
                     ]
-                    self.parametre["condition_victoire"] = inquirer.prompt(questions_Cond_Vict_perso)["menu_Cond_Vict_Perso"]
+                    self.parametre["condition_victoire"] = \
+                        inquirer.prompt(questions_Cond_Vict_perso)["menu_Cond_Vict_Perso"]
 
                 elif self.reponse_partie_perso["menu_Param_Perso"] == "Taille du plateau":
                     questions_Taille_Plateau_perso = [
@@ -77,16 +78,17 @@ class Menu_Parametre():
                             ]
                         },
                     ]
-                    self.parametre["Taille_plateau"] = inquirer.prompt(questions_Taille_Plateau_perso)["menu_Taille_Plateau_Perso"]
+                    self.parametre["Taille_plateau"] = \
+                        inquirer.prompt(questions_Taille_Plateau_perso)["menu_Taille_Plateau_Perso"]
 
                 elif self.reponse_partie_perso["menu_Param_Perso"] == "Sauvegarder les paramètres et revenir au salon":
                     self.creer_partie_perso_P4()
 
                 elif self.reponse_partie_perso["menu_Param_Perso"] == "Abandonner et revenir au salon":
                     import Vues.menu_Salon as MS
-                    Retour = MS.Salon(self.pseudo, self.id_salle, self.game, self.est_chef)
-                    Retour.display_info()
-                    return Retour.make_choice()
+                    retour = MS.Salon(self.pseudo, self.id_salle, self.game, self.est_chef)
+                    retour.display_info()
+                    return retour.make_choice()
 
     def display_info(self):
         pass
@@ -94,14 +96,15 @@ class Menu_Parametre():
 
     def creer_partie_standard_P4(self):
         dataPost = {"id_salle": self.id_salle, "duree_tour" : self.parametre["duree_tour"],
-                    "condition_victoire" : self.parametre["condition_victoire"], "Taille_plateau" : self.parametre["Taille_plateau"]}
+                    "condition_victoire" : self.parametre["condition_victoire"],
+                    "Taille_plateau" : self.parametre["Taille_plateau"]}
         res = requests.post('http://localhost:9090/home/game/room/settings', data=json.dumps(dataPost))
         if res.status_code == 200:
             print("Votre partie est définie  selon des paramètres standard.")
             import Vues.menu_Salon as MS
-            Retour = MS.Salon(self.pseudo, self.id_salle, self.game, self.est_chef)
-            Retour.display_info()
-            return Retour.make_choice()
+            retour = MS.Salon(self.pseudo, self.id_salle, self.game, self.est_chef)
+            retour.display_info()
+            return retour.make_choice()
 
         elif res.status_code == 404:
             print("erreur, l'api n'a pas été trouvée")
@@ -115,14 +118,54 @@ class Menu_Parametre():
             return self.make_choice_retour()
 
     def creer_partie_perso_P4(self):
-        dataPost = {"id_Partie": self.id_salle, "duree_tour" : self.parametre["duree_tour"], "condition_victoire" : self.parametre["condition_victoire"], "Taille_plateau" : self.parametre["Taille_plateau"]}
-        res = requests.post('http://localhost:9090/home/game/room/settings', data=json.dumps(dataPost))
+        dataPost = {"id_partie": self.id_salle, "duree_tour" : self.parametre["duree_tour"],
+                    "condition_victoire" : self.parametre["condition_victoire"],
+                    "Taille_plateau" : self.parametre["Taille_plateau"]}
+        res = requests.get('http://localhost:9090/home/game/room/settings', data=json.dumps(dataPost))
         if res.status_code == 200:
-            print(f"Votre partie est définie  selon des les paramètres suivants : \n  Durée des tours : {self.parametre['duree_tour']} secondes \n Condition de victoire : Aligner {self.parametre['condition_victoire']} jetons \n Taille du plateau : {self.parametre['Taille_plateau']}")
-            import Vues.menu_Salon as MS
-            Retour = MS.Salon(self.pseudo, self.id_salle, self.game, self.est_chef)
-            Retour.display_info()
-            return Retour.make_choice()
+            resb = requests.put('http://localhost:9090/home/game/room/settings', data=json.dumps(dataPost))
+            if resb.status_code == 200 :
+                print(f"Votre partie est définie  selon des les paramètres suivants : \n"
+                      f"  Durée des tours : {self.parametre['duree_tour']} secondes \n"
+                      f" Condition de victoire : Aligner {self.parametre['condition_victoire']} jetons \n"
+                      f" Taille du plateau : {self.parametre['Taille_plateau']}")
+                import Vues.menu_Salon as MS
+                retour = MS.Salon(self.pseudo, self.id_salle, self.game, self.est_chef)
+                retour.display_info()
+                return retour.make_choice()
+            elif resb.status_code == 404:
+                print("erreur, l'api n'a pas été trouvée")
+                return self.make_choice()
+            elif resb.status_code == 500:
+                return print("erreur dans le code de l'api")
+            else:
+                print("erreur non prévue : " + str(resb.status_code))
+                return self.make_choice()
+
+
+        elif res.status_code == 409 :
+            resb = requests.post('http://localhost:9090/home/game/room/settings')
+            print(f"Votre partie est définie  selon des les paramètres suivants : \n"
+                  f"  Durée des tours : {self.parametre['duree_tour']} secondes \n"
+                  f" Condition de victoire : Aligner {self.parametre['condition_victoire']} jetons \n"
+                  f" Taille du plateau : {self.parametre['Taille_plateau']}")
+            if resb.status_code == 200:
+                print(f"Votre partie est définie  selon des les paramètres suivants : \n"
+                  f"  Durée des tours : {self.parametre['duree_tour']} secondes \n"
+                  f" Condition de victoire : Aligner {self.parametre['condition_victoire']} jetons \n"
+                  f" Taille du plateau : {self.parametre['Taille_plateau']}")
+                import Vues.menu_Salon as MS
+                retour = MS.Salon(self.pseudo, self.id_salle, self.game, self.est_chef)
+                retour.display_info()
+                return retour.make_choice()
+            elif resb.status_code == 404:
+                print("erreur, l'api n'a pas été trouvée")
+                return self.make_choice()
+            elif resb.status_code == 500:
+                return print("erreur dans le code de l'api")
+            else:
+                print("erreur non prévue : " + str(resb.status_code))
+                return self.make_choice()
 
         elif res.status_code == 404:
             print("erreur, l'api n'a pas été trouvée")
