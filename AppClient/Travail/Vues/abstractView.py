@@ -10,3 +10,7 @@ class AbstractView(ABC):
     def make_choice(self):
         pass
 
+    def print_message(self, Resultat):
+        if Resultat["Message"]:
+            print(Resultat["Message"])
+

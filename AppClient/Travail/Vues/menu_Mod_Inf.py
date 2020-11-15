@@ -77,6 +77,7 @@ class Menu_Modif_Inf(AbstractView):
             from Player.UserClass import User
             User1 = User(self.pseudo)
             Resultat = User1.modifier_mdp(old_mdp,new_mdp1,new_mdp2)
+            self.print_message(Resultat)
             if Resultat["Statut"] == True:
                 return (self.make_choice())
             elif Resultat["Statut"] == False:
@@ -123,6 +124,7 @@ class Menu_Modif_Inf(AbstractView):
                 from Player.UserClass import User
                 User1 = User(self.pseudo)
                 Resultat = User1.modifier_pseudo(new_pseudo)
+                self.print_message(Resultat)
                 if Resultat["Statut"] == True:
                     self.pseudo = new_pseudo
                     return(self.make_choice())
@@ -159,13 +161,19 @@ class Menu_Modif_Inf(AbstractView):
         from Player.UserClass import User
         User1 = User(self.pseudo)
         Resultat = User1.acceder_stats_perso()
+        self.print_message(Resultat)
         if Resultat["Statut"] == True:
+            self.print_stat_perso(Resultat["stat_perso"])
             return (self.make_choice())
         elif Resultat["Statut"] == False:
             return (self.make_choice())
         else:
             print("Erreur non prévue")
             return (self.make_choice())
+
+    def print_stat_perso(self, stat_perso):
+        print("\n" + tabulate(stat_perso, headers=["Nombre de parties jouées", "Nombre de parties gagnées",
+                                                   "Pourcentage de parties gagnées"], tablefmt="grid"))
 
     def menu_reinit_stat_perso(self):
         self.Verif_choixQ = [
@@ -188,6 +196,7 @@ class Menu_Modif_Inf(AbstractView):
                 from Player.UserClass import User
                 User1 = User(self.pseudo)
                 Resultat = User1.reinitialiser_stats_perso()
+                self.print_message(Resultat)
                 if Resultat["Statut"] == True:
                     return (self.make_choice())
                 elif Resultat["Statut"] == False:

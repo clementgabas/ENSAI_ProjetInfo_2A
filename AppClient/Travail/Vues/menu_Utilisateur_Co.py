@@ -48,6 +48,7 @@ class Menu_User_Co(AbstractView):
                 from Player.UserClass import User
                 User1 = User(self.pseudo)
                 Resultat = User1.deconnexion()
+                self.print_message(Resultat)
                 if Resultat["Statut"] == True:
                     import Vues.menu_Accueil as MA
                     Deco = MA.Menu_Accueil()

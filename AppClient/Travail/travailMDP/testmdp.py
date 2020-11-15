@@ -58,6 +58,5 @@ def anti_SQl_injection(text):
     text = text.replace("NUL", "")
 
     if text!=copy_text:
-        print("Pour des raisons de sécurité, votre demande ne peut aboutir.")
         return False
     return True

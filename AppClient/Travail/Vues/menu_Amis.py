@@ -65,6 +65,7 @@ class Menu_Ami(AbstractView):
             from Player.UserClass import User
             User1 = User(self.pseudo)
             Resultat = User1.ajout_ami(pseudo_ami)
+            self.print_message(Resultat)
             if Resultat["Statut"] == False:
                 return (self.menu_echec_ajout_ami())
             elif Resultat["Statut"] == True:
@@ -110,6 +111,7 @@ class Menu_Ami(AbstractView):
             from Player.UserClass import User
             User1 = User(self.pseudo)
             Resultat = User1.supp_ami(pseudo_ami)
+            self.print_message(Resultat)
             if Resultat["Statut"] == False:
                 return (self.menu_echec_supp_ami())
             elif Resultat["Statut"] == True:
@@ -145,13 +147,19 @@ class Menu_Ami(AbstractView):
         from Player.UserClass import User
         User1 = User(self.pseudo)
         Resultat = User1.afficher_amis()
+        self.print_message(Resultat)
         if Resultat["Statut"] == False:
             return (self.make_choice())
         elif Resultat["Statut"] == True:
+            self.afficher_liste_amis(liste_amis = Resultat["Liste_amis"])
             return (self.make_choice())
         else:
             print("Erreur non prévue")
             return (self.make_choice())
+
+    def afficher_liste_amis(self, liste_amis):
+        return print("\n" + tabulate(liste_amis, headers=["Pseudo", "Date d'ajout", "Est connecté?", "En partie?"],
+                                  tablefmt="grid"))
 
 
 

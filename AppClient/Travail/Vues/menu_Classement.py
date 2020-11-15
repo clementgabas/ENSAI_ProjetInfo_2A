@@ -78,7 +78,10 @@ class Menu_Classement(AbstractView):
         from Player.UserClass import User
         User1 = User(self.pseudo)
         Resultat = User1.aff_classement_general()
+        self.print_message(Resultat)
         if Resultat["Statut"] == True:
+            self.print_classement(Resultat["classement_general"])
+            self.print_classement(Resultat["classement_general_amis"])
             return(self.make_choice())
         elif Resultat["Statut"] == False:
             return(self.make_choice_retour())
@@ -86,23 +89,32 @@ class Menu_Classement(AbstractView):
             print("Erreur non prévue")
             return(self.make_choice_retour())
 
+
     def aff_class_oie(self):
         from Player.UserClass import User
         User1 = User(self.pseudo)
         Resultat = User1.aff_classement_jeu_oie()
+        self.print_message(Resultat)
         if Resultat["Statut"] == True:
+            self.print_classement(Resultat["classement_jeu"])
+            self.print_classement(Resultat["classement_jeu_amis"])
             return (self.make_choice())
         elif Resultat["Statut"] == False:
             return (self.make_choice_retour())
         else:
             print("Erreur non prévue")
             return (self.make_choice_retour())
+
+
 
     def aff_class_p4(self):
         from Player.UserClass import User
         User1 = User(self.pseudo)
         Resultat = User1.aff_classement_P4()
+        self.print_message(Resultat)
         if Resultat["Statut"] == True:
+            self.print_classement(Resultat["classement_jeu"])
+            self.print_classement(Resultat["classement_jeu_amis"])
             return (self.make_choice())
         elif Resultat["Statut"] == False:
             return (self.make_choice_retour())
@@ -110,6 +122,12 @@ class Menu_Classement(AbstractView):
             print("Erreur non prévue")
             return (self.make_choice_retour())
 
+    def print_classement(self, classement):
+        return print("Classement mondial \n" + tabulate(classement,
+                                                 headers=["Classement", "Pseudo", "nombre de point",
+                                                          "Nombre de parties jouées",
+                                                          "Nombre de parties gagnées"],
+                                                 tablefmt="grid"))
 
 if __name__ == "__main__":
     menu_Classement1 = Menu_Classement()
