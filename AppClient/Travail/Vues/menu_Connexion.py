@@ -33,6 +33,7 @@ class Menu_Connexion(AbstractView):
             from Player.UserBaseClass import UserBase
             UserBase1 = UserBase()
             Resultat = UserBase1.connexion(self.reponse["Identifiant"].lower(), self.reponse["Password"])
+            self.print_message(Resultat)
 
             if Resultat["Statut"] == False:
                 return (self.make_choice_retour())

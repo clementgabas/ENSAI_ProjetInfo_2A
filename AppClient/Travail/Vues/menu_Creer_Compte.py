@@ -41,6 +41,7 @@ class Menu_Creer_Compte(AbstractView):
             from Player.UserBaseClass import UserBase
             UserBase1 = UserBase()
             Resultat = UserBase1.creer_compte(self.reponse["identifiant"].lower(), self.reponse["Password"], self.reponse["password_Check"], self.reponse["pseudo"].lower())
+            self.print_message(Resultat)
             if Resultat["Statut"] == False:
                 return(self.make_choice_retour())
             elif Resultat["Statut"] == True:
