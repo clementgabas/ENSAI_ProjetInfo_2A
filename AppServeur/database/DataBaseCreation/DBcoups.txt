@@ -1,6 +1,6 @@
 CREATE TABLE "Coups" (
 	"id_partie"	INTEGER,
-	"num_coup"	INTEGER,
+	"num_coup"	REAL,
 	"pseudo_joueur"	INTEGER,
 	"position"	INTEGER,
 	"prochain_tour"	INTEGER,

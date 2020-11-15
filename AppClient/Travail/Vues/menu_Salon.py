@@ -128,11 +128,12 @@ class Salon(AbstractView):
         couleur_choisie = answer['couleur']
 
         Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
-        Resultat = Player1.choix_couleur()
+        Resultat = Player1.choix_couleur(couleur_choisie)
         self.print_message(Resultat)
 
         if not Resultat["Statut"]:
-            return self.choix_couleur(self.get_liste_couleurs_dispo())
+            liste_couleurs_dispos = self.get_liste_couleurs_dispo()
+            return self.choix_couleur(liste_couleurs_dispos)
         else:
             #la couleur est choisie et notée dans la db. On peut passer
             pass
@@ -198,7 +199,7 @@ class Salon(AbstractView):
 
     def passer_tour(self):
         Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
-        Resultat = Player1.lancer_partie()
+        Resultat = Player1.passer_tour()
         self.print_message(Resultat)
         if Resultat["Statut"]:
             return self.jouer()

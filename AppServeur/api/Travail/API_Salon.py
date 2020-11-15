@@ -25,7 +25,7 @@ import DAO.gestionParties as DAOparties
 import DAO.gestionParametres as DAOparametres
 import DAO.gestionParticipation as DAOparticipation
 
-from api.Travail.Base import *
+from api.Travail.Base import make_reponse
 
 #@app.route('/home/game/room/settings', methods=['GET']) #ajout de parametre
 def get_param_p4():

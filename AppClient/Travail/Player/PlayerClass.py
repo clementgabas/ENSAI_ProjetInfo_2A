@@ -13,7 +13,7 @@ class Player(User):
     def __init__(self, pseudo, jeu, id_salle, chef_salle):
         self.pseudo = pseudo
         self.id_salle = id_salle
-        self.chef_salle = chef_salle
+        self.est_chef = chef_salle
         self.jeu = jeu
 
 
@@ -102,7 +102,7 @@ class Player(User):
             Resultat = self.update_resultat(True, f"Vous avez quitté la salle {self.id_salle}")
         return Resultat
 
-    def get_liste_couleurs_dispo(self):
+    def get_liste_couleurs_dispos(self):
         relative_address = "/home/game/room/colors"
         adresse = make_address(absolute_address, relative_address)
 
@@ -130,7 +130,7 @@ class Player(User):
         elif res.status_code == 200:
             Resultat = self.update_resultat(True)
         else:
-            Resultat = self.update_resultat(False, "erreur ndas PlayerClass.choix_couleur")
+            Resultat = self.update_resultat(False, "erreur dans PlayerClass.choix_couleur")
         return Resultat
 
     def etre_pret(self):
@@ -169,11 +169,11 @@ class Player(User):
             # la partie est lancée, on peut requeter pour savoir si c'est son tour
             Resultat = self.update_resultat(True)
         else:
-            Resultat = self.update_resultat(False, "erreur daas PlayerClass.lancer_partie")
+            Resultat = self.update_resultat(False, "erreur dans PlayerClass.lancer_partie")
         return Resultat
 
     def passer_tour(self):
-        relative_address = "/home/game/room/launch"
+        relative_address = "/home/game/room/turns"
         adresse = make_address(absolute_address, relative_address)
 
         dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle}
@@ -185,7 +185,7 @@ class Player(User):
         return Resultat
 
     def demander_tour(self):
-        relative_address = "/home/game/room/launch"
+        relative_address = "/home/game/room/turns"
         adresse = make_address(absolute_address, relative_address)
 
         dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle}
