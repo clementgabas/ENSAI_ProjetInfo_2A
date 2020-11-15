@@ -24,6 +24,9 @@ import DAO.gestionParties as DAOparties
 import DAO.gestionParticipation as DAOparticipation
 import DAO.gestionCoups as DAOcoups
 
+from api.Travail.Base import *
+
+
 #@app.route('/home/game/room/turns', methods=['GET']) #dsavoir si c'est son tour de jouer
 def est_ce_mon_tour():
     request.get_json(force=True)
@@ -64,18 +67,3 @@ def passer_son_tour():
 
 
 
-def make_reponse(p_object=None, status_code=http_codes.OK):
-    if p_object is None and status_code == http_codes.NOT_FOUND:
-        p_object = {
-            "status": {
-                "status_content": [
-                    {"code": "404 - Not Found", "message": "Resource not found"}
-                ]
-            }
-        }
-
-    json_response = jsonify(p_object)
-    json_response.status_code = status_code
-    json_response.content_type = "application/json;charset=utf-8"
-    json_response.headers["Cache-Control"] = "max-age=3600"
-    return json_response

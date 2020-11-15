@@ -24,6 +24,7 @@ from datetime import datetime
 import travailMDP.testmdp as MDPgestion
 import DAO.gestionUser as DAOuser
 
+from api.Travail.Base import *
 
 
 
@@ -110,18 +111,3 @@ def deconnect():
     return make_reponse(response, http_codes.ok)  # code 200
 
 
-def make_reponse(p_object=None, status_code=http_codes.OK):
-    if p_object is None and status_code == http_codes.NOT_FOUND:
-        p_object = {
-            "status": {
-                "status_content": [
-                    {"code": "404 - Not Found", "message": "Resource not found"}
-                ]
-            }
-        }
-
-    json_response = jsonify(p_object)
-    json_response.status_code = status_code
-    json_response.content_type = "application/json;charset=utf-8"
-    json_response.headers["Cache-Control"] = "max-age=3600"
-    return json_response

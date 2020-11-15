@@ -34,8 +34,10 @@ import api.Travail.API_Amis as APIfriend
 import api.Travail.API_Classement as APIclassement
 import api.Travail.API_Profil as APIprofil
 import api.Travail.API_Salle as APIsalle
-import api.Travail.API_Salle as APIsalon
+import api.Travail.API_Salon as APIsalon
 import api.Travail.API_Partie as APIpartie
+
+from api.Travail.Base import *
 
 
 CACHE_TTL = 60  # 60 seconds
@@ -99,7 +101,7 @@ def identification():
 
 @app.route('/home/deconnexion', methods = ['GET']) #deconnexion d'un utilisateur
 def deconnect():
-    return APIhome.identification()
+    return APIhome.deconnect()
 
 #----------------------------- APIhome -------------------------------------------
 #----------------------------- APIfriend ---------------------------------------------
@@ -171,9 +173,17 @@ def voir_membres_salle():
 #----------------------------- APIsalle -------------------------------------------
 #----------------------------- APIsalon -------------------------------------------
 
+@app.route('/home/game/room/settings', methods=['GET']) #recup de parametre
+def get_param_p4():
+    return APIsalon.get_param_p4()
+
 @app.route('/home/game/room/settings', methods=['POST']) #ajout de parametre
 def ajout_param_partie_P4():
-    APIsalon.ajout_param_partie_P4()
+    return APIsalon.ajout_param_partie_P4()
+
+@app.route('/home/game/room/settings', methods=['PUT']) #modif de parametre
+def maj_param_partie_p4():
+    return APIsalon.maj_param_partie_p4()
 
 @app.route("/home/game/room/colors", methods=["GET"])
 def get_liste_couleur_dispos():
@@ -216,49 +226,6 @@ def passer_son_tour():
 
 
 #---------------------------------------------------------
-def set_response_headers(response):
-    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '0'
-    return response
-
-def _success(response):
-    return make_reponse(response, http_codes.OK)
-
-
-def _failure(exception, http_code=http_codes.SERVER_ERROR):
-    try:
-        exn = traceback.format_exc(exception)
-        logger.info("EXCEPTION: {}".format(exn))
-    except Exception as e:
-        logger.info("EXCEPTION: {}".format(exception))
-        logger.info(e)
-
-    try:
-        data, code = exception.to_tuple()
-        return make_reponse(data, code)
-    except:
-        try:
-            data = exception.to_dict()
-            return make_reponse(data, exception.http)
-        except Exception:
-            return make_reponse(None, http_code)
-
-def make_reponse(p_object=None, status_code=http_codes.OK):
-    if p_object is None and status_code == http_codes.NOT_FOUND:
-        p_object = {
-            "status": {
-                "status_content": [
-                    {"code": "404 - Not Found", "message": "Resource not found"}
-                ]
-            }
-        }
-
-    json_response = jsonify(p_object)
-    json_response.status_code = status_code
-    json_response.content_type = "application/json;charset=utf-8"
-    json_response.headers["Cache-Control"] = "max-age=3600"
-    return json_response
 
 
 if __name__ == "__main__":
