@@ -3,8 +3,7 @@ from Vues.abstractView import AbstractView
 import Vues.menu_Jouer as Play
 
 from printFunctions import timePrint as print
-import requests
-import json
+
 from tabulate import tabulate
 import time
 

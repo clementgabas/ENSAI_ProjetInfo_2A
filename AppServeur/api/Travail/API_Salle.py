@@ -31,7 +31,7 @@ from api.Travail.Base import *
 def creer_salle():
     request.get_json(force=True)
     pseudo_chef, game = request.json.get('pseudo_chef_salle'), request.json.get('game')
-    print(f"{pseudo_chef} crée une salle pour jouer au jeu : {game}.")
+    print(f"{pseudo_chef} créée une salle pour jouer au jeu : {game}.")
     if game.lower() == 'p4':
         total_places = 2
         print("Nombre de place maximum : 2")

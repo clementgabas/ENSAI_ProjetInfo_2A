@@ -3,8 +3,8 @@ import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 
 from printFunctions import timePrint as print
-import requests
-import json
+from Player.PlayerClass import Player
+
 
 #Création du menu des classements.
 
@@ -37,7 +37,7 @@ class Menu_Salle(AbstractView):
             elif self.reponse["menu_Salle"] == "Rejoindre une salle":
                 return self.menu_rejoindre_salle()
             elif self.reponse["menu_Salle"] == "Revenir au menu précédent":
-                print("Vous allez être redirigé vers le menu précédent.")
+                print("Vous allez être redirigés vers le menu précédent.")
                 import Vues.menu_Choix_Mode_Jeu as MCMJ
                 Retour = MCMJ.Menu_Choix_Mode_Jeu_Connecte(pseudo = self.pseudo, jeu=self.game)
                 Retour.display_info()
@@ -48,18 +48,19 @@ class Menu_Salle(AbstractView):
 
 
     def menu_creer_salle(self):
-        from Player.PlayerClass import Player
         Player1 = Player(self.pseudo, self.game, None, None)
         Resultat = Player1.creer_salle()
-        if Resultat["Statut"] == True:
+        self.print_message(Resultat)
+
+        if Resultat["Statut"]:
             import Vues.menu_Salon as MS
             salon = MS.Salon(self.pseudo, Resultat["id_salle"], self.game, True)
             salon.display_info()
             return(salon.make_choice())
-        elif Resultat["Statut"] == False:
+        elif not Resultat["Statut"]:
             return(self.menu_echec_creer_salle())
         else:
-            print("Erreur non prévue")
+            print("Erreur non prévue dans Menu_Salle.menu_creer_salle")
             return(self.menu_echec_creer_salle())
 
     def menu_echec_creer_salle(self):
@@ -95,18 +96,19 @@ class Menu_Salle(AbstractView):
         self.reponse_rejoindre_salle = inquirer.prompt(self.questions_rejoindre_salle)
         id_salle = self.reponse_rejoindre_salle["ide_salle"]
 
-        from Player.PlayerClass import Player
         Player1 = Player(self.pseudo, self.game, None, None)
         Resultat = Player1.rejoindre_salle(id_salle)
-        if Resultat["Statut"] == True:
+        self.print_message(Resultat)
+
+        if Resultat["Statut"]:
             import Vues.menu_Salon as MS
             salon = MS.Salon(self.pseudo, Resultat["id_salle"], self.game, False)
             salon.display_info()
             return (salon.make_choice())
-        elif Resultat["Statut"] == False:
+        elif not Resultat["Statut"]:
             return (self.menu_echec_rejoindre_salle())
         else:
-            print("Erreur non prévue")
+            print("Erreur non prévue dans Menu_Salle.menu_rejoindre_salle")
             return (self.menu_echec_rejoindre_salle())
 
     def menu_echec_rejoindre_salle(self):
