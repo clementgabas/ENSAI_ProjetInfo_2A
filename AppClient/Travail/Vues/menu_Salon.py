@@ -150,7 +150,7 @@ class Salon(AbstractView):
 
     def is_everyone_ready(self):
         tout_le_monde_pret = False
-        count = 1
+        count = 0
         while not tout_le_monde_pret:
             count += 1
             Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)

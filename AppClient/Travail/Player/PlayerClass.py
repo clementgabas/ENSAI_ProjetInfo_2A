@@ -156,7 +156,7 @@ class Player(User):
         if res.status_code == 200:
             Resultat = self.update_resultat(True, "Tout le monde est prêt dans la salle. La partie va se lancer.")
         else:
-            Resultat = self.update_resultat(False, "en attente que tous les participants soient prets pour lancer la partie.")
+            Resultat = self.update_resultat(False, "En attente que tous les participants soient prêts pour lancer la partie.")
         return Resultat
 
     def lancer_partie(self):
