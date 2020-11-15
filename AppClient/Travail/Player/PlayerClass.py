@@ -28,10 +28,6 @@ class Player(User):
             return False
 
 
-    def ask_api_if_partie_lancee(self):
-        pass
-
-
     def creer_salle(self):
         dataPost = {'pseudo_chef_salle': self.pseudo, 'game': self.jeu}
         res = requests.post('http://localhost:9090/home/game/room', data=json.dumps(dataPost))
@@ -104,4 +100,102 @@ class Player(User):
             Resultat = self.update_resultat(False,"Vous êtes le chef de la salle! Vous ne pouvez pas la quitter tant qu'un autre utilisateur s'y trouve encore. Un capitaine quitte toujours son navire en dernier n'est-ce pas?")
         elif res.status_code == 200:
             Resultat = self.update_resultat(True, f"Vous avez quitté la salle {self.id_salle}")
+        return Resultat
+
+    def get_liste_couleurs_dispo(self):
+        relative_address = "/home/game/room/colors"
+        adresse = make_address(absolute_address, relative_address)
+
+        dataPost = {'id_salle':self.id_salle}
+        res = requests.get(adresse, data=json.dumps(dataPost))
+
+        if res.status_code == 200:
+            Resultat = self.update_resultat(True)
+            Resultat["liste_couleurs_dispos"] = res.json()["liste_couleurs_dispos"]
+        elif res.status_code == 403:
+            Resultat = self.update_resultat(False, "Vous ne pouvez pas être pret car vous êtes seuls dans la salle. Il faut être au moins 2.")
+        else:
+            Resultat = self.update_resultat(False, "erreur ndas PlayerClass.get_liste_couleurs_dispos")
+        return Resultat
+
+    def choix_couleur(self, couleur_choisie):
+        relative_address = "/home/game/room/colors"
+        adresse = make_address(absolute_address, relative_address)
+
+        dataPost = {'id_salle':self.id_salle, 'pseudo':self.pseudo, 'couleur':couleur_choisie}
+        res = requests.post(adresse, data=json.dumps(dataPost))
+
+        if res.status_code == 409: #la couleur a été choisie entre temps
+            Resultat = self.update_resultat(False, "La couleur demandée a été choisie entre temps par un autre utilisateur. Veuillez réessayer svp.")
+        elif res.status_code == 200:
+            Resultat = self.update_resultat(True)
+        else:
+            Resultat = self.update_resultat(False, "erreur ndas PlayerClass.choix_couleur")
+        return Resultat
+
+    def etre_pret(self):
+        relative_address = "/home/game/room/turns"
+        adresse = make_address(absolute_address, relative_address)
+
+        dataPost = {'pseudo':self.pseudo,'id_salle':self.id_salle, 'est_chef':self.est_chef}
+        res = requests.post(adresse, data=json.dumps(dataPost))
+        if res.status_code == 200:
+            Resultat = self.update_resultat(True, "Vous êtes prêts!")
+        else:
+            Resultat = self.update_resultat(False, "erreur ndas PlayerClass.choix_couleur")
+        return Resultat
+
+    def is_everyone_ready(self):
+        relative_address = "/home/game/room/launch"
+        adresse = make_address(absolute_address, relative_address)
+
+        dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle, 'est_chef': self.est_chef}
+        # -- on requete pour savoir si tout le monde est pret dans la salle
+        res = requests.get(adresse, data=json.dumps(dataPost))
+        # -- si on récupère un "tout le monde est pret", on lance la partie
+        if res.status_code == 200:
+            Resultat = self.update_resultat(True, "Tout le monde est prêt dans la salle. La partie va se lancer.")
+        else:
+            Resultat = self.update_resultat(False, "en attente que tous les participants soient prets pour lancer la partie.")
+        return Resultat
+
+    def lancer_partie(self):
+        relative_address = "/home/game/room/launch"
+        adresse = make_address(absolute_address, relative_address)
+
+        dataPost = {'id_salle': self.id_salle}
+        res = requests.post(adresse, data=json.dumps(dataPost))  # dao pour modifier dans la table Partie le statut à en cours
+        if res.status_code == 200:
+            # la partie est lancée, on peut requeter pour savoir si c'est son tour
+            Resultat = self.update_resultat(True)
+        else:
+            Resultat = self.update_resultat(False, "erreur daas PlayerClass.lancer_partie")
+        return Resultat
+
+    def passer_tour(self):
+        relative_address = "/home/game/room/launch"
+        adresse = make_address(absolute_address, relative_address)
+
+        dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle}
+        res = requests.put(adresse, data=json.dumps(dataPost))
+        if res.status_code == 200:
+            Resultat = self.update_resultat(True)
+        else:
+            Resultat = self.update_resultat(False)
+        return Resultat
+
+    def demander_tour(self):
+        relative_address = "/home/game/room/launch"
+        adresse = make_address(absolute_address, relative_address)
+
+        dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle}
+        res = requests.get(adresse, data=json.dumps(dataPost))
+        if res.status_code == 200:
+            Resultat = self.update_resultat(True, "C'est votre tour de jouer")
+        elif res.status_code == 403:
+            Resultat = self.update_resultat(False, "C'était votre tour de jouer mais vous deviez le passer.")
+        elif res.status_code == 449:
+            Resultat = self.update_resultat(False, "Ce n'est pas votre tour de jouer")
+        else:
+            Resultat = self.update_resultat(False, "erreur dans PlayerClass.demander_tour")
         return Resultat

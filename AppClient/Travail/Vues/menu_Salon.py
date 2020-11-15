@@ -8,6 +8,9 @@ import json
 from tabulate import tabulate
 import time
 
+from Player.PlayerClass import Player
+
+
 class Salon(AbstractView):
     def __init__(self, pseudo, id_salle, jeu, est_chef):
         self.pseudo = pseudo.lower()
@@ -68,20 +71,20 @@ class Salon(AbstractView):
         while True:
             self.reponse_retour = inquirer.prompt(self.question_retour)
             if self.reponse_retour["salon_retour"] == "Oui":
-                from Player.PlayerClass import Player
                 Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
                 Resultat = Player1.quitter_salle()
-                if Resultat["Statut"] == True:
+                self.print_message(Resultat)
+
+                if Resultat["Statut"]:
                     import Vues.menu_Choix_Mode_Jeu as MCMJ
                     Retour = MCMJ.Menu_Choix_Mode_Jeu_Connecte(pseudo=self.pseudo, jeu=self.game)
                     Retour.display_info()
                     return Retour.make_choice()
-                elif Resultat["Statut"] == False:
-                    return (self.make_choice())
+                elif not Resultat["Statut"]:
+                    return self.make_choice()
                 else:
                     print("Erreur non prévue")
-                    return (self.make_choice())
-
+                    return self.make_choice()
             else: #'non'
                 return self.make_choice()
 
@@ -104,14 +107,13 @@ class Salon(AbstractView):
         print("\n" + tabulate(liste_membres, headers=["Pseudo"], tablefmt="grid"))
 
     def get_liste_couleurs_dispo(self):
-        dataPost = {'id_salle':self.id_salle}
-        res = requests.get("http://localhost:9090/home/game/room/colors", data=json.dumps(dataPost))
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.get_liste_couleurs_dispos()
+        self.print_message(Resultat)
 
-        if res.status_code == 200:
-            liste_couleurs_dispos = res.json()["liste_couleurs_dispos"]
-            return liste_couleurs_dispos
-        elif res.status_code == 403:
-            print("Vous ne pouvez pas être pret car vous êtes seuls dans la salle. Il faut être au moins 2.")
+        if Resultat["Statut"]:
+            return Resultat["liste_couleurs_dispos"]
+        else:
             return self.make_choice()
 
     def choix_couleur(self, liste_couleurs_dispos):
@@ -125,31 +127,39 @@ class Salon(AbstractView):
         ])
         couleur_choisie = answer['couleur']
 
-        dataPost = {'id_salle':self.id_salle, 'pseudo':self.pseudo, 'couleur':couleur_choisie}
-        res = requests.post("http://localhost:9090/home/game/room/colors", data=json.dumps(dataPost))
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.choix_couleur()
+        self.print_message(Resultat)
 
-        if res.status_code == 409: #la couleur a été choisie entre temps
-            print("La couleur demandée a été choisie entre temps par un autre utilisateur. Veuillez réessayer svp.")
+        if not Resultat["Statut"]:
             return self.choix_couleur(self.get_liste_couleurs_dispo())
-
+        else:
+            #la couleur est choisie et notée dans la db. On peut passer
+            pass
 
     def etre_pret(self):
-        dataPost = {'pseudo':self.pseudo,'id_salle':self.id_salle, 'est_chef':self.est_chef}
-        res = requests.post("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
-        if res.status_code == 200:
-            print("Vous êtes prets!")
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.etre_pret()
+        self.print_message(Resultat)
+
+        if Resultat["Statut"]: #ca c'est bien passé
+            pass
+        else: #un bug est survenu
+            return self.make_choice()
 
     def is_everyone_ready(self):
         tout_le_monde_pret = False
-        dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle, 'est_chef': self.est_chef}
+        count = 1
         while not tout_le_monde_pret:
-            # -- on requete pour savoir si tout le monde est pret dans la salle
-            res = requests.get("http://localhost:9090/home/game/room/launch", data=json.dumps(dataPost))
-            # -- si on récupère un "tout le monde est pret", on lance la partie
-            if res.status_code == 200:
+            count += 1
+            Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+            Resultat = Player1.is_everyone_ready()
+            if Resultat["Statut"]:
+                self.print_message(Resultat)
                 tout_le_monde_pret = True
             else:
-                print('en attente que tous les participants soient prets pour lancer la partie.')
+                if count == 1:
+                    self.print_message(Resultat)
                 time.sleep(0.5)
         return tout_le_monde_pret
 
@@ -159,16 +169,10 @@ class Salon(AbstractView):
         while not everyone_ready:
             if self.is_everyone_ready():
                 everyone_ready = True
-                print("Tous les participants sont prêts. La partie va pouvoir démarer.")
 
-        dataPost = {'id_salle': self.id_salle}
-        res = requests.post("http://localhost:9090/home/game/room/launch", data=json.dumps(dataPost))  # dao pour modifier dans la table Partie le statut à en cours
-        if res.status_code == 200:
-            #la partie est lancée, on peut requeter pour savoir si c'est son tour
-            print("jusque la tout va bien, plus qu'a demander son tour sans arret")
-
-
-
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.lancer_partie()
+        self.print_message(Resultat)
 
     def jouer(self):
         monTour = False
@@ -179,25 +183,24 @@ class Salon(AbstractView):
         Action.jouer()
         return self.passer_tour()
 
-
-
     def demander_tour(self):
-        dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle}
-        res = requests.get("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
-        if res.status_code == 200:
-            mon_tour = True
-            print("C'est votre tour de jouer.")
-        elif res.status_code == 403:
-            mon_tour = False
-            print("C'est votre tour de jouer, mais vous ne pouvez pas le jouer")
-        elif res.status_code == 449:
-            mon_tour = False
-            print("ce n'est pas votre tour de jouer")
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.demander_tour()
+        self.print_message(Resultat)
+        if Resultat["Statut"]:
+            #c'est votre tour de jouer
+            pass
+        elif not Resultat["Statut"]:
+            pass
         else:
-            print("erreur dans demander_tour")
-        return mon_tour
+            print("erreur dans menu_salon.demander_tour")
+        return Resultat["Statut"]
 
     def passer_tour(self):
-        dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle}
-        requests.put("http://localhost:9090/home/game/room/turns", data=json.dumps(dataPost))
-        return self.jouer()
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.lancer_partie()
+        self.print_message(Resultat)
+        if Resultat["Statut"]:
+            return self.jouer()
+        else:
+            print(f"erreur dans le passage de tour pour le joueur {self.pseudo}")
