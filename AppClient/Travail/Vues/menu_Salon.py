@@ -43,7 +43,12 @@ class Salon(AbstractView):
                 MParametre1 = MPara.Menu_Parametre(self.pseudo, self.id_salle, self.game,  self.est_chef)
                 return MParametre1.make_choice()
             elif self.reponse["Salon_accueil"] == "Être prêt":
-                pass
+                self.choix_couleur(self.get_liste_couleurs_dispo())
+                if self.est_chef == True:
+                    self.etre_pret_chef()
+                else:
+                    self.etre_pret()
+                return self.jouer()
             else: #'Quitter la salle'
                 return self.menu_retour()
             break
@@ -85,7 +90,9 @@ class Salon(AbstractView):
         from Player.PlayerClass import Player
         Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
         Resultat = Player1.voir_membres_salle()
+        self.print_message(Resultat)
         if Resultat["Statut"] == True:
+            self.print_membres_salle(Resultat["liste_membres"])
             return(self.make_choice())
         elif Resultat["Statut"] == False:
             return (self.make_choice())
@@ -93,6 +100,8 @@ class Salon(AbstractView):
             print("Erreur non prévue")
             return (self.make_choice())
 
+    def print_membres_salle(self, liste_membres):
+        print("\n" + tabulate(liste_membres, headers=["Pseudo"], tablefmt="grid"))
 
     def get_liste_couleurs_dispo(self):
         dataPost = {'id_salle':self.id_salle}
@@ -150,7 +159,7 @@ class Salon(AbstractView):
         while not everyone_ready:
             if self.is_everyone_ready():
                 everyone_ready = True
-                print("Tous les participants sont pret. La partie va pouvoir démarer.")
+                print("Tous les participants sont prêts. La partie va pouvoir démarer.")
 
         dataPost = {'id_salle': self.id_salle}
         res = requests.post("http://localhost:9090/home/game/room/launch", data=json.dumps(dataPost))  # dao pour modifier dans la table Partie le statut à en cours

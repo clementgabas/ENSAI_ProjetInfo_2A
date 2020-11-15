@@ -2,6 +2,11 @@ import requests
 import json
 from tabulate import tabulate
 from Player.UserClass import User
+from RequestsTools.AddressTools import get_absolute_address, make_address
+
+
+absolute_address = get_absolute_address()
+
 
 class Player(User):
 
@@ -11,8 +16,6 @@ class Player(User):
         self.chef_salle = chef_salle
         self.jeu = jeu
 
-    def choix_couleur(self):
-        pass
 
     def ask_api_if_tour(self):
         dataPost = {"id_salle":self.id_salle,
@@ -78,23 +81,27 @@ class Player(User):
             return (Resultat)
 
     def voir_membres_salle(self):
+        relative_address = "/home/game/room"
+        adresse = make_address(absolute_address, relative_address)
+
         dataPost = {'id_salle': self.id_salle}
-        res = requests.get("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
+        res = requests.get(adresse, data=json.dumps(dataPost))
 
         if res.status_code == 200:
-            liste_membres = res.json()["liste_membres"]
-            print("\n" + tabulate(liste_membres, headers=["Pseudo"], tablefmt="grid"))
-            Resultat = {"Statut" : True}
-            return(Resultat)
+            Resultat = self.update_resultat(True)
+            Resultat["liste_membres"] = res.json()["liste_membres"]
+        else:
+            Resultat = self.update_resultat(False, "erreur dans PlayerClass.voir_membres_salle")
+        return Resultat
 
     def quitter_salle(self):
+        relative_address = "/home/game/room"
+        adresse = make_address(absolute_address, relative_address)
+
         dataPost = {"pseudo": self.pseudo, "id_salle": self.id_salle, "est_chef_salle": self.chef_salle}
-        res = requests.delete("http://localhost:9090/home/game/room", data=json.dumps(dataPost))
+        res = requests.delete(adresse, data=json.dumps(dataPost))
         if res.status_code == 401:
-            print(
-                "Vous êtes le chef de la salle! Vous ne pouvez pas la quitter tant qu'un autre utilisateur s'y trouve encore. Un capitaine quitte toujours son navire en dernier n'est-ce pas?")
-            Resultat = {"Statut": False}
-            return (Resultat)
+            Resultat = self.update_resultat(False,"Vous êtes le chef de la salle! Vous ne pouvez pas la quitter tant qu'un autre utilisateur s'y trouve encore. Un capitaine quitte toujours son navire en dernier n'est-ce pas?")
         elif res.status_code == 200:
-            Resultat = {"Statut": True}
-            return (Resultat)
+            Resultat = self.update_resultat(True, f"Vous avez quitté la salle {self.id_salle}")
+        return Resultat
