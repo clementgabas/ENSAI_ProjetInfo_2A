@@ -9,7 +9,7 @@ class GameP4(AbstractJeu):
     def __init__(self, id_partie):
         AbstractJeu.__init__(self, id_partie)
         self.nbcolumn = 7
-        self.nbline = 6
+        self.nbline = 7
         self.nbToken = 4
         self.numberOfPlayer = 2
 

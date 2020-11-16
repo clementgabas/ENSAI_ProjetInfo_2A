@@ -49,7 +49,7 @@ class Jouer(AbstractView):
 
 
     def print_grille(self, _grid):
-        self.nbcolumn, self.nbline = 7, 6
+        self.nbcolumn, self.nbline = 7, 7
 
         line = "|"
         separator = "-"

@@ -64,7 +64,7 @@ def get_grille():
     liste_coups = DAOcoups.get_all_coups(id_partie)
 
     #-- on envoit cette liste à jeux service qui va simuler tous les coups et renvoyer la grille dans cet etat
-    plateau = GridP4(numHeight=7, numWidth=6, tokenWinNumber=4) #pour l'instant, on ne travaille que avec des parties par default
+    plateau = GridP4(numHeight=7, numWidth=7, tokenWinNumber=4) #pour l'instant, on ne travaille que avec des parties par default
     plateau.simulatation(liste_coups)
     grille = plateau.getGrid()
 
@@ -76,7 +76,7 @@ def get_grille():
 #@app.route("/home/game/room/grid", methods=["POST"]) #requetage pour jouer son coup
 def jouer_son_tour():
     request.get_json(force=True)
-    id_partie, pseudo, position, jeu = request.json.get('id_salle'), request.json.get('pseudo'), request.json.get('position'), request.json.get('jeu')
+    id_partie, pseudo, position, jeu = request.json.get('id_partie'), request.json.get('pseudo'), request.json.get('position'), request.json.get('jeu')
     if jeu.lower() == "p4":
         coup = {'player' : pseudo, 'id_partie': id_partie , 'colonne': position}
         print(
@@ -98,8 +98,6 @@ def jouer_son_tour():
     #-- on enregistre ce coup dans la bd
     last_coup = DAOcoups.get_last_coup(id_partie)[0]
     print(last_coup)
-    if last_coup == None:
-        last_coup = 0
     DAOcoups.add_new_coup(id_partie, math.floor(last_coup)+1, pseudo, position, 1)
     print("Le coup a été enregistré dans la DB")
     response = {"status_code": http_codes.ok, "message": "Coup joué et ajouté à la DB"}  # code 200
