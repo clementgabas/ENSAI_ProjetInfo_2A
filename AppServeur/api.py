@@ -215,6 +215,13 @@ def jouer_son_tour():
 def demander_si_vainqueur():
     return APIpartie.demander_si_vainqueur()
 
+@app.route("/home/game/room/end", methods=["PUT"]) #-- fonction qui nous retire de la table participation pour cette partie,
+        # qui update si on a gagné notre nb de parties gagnees dans la table score
+        # et qui update notre score (si la partie est anonyme
+def gestion_fin_partie():
+    return APIpartie.gestion_fin_partie()
+
+
 #----------------------------- APIpartie -------------------------------------------
 
 

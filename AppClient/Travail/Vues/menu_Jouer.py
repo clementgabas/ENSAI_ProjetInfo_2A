@@ -124,7 +124,7 @@ class Jouer(AbstractView):
             else:
                 print("Vous avez perdu!")
             print("Il faut gérer les points!")
-        return self.passer_tour(win_bool=True)
+        return self.passer_tour(win_bool=True, self_win=self_win)
 
     def demander_tour(self):
         Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
@@ -139,17 +139,26 @@ class Jouer(AbstractView):
             print("erreur dans menu_salon.demander_tour")
         return Resultat["Statut"]
 
-    def passer_tour(self, win_bool=False):
+    def passer_tour(self, win_bool=False, self_win=False):
         Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
         Resultat = Player1.passer_tour()
         self.print_message(Resultat)
         if Resultat["Statut"] and not win_bool:
             return self.jouer()
         elif Resultat["Statut"] and win_bool:
-            pass
+            return self.gestion_fin_partie(self_win)
         else:
             print(f"erreur dans le passage de tour pour le joueur {self.pseudo}")
 
-
-    def quitter_partie(self):
-        pass
+    def gestion_fin_partie(self, self_win):
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.gestion_fin_partie(self_win)
+        self.print_message(Resultat)
+        if Resultat["Statut"]:
+            print("Vous allez être renvoyés vers le menu principal")
+            import Vues.menu_Utilisateur_Co as MUC
+            Retour = MUC.Menu_User_Co(self.pseudo)
+            Retour.display_info()
+            return Retour.make_choice()
+        else:
+            print("erreur dans menuJouer.gestion_fin_partie")

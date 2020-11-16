@@ -228,3 +228,18 @@ class Player(User):
             Resultat = self.update_resultat(False, "erreur dans PlayerClass.jouer_son_tour")
         return Resultat
 
+    def gestion_fin_partie(self, win_bool):
+        #-- fonction qui nous retire de la table participation pour cette partie,
+        # qui update si on a gagné notre nb de parties gagnees dans la table score
+        # et qui update notre score (si la partie est anonyme
+        relative_address = "/home/game/room/end"
+        adresse = make_address(absolute_address, relative_address)
+
+        dataPost = {'pseudo': self.pseudo, 'id_partie': self.id_salle, 'jeu': self.jeu.lower(), 'win_bool': win_bool}
+        res = requests.put(adresse, data=json.dumps(dataPost))
+
+        if res.status_code==200:
+            Resultat = self.update_resultat(True, "Vos statistiques ont été mises à jour")
+        else:
+            Resultat = self.update_resultat(False, "erreur dans PlayerClass.gestion_fin_partie")
+        return Resultat

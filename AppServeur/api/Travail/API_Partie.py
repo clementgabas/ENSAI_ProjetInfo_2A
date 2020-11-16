@@ -4,11 +4,10 @@ from flask import request
 
 from requests import codes as http_codes
 
-import requests
-
 import DAO.gestionParties as DAOparties
 import DAO.gestionParticipation as DAOparticipation
 import DAO.gestionCoups as DAOcoups
+import DAO.gestionScores as DAOscores
 
 from jeuxservice.plateau.p4grid import GridP4
 from jeuxservice.jeux.p4game import GameP4
@@ -119,4 +118,25 @@ def demander_si_vainqueur():
         response = {"status_code": http_codes.ok, "message": "", "is_winner": Bool}  # code 200
         return make_reponse(response, http_codes.ok)  # code 200
 
+#@app.route("/home/game/room/end", methods=["PUT"])
+def gestion_fin_partie():
+    request.get_json(force=True)
+    id_partie, jeu, pseudo, win_bool = request.json.get('id_partie'), request.json.get('jeu').upper(), request.json.get('pseudo'), request.json.get('win_bool')
 
+    #-- on retire le joueur de la table participation
+    DAOparties.delete_from_participation(id_partie, pseudo, 0) #deletfromparticipation meyt directement a jour le nb_de_place
+    print(f"L'utilisateur {pseudo} a bien été retiré de la salle {id_partie}")
+    nbr_places_restantes = DAOparties.check_cb_places_libres(id_partie)
+    print(f"La salle {id_partie} a dorenavant {nbr_places_restantes} de libres.")
+    if DAOparties.get_nbr_participants(id_partie)==0: #si c'était le dernier joueur dans la salle, on supprime la salle
+        DAOparties.delete_partie(id_partie)
+        print(f"La salle {id_partie} était vide et a donc été supprimée")
+
+    #-- si le joueur a gagné la partie, on lui ajoute un dans la table scores
+    if win_bool:
+        nb_parties_gagnnes = DAOscores.get_nb_parties_gagnees(pseudo, jeu)
+        DAOscores.update_nb_parties_gagnees(pseudo, jeu, nb_parties_gagnnes+1)
+        print(f"L'utilisateur {pseudo} a dorenavant gagné {nb_parties_gagnnes+1} dans le jeu {jeu}")
+
+    response = {"status_code": http_codes.ok, "message": ""}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
