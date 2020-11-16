@@ -5,7 +5,7 @@ db_address = DBgestion.get_db_address()
 #-- does .. exist
 def does_pseudo_exist(pseudo):
     """
-    Fonction qui renvoit True si il existe dans la DB un utilisateur ayant ce pseudo, qui renvoit False sinon.
+    Fonction qui renvoie True si il existe dans la DB un utilisateur ayant ce pseudo, qui renvoie False sinon.
 
     Parameters
     ----------
@@ -42,7 +42,7 @@ def does_pseudo_exist(pseudo):
 
 def does_username_exist(username):
     """
-    Fonction qui renvoit True si il existe dans la DB un utilisateur ayant cet identifiant, renvoit False sinon.
+    Fonction qui renvoie True si il existe dans la DB un utilisateur ayant cet identifiant, renvoie False sinon.
 
     Parameters
     ----------
@@ -156,7 +156,7 @@ def add_user_score(pseudo):
 #-- get ..
 def get_hpass_username(username):
     """
-    Fonction qui renvoit le hash de mot de passe stocké dans la DB pour un identifiant donné.
+    Fonction qui renvoie le hash de mot de passe stocké dans la DB pour un identifiant donné.
 
     Parameters
     ----------
@@ -173,7 +173,7 @@ def get_hpass_username(username):
     Returns
     -------
     hpass : str
-        Renvoit le hash du mot de passe associé à l'identifiant en entrée.
+        Renvoie le hash du mot de passe associé à l'identifiant en entrée.
 
     """
     try: #on récupère le hpass
@@ -187,11 +187,32 @@ def get_hpass_username(username):
     finally:
         con.close()
     if hpass == None:
-        print("le execute renvoit none, erreur dans get_hpass")
+        print("le execute renvoie none, erreur dans get_hpass")
         raise ValueError
     return hpass[0]
 
 def get_hpass_pseudo(pseudo):
+    """
+    Fonction qui renvoie le hash de mot de passe stocké dans la DB pour un pseudo donné.
+
+    Parameters
+    ----------
+    pseudo : str
+        pseudo associé au hmdp recherché.
+
+    Raises
+    ------
+    ConnectionAbortedError
+        Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+    ValueError
+        pass
+
+    Returns
+    -------
+    hpass : str
+        Renvoie le hash du mot de passe associé au pseudo en entrée.
+
+    """
     try: #on récupère le hpass
         con = sqlite3.connect(db_address)
         cursor= con.cursor()
@@ -203,13 +224,13 @@ def get_hpass_pseudo(pseudo):
     finally:
         con.close()
     if hpass == None:
-        print("le execute renvoit none, erreur dans get_hpass")
+        print("le execute renvoie none, erreur dans get_hpass")
         raise ValueError
     return hpass[0]
 
 def get_pseudo(username):
     """
-    Fonction qui renvoit le pseudo associé à un identifiant dans la DB
+    Fonction qui renvoie le pseudo associé à un identifiant dans la DB
 
     Parameters
     ----------
@@ -219,9 +240,9 @@ def get_pseudo(username):
     Raises
     ------
     ConnectionAbortedError
-        DESCRIPTION.
+        Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
     ValueError
-        DESCRIPTION.
+        Si le pseudo n'existe pas.
 
     Returns
     -------
@@ -240,11 +261,30 @@ def get_pseudo(username):
     finally:
         con.close()
     if pseudo == None:
-        print("le execute renvoit none, erreur dans get_pseudo")
+        print("le execute renvoie none, erreur dans get_pseudo")
         raise ValueError
     return pseudo[0]
 
 def get_est_connecte(username):
+    """
+        Fonction qui renvoie True si l'utilisateur ayant cet identifiant est connecté , renvoie False sinon.
+
+        Parameters
+        ----------
+        username : str
+            Identifiant dont on cherche l'existance dans la DB.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur se produit au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        Bool : Bool
+            Booléen qui précise si oui ou non l'identifiant est connecté dans la DB.
+
+    """
     try: #on récupère le pseudo
         con = sqlite3.connect(db_address)
         cursor= con.cursor()
@@ -256,44 +296,45 @@ def get_est_connecte(username):
     finally:
         con.close()
     if est_co == None:
-        print("le execute renvoit none, erreur dans get_est_connecte")
+        print("le execute renvoie none, erreur dans get_est_connecte")
         raise ValueError
     if est_co[0] == 'True':
         return True
     elif est_co[0] == 'False':
         return False
     else:
-        print("le execute ne renvoit ni True ni False, erreur dans get_est_connecte")
+        print("le execute ne renvoie ni True ni False, erreur dans get_est_connecte")
         raise ValueError
 
 
 #-- update ..
 def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'True'):
     """
-    Procédure qui permet de modifier la valeur est_connecté pour un utilisateur dans la DB en fonction de son pseudo ou
-    de son identifiant.
+        Procédure qui permet de modifier la valeur est_connecté pour un utilisateur dans la DB en fonction de
+        son pseudo ou de son identifiant.
 
-    Parameters
-    ----------
-    ide : str
-        nom de l'identifiant ou du pseudo de l'utilisateur dont on veut modifier la valeur du est_connecte.
-    username_or_pseudo : str, optional
-        Il faut préciser si le ide fournit correspond à l'identifiant ou au pseudo de l'utilisateur.
-         username_or_pseudo est donc à valeur dans ('username', 'pseudo'). The default is 'username'.
-    nouvel_etat : str, optional
-        Il faut préciser si on veut mettre est_connecte à True ou à False.
-        nouvel_etat est donc à valeur dans ('True','False'). The default is 'True'.
+        Parameters
+        ----------
+        ide : str
+            nom de l'identifiant ou du pseudo de l'utilisateur dont on veut modifier la valeur du est_connecte.
+        username_or_pseudo : str, optional
+            Il faut préciser si le ide fournit correspond à l'identifiant ou au pseudo de l'utilisateur.
+             username_or_pseudo est donc à valeur dans ('username', 'pseudo'). The default is 'username'.
+        nouvel_etat : str, optional
+            Il faut préciser si on veut mettre est_connecte à True ou à False.
+            nouvel_etat est donc à valeur dans ('True','False'). The default is 'True'.
 
-    Raises
-    ------
-    ValueError
-        DESCRIPTION.
-    ConnectionAbortedError
-        DESCRIPTION.
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+        ValueError
+            Si  :   - username_or_pseudo n'est ni égale au pseudo ni à l'identifiant
+                    - nouvel_etat n'est pas un booléen
 
-    Returns
-    -------
-    None.
+        Returns
+        -------
+        None.
 
     """
 
@@ -329,6 +370,29 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
             con.close()
 
 def update_en_partie_pseudo(pseudo, nouvel_etat):
+    """
+        Procédure qui permet de modifier la valeur en_partie pour un utilisateur dans la DB en fonction de son pseudo.
+
+        Parameters
+        ----------
+        pseudo : str
+            pseudo de l'utilisateur dont on veut modifier la valeur du en_partie.
+        nouvel_etat : str
+            Il faut préciser si on veut mettre en_partie à True ou à False.
+            nouvel_etat est donc à valeur dans ('True','False')
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+        ValueError
+            Si nouvel_etat n'est pas un booléen.
+
+        Returns
+        -------
+        None.
+
+    """
     if not nouvel_etat in ("True", "False"):
         print("nouvel_etat doit prendre la valeur 'True' ou 'False'!")
         raise ValueError
@@ -345,6 +409,26 @@ def update_en_partie_pseudo(pseudo, nouvel_etat):
         con.close()
 
 def update_pseudo_table_utilisateur(old_pseudo, new_pseudo):
+    """
+        Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Utilisateurs.
+
+        Parameters
+        ----------
+        old_pseudo : str
+            pseudo de l'utilisateur qu'on veut modifier.
+        new_pseudo : str
+            pseudo de l'utilisateur qu'on veut mettre à la place.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None.
+
+    """
     try:  # on update le pseudo de l'utilisateur dans la table utilisateur
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -358,6 +442,26 @@ def update_pseudo_table_utilisateur(old_pseudo, new_pseudo):
         con.close()
 
 def update_pseudo_table_liste_amis(old_pseudo, new_pseudo):
+    """
+        Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Liste_Amis.
+
+        Parameters
+        ----------
+        old_pseudo : str
+            pseudo de l'utilisateur qu'on veut modifier.
+        new_pseudo : str
+            pseudo de l'utilisateur qu'on veut mettre à la place.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None.
+
+    """
     try:  # on update le pseudo de l'utilisateur dans la table liste amis
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -372,6 +476,26 @@ def update_pseudo_table_liste_amis(old_pseudo, new_pseudo):
         con.close()
 
 def update_pseudo_table_score(old_pseudo, new_pseudo):
+    """
+        Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Scores.
+
+        Parameters
+        ----------
+        old_pseudo : str
+            pseudo de l'utilisateur qu'on veut modifier.
+        new_pseudo : str
+            pseudo de l'utilisateur qu'on veut mettre à la place.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None.
+
+    """
     try:  # on update le pseudo de l'utilisateur dans la table score
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -384,13 +508,160 @@ def update_pseudo_table_score(old_pseudo, new_pseudo):
     finally:
         con.close()
 
+def update_pseudo_table_partie(old_pseudo, new_pseudo):
+    """
+        Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Parties.
+
+        Parameters
+        ----------
+        old_pseudo : str
+            pseudo de l'utilisateur qu'on veut modifier.
+        new_pseudo : str
+            pseudo de l'utilisateur qu'on veut mettre à la place.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None.
+
+    """
+    try:  # on update le pseudo de l'utilisateur dans la table score
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("UPDATE Parties SET pseudo_proprietaire = ? WHERE pseudo_proprietaire = ?", (new_pseudo, old_pseudo,))
+        con.commit()
+    except:
+        print("erreur dans update_pseudo_table_scores")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
+def update_pseudo_table_participation(old_pseudo, new_pseudo):
+    """
+        Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Participation.
+
+        Parameters
+        ----------
+        old_pseudo : str
+            pseudo de l'utilisateur qu'on veut modifier.
+        new_pseudo : str
+            pseudo de l'utilisateur qu'on veut mettre à la place.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None.
+
+    """
+    try:  # on update le pseudo de l'utilisateur dans la table score
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("UPDATE Participation SET pseudo = ? WHERE pseudo = ?", (new_pseudo, old_pseudo,))
+        con.commit()
+    except:
+        print("erreur dans update_pseudo_table_scores")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
+def update_pseudo_table_coup(old_pseudo, new_pseudo):
+    """
+        Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Coups.
+
+        Parameters
+        ----------
+        old_pseudo : str
+            pseudo de l'utilisateur qu'on veut modifier.
+        new_pseudo : str
+            pseudo de l'utilisateur qu'on veut mettre à la place.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None.
+
+    """
+    try:  # on update le pseudo de l'utilisateur dans la table score
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("UPDATE Coups SET pseudo_joueur = ? WHERE pseudo_joueur = ?", (new_pseudo, old_pseudo,))
+        con.commit()
+    except:
+        print("erreur dans update_pseudo_table_scores")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+
 def update_pseudo(old_pseudo, new_pseudo):
+    """
+        Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans les tables
+        Scores, Utilisateurs, Liste_Amis, Parties, Participation et Coups
+        via les fonctions : update_pseudo_table_utilisateur(old_pseudo, new_pseudo),
+                            update_pseudo_table_liste_amis(old_pseudo, new_pseudo),
+                            update_pseudo_table_score(old_pseudo, new_pseudo),
+                            update_pseudo_table_partie(old_pseudo, new_pseudo),
+                            update_pseudo_table_participation(old_pseudo, new_pseudo),
+                            update_pseudo_table_coup(old_pseudo, new_pseudo),
+        Parameters
+        ----------
+        old_pseudo : str
+            pseudo de l'utilisateur qu'on veut modifier.
+        new_pseudo : str
+            pseudo de l'utilisateur qu'on veut mettre à la place.
+
+        Raises
+        ------
+        None
+
+        Returns
+        -------
+        None.
+
+    """
     update_pseudo_table_utilisateur(old_pseudo, new_pseudo)
     update_pseudo_table_liste_amis(old_pseudo, new_pseudo)
     update_pseudo_table_score(old_pseudo, new_pseudo)
-
+    update_pseudo_table_partie(old_pseudo, new_pseudo)
+    update_pseudo_table_participation(old_pseudo, new_pseudo)
+    update_pseudo_table_coup(old_pseudo, new_pseudo)
 
 def update_password(pseudo, new_hpassword):
+    """
+        Procédure qui permet de modifier le mot de passe pour un utilisateur dans la table Utilisateurs
+        en fonction de son pseudo.
+
+        Parameters
+        ----------
+        pseudo : str
+            pseudo de l'utilisateur dont on veut modifier le mot de passe.
+        new_hpassword : str
+            nouveau mot de passe hashé
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None.
+
+    """
     try:  # on update le mdp dans la table utilisateur
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -404,6 +675,25 @@ def update_password(pseudo, new_hpassword):
         con.close()
 
 def get_stat(pseudo):
+    """
+    Fonction qui renvoie les statistique personnelles associées à un pseudo dans la table Utilisateurs.
+
+    Parameters
+    ----------
+    pseudo : str
+        pseudo dont on souhaite les statistique personnelles associées.
+
+    Raises
+    ------
+    ConnectionAbortedError
+        Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+    Returns
+    -------
+    stat_perso : list
+        Liste à un élément : le couple [nb_parties_jouees, nb_parties_gagnees].
+
+    """
     try:  # on récupère les info interessante
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -417,6 +707,23 @@ def get_stat(pseudo):
     return stat_perso
 
 def update_stat(pseudo):
+    """
+        Procédure qui réinitialise les statistique personnelles associées à un pseudo dans la table Utilisateurs.
+
+        Parameters
+        ----------
+        pseudo : str
+            pseudo de l'utilisateur dont on veut modifier le mot de passe.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None.
+    """
     try:  # on update le mdp dans la table utilisateur
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -432,6 +739,23 @@ def update_stat(pseudo):
 
 #-- put
 def put_all_users_disconnected():
+    """
+        Procédure qui réinitialise la valeur de est_connecte en False pour tous les utilisateurs
+        dans la table Utilisateurs.
+
+        Parameters
+        ----------
+        None
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None.
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -448,6 +772,23 @@ def put_all_users_disconnected():
 
 #-- delete
 def delete_user_pseudo(pseudo):
+    """
+        Procédure qui supprime tous les éléments de la table Utilisateurs à un pseudo associé.
+
+        Parameters
+        ----------
+        pseudo : str
+            pseudo de l'utilisateur que l'on veut supprimer .
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None.
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
