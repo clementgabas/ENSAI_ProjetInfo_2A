@@ -1,6 +1,7 @@
 import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 from Player.PlayerClass import Player
+import time
 
 #from printFunctions import timePrint as print
 
@@ -33,7 +34,7 @@ class Jouer(AbstractView):
             self.action_jouer = [{'type':'list', 'message':'bug dans classe jouer.'}]
 
 
-    def jouer(self):
+    def jouer_un_tour(self):
         Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
         Resultat = Player1.demander_grille()
         self.print_message(Resultat)
@@ -46,7 +47,7 @@ class Jouer(AbstractView):
             Resultat2 = Player1.jouer_son_tour(self.jouer_son_tour())
             self.print_message(Resultat2)
             if not Resultat2["Statut"]:
-                return self.jouer()
+                return self.jouer_un_tour()
 
             Resultat3 = Player1.demander_grille()
             self.print_message(Resultat3)
@@ -102,3 +103,53 @@ class Jouer(AbstractView):
         action = inquirer.prompt(self.action_jouer)
         #actoion --> {'action': '2'}
         return action
+
+    def jouer(self):
+        monTour = False
+        count = 0
+        while not monTour:
+            count += 1
+            if count == 1:
+                print("Ce n'est pas votre tour.. Merci de patienter en attendant votre tour.")
+            monTour = self.demander_tour()
+            time.sleep(0.5)
+        print("C'est votre tour!")
+        dico = self.jouer_un_tour()
+        win, self_win = dico["win"], dico["self_win"]
+        if not win:
+            return self.passer_tour()
+        else:
+            if self_win:
+                print("Vous avez gagné!")
+            else:
+                print("Vous avez perdu!")
+            print("Il faut gérer les points!")
+        return self.passer_tour(win_bool=True)
+
+    def demander_tour(self):
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.demander_tour()
+        #self.print_message(Resultat)
+        if Resultat["Statut"]:
+            #c'est votre tour de jouer
+            pass
+        elif not Resultat["Statut"]:
+            pass
+        else:
+            print("erreur dans menu_salon.demander_tour")
+        return Resultat["Statut"]
+
+    def passer_tour(self, win_bool=False):
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.passer_tour()
+        self.print_message(Resultat)
+        if Resultat["Statut"] and not win_bool:
+            return self.jouer()
+        elif Resultat["Statut"] and win_bool:
+            pass
+        else:
+            print(f"erreur dans le passage de tour pour le joueur {self.pseudo}")
+
+
+    def quitter_partie(self):
+        pass

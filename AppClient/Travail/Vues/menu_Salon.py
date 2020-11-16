@@ -50,7 +50,8 @@ class Salon(AbstractView):
                     self.etre_pret_chef()
                 else:
                     self.etre_pret()
-                return self.jouer()
+                Action = Play.Jouer(self.pseudo, self.id_salle, self.game, self.est_chef)
+                return Action.jouer()
             else: #'Quitter la salle'
                 return self.menu_retour()
             break
@@ -174,42 +175,3 @@ class Salon(AbstractView):
         Resultat = Player1.lancer_partie()
         self.print_message(Resultat)
 
-    def jouer(self):
-        monTour = False
-        while not monTour:
-            monTour = self.demander_tour()
-            time.sleep(0.5)
-        Action = Play.Jouer(self.pseudo, self.id_salle, self.game,  self.est_chef)
-        dico = Action.jouer()
-        win, self_win = dico["win"], dico["self_win"]
-        if not win:
-            pass
-        else:
-            if self_win:
-                print("Vous avez gagné!")
-            else:
-                print("Vous avez perdu!")
-            print("Il faut gérer les points!")
-        return self.passer_tour()
-
-    def demander_tour(self):
-        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
-        Resultat = Player1.demander_tour()
-        self.print_message(Resultat)
-        if Resultat["Statut"]:
-            #c'est votre tour de jouer
-            pass
-        elif not Resultat["Statut"]:
-            pass
-        else:
-            print("erreur dans menu_salon.demander_tour")
-        return Resultat["Statut"]
-
-    def passer_tour(self):
-        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
-        Resultat = Player1.passer_tour()
-        self.print_message(Resultat)
-        if Resultat["Statut"]:
-            return self.jouer()
-        else:
-            print(f"erreur dans le passage de tour pour le joueur {self.pseudo}")
