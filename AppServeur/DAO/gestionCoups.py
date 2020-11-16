@@ -7,7 +7,7 @@ db_address = DBgestion.get_db_address()
 def add_new_coup(id_partie, num_coup , pseudo_joueur, new_position, prochain_tour): #post
     """
         Procédure qui enregistre un nouveau coup
-        couposé de id_partie, num_coup , pseudo_joueur, new_position et prochain_tour
+        composé de id_partie, num_coup , pseudo_joueur, new_position et prochain_tour
 
         Parameters
         ----------
