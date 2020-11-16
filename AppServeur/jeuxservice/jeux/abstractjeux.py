@@ -1,20 +1,27 @@
 from abc import ABC
 
-class AbstractJeux(ABC):
+class AbstractJeu(ABC):
 
-    def __init__(self):
+    def __init__(self, id_partie):
         self.listOfPlayers = []
+        self.id_partie = id_partie
 
 
     def set_Players(self, playerClass):
         self.listOfPlayers.append(playerClass)
 
-    def init(self):
+    def initialisation(self):
         pass
 
     def jouer_un_coup(self):
         pass
 
-    def printGrid(self, gridClass):
-        pass
+    def create_resultat(self):
+        return {"Statut": "", "Message": ""}
+
+    def update_resultat(self, statut, message=""):
+        Resultat = self.create_resultat()
+        Resultat["Statut"] = statut
+        Resultat["Message"] = message
+        return Resultat
     
