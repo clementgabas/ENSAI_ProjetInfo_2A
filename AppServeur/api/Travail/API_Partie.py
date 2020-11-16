@@ -83,7 +83,7 @@ def jouer_son_tour():
             f"L'utilisateur {pseudo} va jouer son tour dans la salle {id_partie} au P4. Il a joué dans la colonne {position}.")
 
     #-- on demande a jeux service si le coup est valide
-    plateau = GridP4(numHeight=7, numWidth=6,
+    plateau = GridP4(numHeight=7, numWidth=7,
                      tokenWinNumber=4)  # pour l'instant, on ne travaille que avec des parties par default
     plateau.simulatation(DAOcoups.get_all_coups(id_partie))
 

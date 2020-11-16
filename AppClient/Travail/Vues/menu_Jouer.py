@@ -39,7 +39,10 @@ class Jouer(AbstractView):
         self.print_message(Resultat)
         self.print_grille(Resultat["Grille"])
 
-        Player1.jouer_son_tour(self.jouer_son_tour())
+        Resultat2 = Player1.jouer_son_tour(self.jouer_son_tour())
+        self.print_message(Resultat2)
+        if not Resultat2["Statut"]:
+            return self.jouer()
 
 
         Resultat = Player1.demander_grille()

@@ -31,14 +31,19 @@ class GameP4(AbstractJeu):
 
     def is_coup_valide(self, coup, gridClass):
         #coup = {'player' : ... , 'id_partie': ... , 'colonne': ...}
-        val_column = int(coup["colonne"])
+        try:
+            val_column = int(coup["colonne"])
+        except:
+            val_column = -1
+        if val_column >= self.nbcolumn or val_column < 0:
+            resultat = self.update_resultat(False, "Le numero de colonne n'est pas valide !")
         try:
             if 0 <= val_column <= (self.nbcolumn - 1):
                 if gridClass.TestEndColumn(val_column):
                     resultat = self.update_resultat(False, "La colonne est pleine!")
                 else:
                     resultat = self.update_resultat(True, "Le coup est valide")
-        except ValueError:
+        except:
             resultat = self.update_resultat(False, "Le numero de colonne n'est pas valide !")
         finally:
             resultat["Colonne"] = val_column
