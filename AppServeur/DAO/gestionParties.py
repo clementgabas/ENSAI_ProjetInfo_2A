@@ -5,6 +5,30 @@ db_address = DBgestion.get_db_address()
 
 
 def add_partie(pseudo_chef, jeu, nb_places_tot):
+    """
+        Fonction qui enregistre une nouvelle partie dans la table Parties et qui retourne le numéro de la partie
+
+        Parameters
+        ----------
+        pseudo_chef : str
+            pseudo du joueur chef, celui qui crée la salle
+        jeu : str
+            Nom du jeu sur lequel va se jouer la partie
+        nb_places_tot : int
+            nombre de place maximale dans la partie
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        id_partie : int
+            identifiant de la salle qui est aussi celui de la partie.
+
+    """
+
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -25,6 +49,28 @@ def add_partie(pseudo_chef, jeu, nb_places_tot):
     return id_partie
 
 def does_partie_exist(id_partie):
+    """
+        Fonction qui verifie l'existence d'une partie via la table Parties
+
+        Parameters
+        ----------
+
+        id_partie : int
+            identifiant de la partie qui est recherchée
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        bool :
+            False : Si l'identifiant de la partie n'est pas dans la tabble Parties, donc si la partie n'existe pas.
+            True : Sinon
+
+    """
+
     try:
         Bool = True
         con = sqlite3.connect(db_address)
@@ -41,6 +87,26 @@ def does_partie_exist(id_partie):
     return Bool
 
 def check_cb_places_libres(id_partie):
+    """
+        Fonction qui verifie le nombre de places libres dans une partie via la table Parties
+
+        Parameters
+        ----------
+
+        id_partie : int
+            identifiant de la partie qui est vérifiée
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        nb : int
+            Nombre de place libre qu'il y a dans la partie
+
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -54,6 +120,26 @@ def check_cb_places_libres(id_partie):
         return nb
 
 def check_cb_places_tot(id_partie):
+    """
+        Fonction qui verifie le nombre total de places dans une partie via la table Parties
+
+        Parameters
+        ----------
+
+        id_partie : int
+            identifiant de la partie qui est vérifiée
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        nb : int
+            Nombre total de place qu'il y a dans la partie
+
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -67,9 +153,50 @@ def check_cb_places_tot(id_partie):
         return nb
     
 def get_nbr_participants(id_partie):
+    """
+        Fonction qui verifie le nombre de participant dans une partie les fonctions
+        check_cb_places_tot et check_cb_places_libres
+
+        Parameters
+        ----------
+
+        id_partie : int
+            identifiant de la partie qui est vérifiée
+
+        Raises
+        ------
+        None
+
+        Returns
+        -------
+        type = int :
+            Nombre de particimpant qu'il y a dans la partie
+
+    """
+
     return check_cb_places_tot(id_partie) - check_cb_places_libres(id_partie)
 
 def update_parties_nb_place(id_partie, nb_places_restantes):
+    """
+        Procédure qui met à jour le nombre  de places restante dans une partie via la table Parties
+
+        Parameters
+        ----------
+
+        id_partie : int
+            identifiant de la partie qui est à mettre à jour
+        nb_places_restantes : int
+            nombre de place restante à mettre à jour
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        None
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -83,6 +210,31 @@ def update_parties_nb_place(id_partie, nb_places_restantes):
         con.close()
 
 def add_to_participation(id_partie, pseudo, nb_places):
+    """
+        Procédure qui met à jour le nombre  de places restante dans une partie via la table Parties
+
+        Parameters
+        ----------
+
+        id_partie : int
+            identifiant de la partie qui est à mettre à jour
+        pseudo : str
+            pseudo du joueur qui rejoint la partie
+        nb_places : int
+            nombre de place restante dans la partie que rejoins le joueur.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+        ValueError
+            Si le nombre de place restante dans la partie est nulle, le joueur ne peut rejoindre la partie car il n'y a
+            plus de place pour lui
+
+        Returns
+        -------
+        None
+    """
     if nb_places <1:
         print("il n'y a pas assez de place, erreur dans add_to_participation")
         raise ValueError
@@ -100,6 +252,31 @@ def add_to_participation(id_partie, pseudo, nb_places):
         con.close()
 
 def delete_from_participation(id_partie, pseudo, nb_places):
+    """
+        Procédure qui met à jour le nombre  de places restante dans une partie via la table Parties
+
+        Parameters
+        ----------
+
+        id_partie : int
+            identifiant de la partie qui est à mettre à jour
+        pseudo : str
+            pseudo du joueur qui rejoint la partie
+        nb_places : int
+            nombre de place restante dans la partie que rejoins le joueur.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+        ValueError
+            Si le nombre de place restante dans la partie est nulle, le joueur ne peut rejoindre la partie car il n'y a
+            plus de place pour lui
+
+        Returns
+        -------
+        None
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
