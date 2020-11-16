@@ -1,29 +1,14 @@
-import os
-import traceback
-import csv
-import random
-import json
-import hashlib
 
-from api.codeList import _codes
 
-from flask import Flask, jsonify, request, Blueprint
-from flask_cors import CORS
-from flask_restplus import Api, Resource
-from flask_restplus import abort
-from flask_caching import Cache
-from loguru import logger
+from flask import request
+
 from requests import codes as http_codes
-from api.commons import configuration
 
-import sqlite3
-import requests
-from datetime import datetime
 
-import DAO.gestionUser as DAOuser
 import DAO.gestionParties as DAOparties
 import DAO.gestionParametres as DAOparametres
 import DAO.gestionParticipation as DAOparticipation
+import DAO.gestionScores as DAOscores
 
 from api.Travail.Base import make_reponse
 
@@ -121,11 +106,25 @@ def ajout_couleur():
 #@app.route('/home/game/room/turns', methods=['POST']) #dire qu'on est pret à jouer
 def je_suis_pret():
     request.get_json(force=True)
-    pseudo, id_salle, est_chef = request.json.get('pseudo'), request.json.get('id_salle'), request.json.get('est_chef')
+    pseudo, id_salle, est_chef, jeu = request.json.get('pseudo'), request.json.get('id_salle'), request.json.get('est_chef'), request.json.get('jeu')
     print(f"L'utilisateur {pseudo} demande à être prêt dans la salle {id_salle}.")
 
     #-- on update le est_pret a True dans la table Participation
     DAOparticipation.update_est_pret(pseudo, id_salle, 'True')
+    #-- on update le nombre de parties jouees
+    if jeu.lower() == 'p4':
+        old_number = DAOscores.get_nb_parties_jouees(pseudo, "P4")
+        DAOscores.update_nb_parties_jouees(pseudo, "P4", old_number+1)
+    elif jeu.lower() == "oie":
+        old_number = DAOscores.get_nb_parties_jouees(pseudo, "Oie")
+        DAOscores.update_nb_parties_jouees(pseudo, "Oie", old_number + 1)
+    else:
+        print("erreur dans le nom du jeu")
+        response = {"status_code": http_codes.bad, "message": "Utilisateur pret."}  # code 400
+        return make_reponse(response, http_codes.bad)  # code 400
+    print(f"L'utilisateur {pseudo} a maintenant joué {old_number + 1} parties de {jeu}")
+
+    #-- on fait choisir la couleur à l'utilisateur
     couleur = DAOparticipation.get_couleur(pseudo, id_salle)
     print(f"L'utilisateur {pseudo} est pret dans la table Participation pour la partie {id_salle} avec la couleur {couleur}.")
     #-- on update l'ordre de jeu dans la table Participation

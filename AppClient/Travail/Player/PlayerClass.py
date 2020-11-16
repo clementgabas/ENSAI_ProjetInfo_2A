@@ -119,7 +119,7 @@ class Player(User):
         relative_address = "/home/game/room/turns"
         adresse = make_address(absolute_address, relative_address)
 
-        dataPost = {'pseudo':self.pseudo,'id_salle':self.id_salle, 'est_chef':self.est_chef}
+        dataPost = {'pseudo':self.pseudo,'id_salle':self.id_salle, 'est_chef':self.est_chef, 'jeu': self.jeu}
         res = requests.post(adresse, data=json.dumps(dataPost))
         if res.status_code == 200:
             Resultat = self.update_resultat(True, "Vous êtes prêts!")
