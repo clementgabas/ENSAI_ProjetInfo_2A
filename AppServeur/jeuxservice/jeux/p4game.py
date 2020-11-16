@@ -7,7 +7,7 @@ import DAO.gestionParticipation as DAOparticipation
 class GameP4(AbstractJeu):
 
     def __init__(self, id_partie):
-        AbstractJeu.__init__(id_partie)
+        AbstractJeu.__init__(self, id_partie)
         self.nbcolumn = 7
         self.nbline = 6
         self.nbToken = 4
@@ -31,8 +31,8 @@ class GameP4(AbstractJeu):
 
     def is_coup_valide(self, coup, gridClass):
         #coup = {'player' : ... , 'id_partie': ... , 'colonne': ...}
+        val_column = int(coup["colonne"])
         try:
-            val_column = coup[2]
             if 0 <= val_column <= (self.nbcolumn - 1):
                 if gridClass.TestEndColumn(val_column):
                     resultat = self.update_resultat(False, "La colonne est pleine!")
@@ -48,10 +48,10 @@ class GameP4(AbstractJeu):
     def enregistrer_coup(self, coup):
         #coup = {'player' : ... , 'id_partie': ... , 'colonne': ...}
 
-        id_partie = coup[1]
+        id_partie = coup["id_partie"]
         num_coup = DAOcoups.get_last_coup(id_partie)
-        pseudo_joueur = coup[0]
-        position = coup[2]
+        pseudo_joueur = coup["player"]
+        position = coup["colonne"]
         prochain_tour = 1
         DAOcoups.add_new_coup(id_partie, num_coup , pseudo_joueur, position, prochain_tour)
 

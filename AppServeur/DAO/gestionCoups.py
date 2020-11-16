@@ -35,11 +35,11 @@ def add_new_coup(id_partie, num_coup , pseudo_joueur, new_position, prochain_tou
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
-        cursor.execute("INSERT INTO Coups (id_partie, num_coup , pseudo_joueur, position, prochain_tour "
+        cursor.execute("INSERT INTO Coups (id_partie, num_coup ,pseudo_joueur, position, prochain_tour) "
                        "VALUES (?, ?, ?, ?,?)", (id_partie, num_coup , pseudo_joueur, new_position, prochain_tour,))
         con.commit()
     except:
-        print("add_coup")
+        print("erruer dans add_new_coup")
         con.rollback()
         raise ConnectionAbortedError
     finally:
@@ -79,7 +79,7 @@ def get_last_coup(id_partie): #get
     finally:
         con.close()
     if last_coup == None:
-        print("le execute renvoie none, erreur dans last_coup")
+        print("le execute renvoie none, erreur dans get_last_coup")
         raise ValueError
     return last_coup
 
@@ -196,3 +196,4 @@ def get_all_coups(id_partie):
     finally:
         con.close()
     return liste_coups
+

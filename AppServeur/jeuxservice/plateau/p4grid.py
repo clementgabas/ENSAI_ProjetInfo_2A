@@ -17,7 +17,6 @@ class GridP4(AbstractGrid):
             colonne_jouee = coup[3]
             ordre_joueur = DAOparticipation.get_position_ordre(pseudo=coup[2], id_partie=coup[0])
             self.Throw(colonne_jouee, ordre_joueur)
-        return self.getGrid()
 
     def Throw(self, x, tokenColor):
         y = 0

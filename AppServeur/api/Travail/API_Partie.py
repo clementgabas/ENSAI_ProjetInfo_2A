@@ -65,7 +65,8 @@ def get_grille():
 
     #-- on envoit cette liste à jeux service qui va simuler tous les coups et renvoyer la grille dans cet etat
     plateau = GridP4(numHeight=7, numWidth=6, tokenWinNumber=4) #pour l'instant, on ne travaille que avec des parties par default
-    grille = plateau.simulatation(liste_coups)
+    plateau.simulatation(liste_coups)
+    grille = plateau.getGrid()
 
     print(f"La grille a été simulée dans la salle {id_partie}")
 
@@ -84,10 +85,10 @@ def jouer_son_tour():
     #-- on demande a jeux service si le coup est valide
     plateau = GridP4(numHeight=7, numWidth=6,
                      tokenWinNumber=4)  # pour l'instant, on ne travaille que avec des parties par default
-    grille = plateau.simulatation(DAOcoups.get_all_coups(id_partie))
+    plateau.simulatation(DAOcoups.get_all_coups(id_partie))
 
     jeu = GameP4(id_partie)
-    Resultat = jeu.is_coup_valide(coup=coup, gridClass=grille)
+    Resultat = jeu.is_coup_valide(coup=coup, gridClass=plateau)
 
     if not Resultat["Statut"]: #le coup n'est pas valide
         print(f"Le coup n'est pas valide")
@@ -95,7 +96,11 @@ def jouer_son_tour():
         return make_reponse(response, http_codes.forbidden)  # code 403
     print("Le coup est valide")
     #-- on enregistre ce coup dans la bd
-    DAOcoups.add_new_coup(id_partie, math.floor(DAOcoups.get_last_coup(id_partie))+1, pseudo, position, 1)
+    last_coup = DAOcoups.get_last_coup(id_partie)[0]
+    print(last_coup)
+    if last_coup == None:
+        last_coup = 0
+    DAOcoups.add_new_coup(id_partie, math.floor(last_coup)+1, pseudo, position, 1)
     print("Le coup a été enregistré dans la DB")
     response = {"status_code": http_codes.ok, "message": "Coup joué et ajouté à la DB"}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
