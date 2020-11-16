@@ -188,7 +188,7 @@ def get_all_coups(id_partie):
     try :
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
-        cursor.execute("SELECT * FROM Coups WHERE id_partie = ? ORDER BY num_coup ASC", (id_partie,))
+        cursor.execute("SELECT * FROM Coups WHERE id_partie = ? AND num_coup >= 1 ORDER BY num_coup ASC", (id_partie,))
         liste_coups = cursor.fetchall()
     except :
         print("erreur dans get_all_coup")
