@@ -10,8 +10,10 @@ def add_partie(pseudo_chef, jeu, nb_places_tot):
         cursor = con.cursor()
         heure = str(datetime.now())
         cursor.execute(
-            "INSERT INTO Parties (jeu, date_debut, pseudo_proprietaire, places_total, places_dispo, statut) VALUES (?,?,?,?,?, 'en préparation')", (jeu, heure, pseudo_chef, nb_places_tot, nb_places_tot,))
-        cursor.execute("SELECT id_partie from Parties WHERE pseudo_proprietaire = ? AND date_debut = ?", (pseudo_chef, heure))
+            "INSERT INTO Parties (jeu, date_debut, pseudo_proprietaire, places_total, places_dispo, statut) "
+            "VALUES (?,?,?,?,?, 'en préparation')", (jeu, heure, pseudo_chef, nb_places_tot, nb_places_tot,))
+        cursor.execute("SELECT id_partie from Parties WHERE pseudo_proprietaire = ? "
+                       "AND date_debut = ?", (pseudo_chef, heure))
         id_partie = cursor.fetchone()[0]
         con.commit()
     except:

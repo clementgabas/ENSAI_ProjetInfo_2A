@@ -13,7 +13,7 @@ def add_parametre(id_Partie,duree_tour, condition_victoire, Taille_plateau):
         Parameters
         ----------
         id_Partie : int
-            identifiant de la partie auquelle on modifie les paramêtre
+            identifiant de la partie auquelle on modifie les paramètres
         duree_tour : int
             durée pour jouer son coup
         condition_victoire : int
@@ -62,7 +62,7 @@ def verif_parametre(id_partie):
         Returns
         -------
         Booléen :
-            True si des paramètres ont déjà été définis
+            True si des paramètres ont déjà été définis.
             False sinon
 
 
@@ -96,7 +96,7 @@ def put_parametre(id_Partie, duree_tour, condition_victoire, Taille_plateau):
         Parameters
         ----------
         id_Partie : int
-            identifiant de la partie auquelle on modifie les paramêtre
+            identifiant de la partie auquelle on modifie les paramètres
         duree_tour : int
             durée pour jouer son coup
         condition_victoire : int

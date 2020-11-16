@@ -95,7 +95,8 @@ def add_user(username, pseudo, hpassword):
     Raises
     ------
     ConnectionAbortedError
-        Si un erreur se produit au cours de la communication avec la DB, un rollback jusqu'au précédant commit à lieu et l'erreur est levée.
+        Si un erreur se produit au cours de la communication avec la DB,
+        un rollback jusqu'au précédant commit à lieu et l'erreur est levée.
 
     Returns
     -------
@@ -106,8 +107,8 @@ def add_user(username, pseudo, hpassword):
     cursor = con.cursor()
     try:
         cursor.execute(
-            "INSERT INTO Utilisateur (pseudo, identifiant, mdp, est_connecte, en_file, en_partie) VALUES (?, ?, ?, 'False', 'False', 'False')",
-            (pseudo, username, hpassword,))
+            "INSERT INTO Utilisateur (pseudo, identifiant, mdp, est_connecte, en_file, en_partie)"
+            " VALUES (?, ?, ?, 'False', 'False', 'False')",(pseudo, username, hpassword,))
         con.commit()
     except:
         print("erreur dans add_user")
@@ -128,7 +129,8 @@ def add_user_score(pseudo):
         Raises
         ------
         ConnectionAbortedError
-            Si un erreur se produit au cours de la communication avec la DB, un rollback jusqu'au précédant commit à lieu et l'erreur est levée.
+            Si un erreur se produit au cours de la communication avec la DB,
+            un rollback jusqu'au précédant commit à lieu et l'erreur est levée.
 
         Returns
         -------
@@ -138,8 +140,10 @@ def add_user_score(pseudo):
     con = sqlite3.connect(db_address)
     cursor = con.cursor()
     try:
-        cursor.execute("INSERT INTO Scores (jeu, pseudo, nb_points, nb_parties_jouees, nb_parties_gagnees) VALUES ('P4', ?, 1000, 0, 0)", (pseudo,))
-        cursor.execute("INSERT INTO Scores (jeu, pseudo, nb_points, nb_parties_jouees, nb_parties_gagnees) VALUES ('Oie', ?, 1000, 0, 0)", (pseudo,))
+        cursor.execute("INSERT INTO Scores (jeu, pseudo, nb_points, nb_parties_jouees, nb_parties_gagnees)"
+                       " VALUES ('P4', ?, 1000, 0, 0)", (pseudo,))
+        cursor.execute("INSERT INTO Scores (jeu, pseudo, nb_points, nb_parties_jouees, nb_parties_gagnees)"
+                       " VALUES ('Oie', ?, 1000, 0, 0)", (pseudo,))
         con.commit()
     except:
         print("erreur dans add_user_score")
@@ -266,16 +270,19 @@ def get_est_connecte(username):
 #-- update ..
 def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'True'):
     """
-    Procédure qui permet de modifier la valeur est_connecté pour un utilisateur dans la DB en fonction de son pseudo ou de son identifiant.
+    Procédure qui permet de modifier la valeur est_connecté pour un utilisateur dans la DB en fonction de son pseudo ou
+    de son identifiant.
 
     Parameters
     ----------
     ide : str
         nom de l'identifiant ou du pseudo de l'utilisateur dont on veut modifier la valeur du est_connecte.
     username_or_pseudo : str, optional
-        Il faut préciser si le ide fournit correspond à l'identifiant ou au pseudo de l'utilisateur. username_or_pseudo est donc à valeur dans ('username', 'pseudo'). The default is 'username'.
+        Il faut préciser si le ide fournit correspond à l'identifiant ou au pseudo de l'utilisateur.
+         username_or_pseudo est donc à valeur dans ('username', 'pseudo'). The default is 'username'.
     nouvel_etat : str, optional
-        Il faut préciser si on veut mettre est_connecte à True ou à False. nouvel_etat est donc à valeur dans ('True','False'). The default is 'True'.
+        Il faut préciser si on veut mettre est_connecte à True ou à False.
+        nouvel_etat est donc à valeur dans ('True','False'). The default is 'True'.
 
     Raises
     ------
@@ -428,7 +435,8 @@ def put_all_users_disconnected():
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
-        cursor.execute("UPDATE Utilisateur SET est_connecte = 'False', en_file = 'False', en_partie = 'False' WHERE est_connecte = 'True'", ())
+        cursor.execute("UPDATE Utilisateur SET est_connecte = 'False', en_file = 'False', en_partie = 'False'"
+                       " WHERE est_connecte = 'True'", ())
         con.commit()
     except:
         print("erreur dans put_all_users_disconnected")
