@@ -6,6 +6,31 @@ db_address = DBgestion.get_db_address()
 
 
 def add_parametre(id_Partie,duree_tour, condition_victoire, Taille_plateau):
+    """
+        Procédure qui enregistre de nouveaux paramètres
+        couposéés de id_Partie, duree_tour , condition_victoire et Taille_plateau
+
+        Parameters
+        ----------
+        id_Partie : int
+            identifiant de la partie auquelle on modifie les paramêtre
+        duree_tour : int
+            durée pour jouer son coup
+        condition_victoire : int
+            condition de victoire pour remporter la partie
+        Taille_plateau : int
+            Taille du plateau de jeu
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur se produit au cours de la communication avec la DB,
+             un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
+
+        Returns
+        -------
+        None.
+        """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -21,6 +46,28 @@ def add_parametre(id_Partie,duree_tour, condition_victoire, Taille_plateau):
         con.close()
 
 def verif_parametre(id_partie):
+    """
+        Fonction qui vérifie si la partie a déjà des paramètres
+
+        Parameters
+        ----------
+        id_partie : int
+            identifiant de la partie
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        Booléen :
+            True si des paramètres ont déjà été définis
+            False sinon
+
+
+
+    """
     try:
         con = sqlite3.connect("database/apijeux.db")
         cursor = con.cursor()
@@ -41,7 +88,33 @@ def verif_parametre(id_partie):
     else :
         return True
 
-def put_parametre(id_Partie,duree_tour, condition_victoire, Taille_plateau):
+def put_parametre(id_Partie, duree_tour, condition_victoire, Taille_plateau):
+    """
+        Procédure qui met à jour de les paramètres
+        couposéés de id_Partie, duree_tour , condition_victoire et Taille_plateau
+
+        Parameters
+        ----------
+        id_Partie : int
+            identifiant de la partie auquelle on modifie les paramêtre
+        duree_tour : int
+            durée pour jouer son coup
+        condition_victoire : int
+            condition de victoire pour remporter la partie
+        Taille_plateau : int
+            Taille du plateau de jeu
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur se produit au cours de la communication avec la DB,
+             un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
+
+        Returns
+        -------
+        None.
+        """
+
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
