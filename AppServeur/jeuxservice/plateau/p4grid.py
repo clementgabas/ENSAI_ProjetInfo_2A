@@ -102,7 +102,8 @@ class GridP4(AbstractGrid):
         return resultat
 
     def TestIfWin(self):
-        return self._win
+        print(str(self._gridList))
+        return (self._win == 1)
 
     def TestEndOfGame(self):
         result = True

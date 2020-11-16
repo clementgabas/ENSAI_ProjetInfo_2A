@@ -44,7 +44,7 @@ class GameP4(AbstractJeu):
                 else:
                     resultat = self.update_resultat(True, "Le coup est valide")
         except:
-            resultat = self.update_resultat(False, "Le numero de colonne n'est pas valide !")
+            resultat = self.update_resultat(False, "Le numéro de colonne n'est pas valide !")
         finally:
             resultat["Colonne"] = val_column
             return resultat

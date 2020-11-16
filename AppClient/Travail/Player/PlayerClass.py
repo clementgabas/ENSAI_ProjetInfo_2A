@@ -210,3 +210,21 @@ class Player(User):
         else:
             Resultat = self.update_resultat(False, "erreur dans PlayerClass.jouer_son_tour")
         return Resultat
+
+    def demander_si_vainqueur(self):
+        relative_address = "/home/game/room/grid"
+        adresse = make_address(absolute_address, relative_address)
+
+        dataPost = {'id_partie': self.id_salle, 'jeu': self.jeu.lower()}
+        res = requests.put(adresse, data=json.dumps(dataPost))
+
+        if res.status_code == 200:
+            winner_bool = res.json()["is_winner"]
+            if winner_bool:
+                Resultat = self.update_resultat(True, "Vous avez gagné la partie")
+            else:
+                Resultat = self.update_resultat(False)
+        else:
+            Resultat = self.update_resultat(False, "erreur dans PlayerClass.jouer_son_tour")
+        return Resultat
+

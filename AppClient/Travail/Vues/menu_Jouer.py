@@ -39,15 +39,25 @@ class Jouer(AbstractView):
         self.print_message(Resultat)
         self.print_grille(Resultat["Grille"])
 
-        Resultat2 = Player1.jouer_son_tour(self.jouer_son_tour())
-        self.print_message(Resultat2)
-        if not Resultat2["Statut"]:
-            return self.jouer()
+        Resultat1 = Player1.demander_si_vainqueur()
+        if not Resultat1["Statut"]:
+            win, self_win = False, False
 
+            Resultat2 = Player1.jouer_son_tour(self.jouer_son_tour())
+            self.print_message(Resultat2)
+            if not Resultat2["Statut"]:
+                return self.jouer()
 
-        Resultat = Player1.demander_grille()
-        self.print_message(Resultat)
-        self.print_grille(Resultat["Grille"])
+            Resultat3 = Player1.demander_grille()
+            self.print_message(Resultat3)
+            self.print_grille(Resultat3["Grille"])
+
+            Resultat4 = Player1.demander_si_vainqueur()
+            if Resultat4["Statut"]:
+                win, self_win = True, True
+        else:
+            win, self_win = True, False
+        return {"win": win, "self_win": self_win}
 
 
 

@@ -211,6 +211,10 @@ def get_grille():
 def jouer_son_tour():
     return APIpartie.jouer_son_tour()
 
+@app.route("/home/game/room/grid", methods=["PUT"]) #requetage pour savoir si il y a un winner
+def demander_si_vainqueur():
+    return APIpartie.demander_si_vainqueur()
+
 #----------------------------- APIpartie -------------------------------------------
 
 

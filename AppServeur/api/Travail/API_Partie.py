@@ -103,5 +103,20 @@ def jouer_son_tour():
     response = {"status_code": http_codes.ok, "message": "Coup joué et ajouté à la DB"}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
+#@app.route("/home/game/room/grid", methods=["PUT"])
+def demander_si_vainqueur():
+    request.get_json(force=True)
+    id_partie, jeu = request.json.get('id_partie'), request.json.get('jeu')
+    print(f"Demande de savoir si la grille de la salle {id_partie} est gagnante dans le jeu {jeu} ")
+
+    if jeu.lower() == 'p4':
+        plateau = GridP4(numHeight=7, numWidth=7,
+                         tokenWinNumber=4)  # pour l'instant, on ne travaille que avec des parties par default
+        plateau.simulatation(DAOcoups.get_all_coups(id_partie))
+
+        Bool = plateau.TestIfWin()
+
+        response = {"status_code": http_codes.ok, "message": "", "is_winner": Bool}  # code 200
+        return make_reponse(response, http_codes.ok)  # code 200
 
 

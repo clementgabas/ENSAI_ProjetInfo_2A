@@ -180,7 +180,16 @@ class Salon(AbstractView):
             monTour = self.demander_tour()
             time.sleep(0.5)
         Action = Play.Jouer(self.pseudo, self.id_salle, self.game,  self.est_chef)
-        Action.jouer()
+        dico = Action.jouer()
+        win, self_win = dico["win"], dico["self_win"]
+        if not win:
+            pass
+        else:
+            if self_win:
+                print("Vous avez gagné!")
+            else:
+                print("Vous avez perdu!")
+            print("Il faut gérer les points!")
         return self.passer_tour()
 
     def demander_tour(self):
