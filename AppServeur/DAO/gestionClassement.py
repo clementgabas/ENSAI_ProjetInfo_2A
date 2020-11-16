@@ -5,29 +5,29 @@ db_address = DBgestion.get_db_address()
 
 def afficher_classement_jeu(nom_jeu,pseudo):
     """
-            Fonction qui retourne les 10 premiers du classement mondial du jeu demandé
+        Fonction qui retourne les 10 premiers du classement mondial du jeu demandé
 
-            Parameters
-            ----------
-            nom_jeu : str
-                Nom du jeu demandé pour le classement
-            pseudo : str
-                Pseudo pour pour lequel on affiche le classement
+        Parameters
+        ----------
+        nom_jeu : str
+            Nom du jeu demandé pour le classement
+        pseudo : str
+            Pseudo pour pour lequel on affiche le classement
 
-            Raises
-            ------
-            ConnectionAbortedError
-                Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-            Returns
-            -------
-             classement_jeu : list
-                    Liste des dix premiers du classement mondial du jeu demandé comprenant rang, pseudo,
-                    nombre de points, nombre parties jouées et nombre parties gagnées
-                    ainsi que ceux du pseudo qui demande.
+        Returns
+        -------
+         classement_jeu : list
+                Liste des dix premiers du classement mondial du jeu demandé comprenant rang, pseudo,
+                nombre de points, nombre parties jouées et nombre parties gagnées
+                ainsi que ceux du pseudo qui demande.
 
 
-            """
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor= con.cursor()
@@ -59,26 +59,26 @@ def afficher_classement_jeu(nom_jeu,pseudo):
 
 def afficher_classement_general(pseudo):
     """
-                Fonction qui retourne les 10 premiers du classement mondial général
+        Fonction qui retourne les 10 premiers du classement mondial général
 
-                Parameters
-                ----------
-                pseudo : str
-                    Pseudo pour pour lequel on affiche le classement
+        Parameters
+        ----------
+        pseudo : str
+            Pseudo pour pour lequel on affiche le classement
 
-                Raises
-                ------
-                ConnectionAbortedError
-                    Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-                Returns
-                -------
-                 classement_general : list
-                    Liste des dix premiers du classement mondial général comprenant rang, pseudo,nombre de points
-                    en somme cumulée, nombre parties jouées et nombre parties gagnées
-                    ainsi que ceux du pseudo qui demande.
+        Returns
+        -------
+        classement_general : list
+            Liste des dix premiers du classement mondial général comprenant rang, pseudo,nombre de points
+            en somme cumulée, nombre parties jouées et nombre parties gagnées
+            ainsi que ceux du pseudo qui demande.
 
-                """
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -110,29 +110,29 @@ def afficher_classement_general(pseudo):
 
 def afficher_classement_jeu_friends(nom_jeu,pseudo):
     """
-                Fonction qui retourne les 10 premiers du classement entre amis du jeu demandé
+        Fonction qui retourne les 10 premiers du classement entre amis du jeu demandé
 
-                Parameters
-                ----------
-                nom_jeu : str
-                    Nom du jeu demandé pour le classement
-                pseudo : str
-                    Pseudo pour pour lequel on affiche le classement
+        Parameters
+        ----------
+        nom_jeu : str
+            Nom du jeu demandé pour le classement
+        pseudo : str
+            Pseudo pour pour lequel on affiche le classement
 
-                Raises
-                ------
-                ConnectionAbortedError
-                    Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-                Returns
-                -------
-                 classement_jeu_friends : list
-                        Liste des dix premiers du classement entre amis du jeu demandé comprenant rang, pseudo,
-                        nombre de points, nombre parties jouées et nombre parties gagnées
-                        ainsi que ceux du pseudo qui demande.
+        Returns
+        -------
+        classement_jeu_friends : list
+            Liste des dix premiers du classement entre amis du jeu demandé comprenant rang, pseudo,
+            nombre de points, nombre parties jouées et nombre parties gagnées
+            ainsi que ceux du pseudo qui demande.
 
 
-                """
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor= con.cursor()
@@ -170,26 +170,26 @@ def afficher_classement_jeu_friends(nom_jeu,pseudo):
 
 def afficher_classement_general_friends(pseudo):
     """
-                    Fonction qui retourne les 10 premiers du classement entre amis général
+        Fonction qui retourne les 10 premiers du classement entre amis général
 
-                    Parameters
-                    ----------
-                    pseudo : str
-                        Pseudo pour pour lequel on affiche le classement
+        Parameters
+        ----------
+        pseudo : str
+            Pseudo pour pour lequel on affiche le classement
 
-                    Raises
-                    ------
-                    ConnectionAbortedError
-                        Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-                    Returns
-                    -------
-                     classement_general_friends : list
-                        Liste des dix premiers du classement entre amis général comprenant rang, pseudo,nombre de points
-                        en somme cumulée, nombre parties jouées et nombre parties gagnées
-                        ainsi que ceux du pseudo qui demande.
+        Returns
+        -------
+        classement_general_friends : list
+            Liste des dix premiers du classement entre amis général comprenant rang, pseudo,nombre de points
+            en somme cumulée, nombre parties jouées et nombre parties gagnées
+            ainsi que ceux du pseudo qui demande.
 
-                    """
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor= con.cursor()
