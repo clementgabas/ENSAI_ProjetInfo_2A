@@ -1,30 +1,18 @@
-import os
-import traceback
-import csv
-import random
-import json
-import hashlib
 
-from api.codeList import _codes
 
-from flask import Flask, jsonify, request, Blueprint
-from flask_cors import CORS
-from flask_restplus import Api, Resource
-from flask_restplus import abort
-from flask_caching import Cache
-from loguru import logger
+from flask import request
+
 from requests import codes as http_codes
-from api.commons import configuration
 
-import sqlite3
 import requests
-from datetime import datetime
 
 import DAO.gestionParties as DAOparties
 import DAO.gestionParticipation as DAOparticipation
 import DAO.gestionCoups as DAOcoups
 
-from api.Travail.Base import *
+from jeuxservice.plateau.p4grid import GridP4
+
+from api.Travail.Base import make_reponse
 
 
 #@app.route('/home/game/room/turns', methods=['GET']) #dsavoir si c'est son tour de jouer
@@ -63,6 +51,21 @@ def passer_son_tour():
     DAOparties.update_aquiltour(id_partie)
     response = {"status_code": http_codes.ok, "message": "Aquiltour updaté"}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
+
+def get_grille():
+    request.get_json(force=True)
+    id_partie, jeu = request.json.get('id_salle'), request.json.get('jeu')
+
+    #-- on requete la DB pour obtenir l'ensemble des coups qui ont eu lieu dans une partie
+    liste_coups = DAOcoups.get_all_coups(id_partie)
+
+    #-- on envoit cette liste à jeux service qui va simuler tous les coups et renvoyer la grille dans cet etat
+    plateau = GridP4(numHeight=6, numWidth=7, tokenWinNumber=4) #pour l'instant, on ne travaille que avec des parties par default
+    grille = plateau.simulatation(liste_coups)
+
+    response = {"status_code": http_codes.ok, "message": "Grille simulée", 'grid': grille}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
+
 
 
 

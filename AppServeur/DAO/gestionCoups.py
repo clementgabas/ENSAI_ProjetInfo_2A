@@ -129,7 +129,6 @@ def get_old_coup(id_partie, pseudo_joueur):
         raise ValueError
     return old_coup
 
-
 def add_coup_zero(id_partie, pseudo):
     """
         Procédure qui enregistre le coup initial de la partie
@@ -168,3 +167,15 @@ def add_coup_zero(id_partie, pseudo):
     finally:
         con.close()
 
+def get_all_coups(id_partie):
+    try :
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT * FROM Coups WHERE id_partie = ? ORDER BY num_coup ASC", (id_partie,))
+        liste_coups = cursor.fetchall()
+    except :
+        print("erreur dans get_all_coup")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return liste_coups

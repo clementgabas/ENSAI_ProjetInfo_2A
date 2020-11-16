@@ -202,6 +202,10 @@ def est_ce_mon_tour():
 @app.route('/home/game/room/turns', methods=['PUT']) #passer son tour et maj la db pour savoir a qui ca sera le tour apres
 def passer_son_tour():
     return APIpartie.passer_son_tour()
+
+@app.route("/home/game/room/grid", methods=["GET"]) #requetage pour obtenir l'etat de la grille
+def get_grille():
+    return APIpartie.get_grille()
 #----------------------------- APIpartie -------------------------------------------
 
 

@@ -1,10 +1,9 @@
 import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
+from Player.PlayerClass import Player
 
+#from printFunctions import timePrint as print
 
-from printFunctions import timePrint as print
-import requests
-import json
 
 
 class Jouer(AbstractView):
@@ -37,48 +36,52 @@ class Jouer(AbstractView):
         action = inquirer.prompt(self.action_jouer)
         return action
 
-    def get_plateau_de_jeu(self):
-        #-- requetage de l'api pour récupérer le plateau de jeu afin de pouvoir l'afficher
-        pass
-
-    def print_plateau_de_jeu(self):
-        plateau = self.get_plateau_de_jeu()
-        #-- on fait notre blabla mais au final on affiche le tableau de jeu
-        pass
-
-    def jouer_son_tour(self):
-        #1) on récupère et affiche le tableau de jeu
-        self.print_plateau_de_jeu()
-
-        #2) en demande au user son action
-        action = self.get_choix_joueur()
-
-        #3) on envoit à l'api l'action du joueur afin qu'elle puisse nous dire si le coup est valide et pris en compte ou s'il doit rejouer
-        dataPost = {'pseudo': self.pseudo, 'id_salle': self.id_salle, 'coup': action}
-        res = requests.post(addresse, data=json.dumps(dataPost))
-
-        if res.status_code == 200: #le coup est valide et a donc été enregistré et joué
-            print("Le coup a bien été pris en compte.")
-        elif res.status_code == 401: #le coup n'est pas valide et il faut donc rejouer
-            raison = res.json()["raison"]
-            print(f"Le coup n'est pas valide pour la raison suivante : {str(raison)}. Merci de rejouer.")
-            return self.jouer_son_tour()
-
-    def get_etat_partie(self):
-        #1) on requete l'api pour qu'elle vérifie si la partie est finie
-        dataPost = {'id_salle': self.id_salle}
-        res = requests.get(addresse, json.dumps(dataPost))
-
-        etat_partie = res.json()['etat partie']
-        if etat_partie == 'en cours': #la partie n'est pas finie
-            pass
-        elif etat_partie == 'finie':
-            winner = res.json()["winner"]
-            print(f"La partie est finie, le vainqueur est {winner}!")
 
     def jouer(self):
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Resultat = Player1.demander_grille()
+        self.print_message(Resultat)
+        self.print_grille(Resultat["Grille"])
+
         print("la tu joues tkt")
         #self.jouer_son_tour()
         #self.get_etat_partie()
+
+    def print_grille(self, _grid):
+        self.nbcolumn, self.nbline = 7, 6
+
+        line = "|"
+        separator = "-"
+        abscisse = " "
+        for k in range(self.nbcolumn):
+            separator = separator + "----"
+
+            if k == 0:
+                abscisse = 2 * abscisse + str(k) + "   "
+
+            elif k >= 10:
+                abscisse = abscisse + str(k) + "  "
+
+            else:
+                abscisse = abscisse + str(k) + "   "
+
+        print(separator)
+        for i in range(self.nbline - 1, -1, -1):
+            for j in range(self.nbcolumn):
+
+                if _grid[j][i] == 0:
+                    line = line + "   |"
+
+                elif _grid[j][i] == 1:
+                    line = line + " X |"
+
+                elif _grid[j][i] == 2:
+                    line = line + " O |"
+
+            print(line)
+            print(separator)
+            line = "|"
+        print(abscisse)
+
 
 
