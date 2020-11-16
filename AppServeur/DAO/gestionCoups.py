@@ -168,6 +168,23 @@ def add_coup_zero(id_partie, pseudo):
         con.close()
 
 def get_all_coups(id_partie):
+    """
+           Fonction qui retourne tous les coups joués dans la partie
+           Parameters
+           ----------
+           id_partie : int
+               identifiant de la partie
+           Raises
+           ------
+           ConnectionAbortedError
+               Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+           Returns
+           -------
+           liste_coups : list
+                   Tuple contenant l'identifiant de la partie, numéro du coup ,
+                   le pseudo du joueur, la position du joueur et son état au prochain tour pour tous les
+                   coups joués dans la partie.
+       """
     try :
         con = sqlite3.connect(db_address)
         cursor = con.cursor()

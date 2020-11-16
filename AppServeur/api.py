@@ -206,6 +206,11 @@ def passer_son_tour():
 @app.route("/home/game/room/grid", methods=["GET"]) #requetage pour obtenir l'etat de la grille
 def get_grille():
     return APIpartie.get_grille()
+
+@app.route("/home/game/room/grid", methods=["POST"]) #requetage pour jouer son coup
+def jouer_son_tour():
+    return APIpartie.jouer_son_tour()
+
 #----------------------------- APIpartie -------------------------------------------
 
 

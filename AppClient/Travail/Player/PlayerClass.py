@@ -195,3 +195,18 @@ class Player(User):
         else:
             Resultat = self.update_resultat(False, "erreur dans PlayerClass.demander_grille")
         return Resultat
+
+    def jouer_son_tour(self, action):
+        relative_address = "/home/game/room/grid"
+        adresse = make_address(absolute_address, relative_address)
+
+        coup = {'pseudo': self.pseudo, 'id_partie': self.id_salle, 'position': action['action'], 'jeu': self.jeu}
+        res = requests.post(adresse, data=json.dumps(coup))
+
+        if res.status_code == 200:
+            Resultat = self.update_resultat(True, "Le coup a bien été joué.")
+        elif res.status_code == 403:
+            Resultat = self.update_resultat(False, res.json()["message"])
+        else:
+            Resultat = self.update_resultat(False, "erreur dans PlayerClass.jouer_son_tour")
+        return Resultat

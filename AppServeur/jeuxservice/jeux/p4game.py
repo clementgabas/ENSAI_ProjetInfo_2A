@@ -1,6 +1,5 @@
 from jeuxservice.jeux.abstractjeux import AbstractJeu
 from jeuxservice.plateau.p4grid import GridP4
-from jeuxservice.jeux.p4game import PlayerP4
 import DAO.gestionCoups as DAOcoups
 import DAO.gestionParticipation as DAOparticipation
 
@@ -9,8 +8,8 @@ class GameP4(AbstractJeu):
 
     def __init__(self, id_partie):
         AbstractJeu.__init__(id_partie)
-        self.nbcolumn = 10
-        self.nbline = 10
+        self.nbcolumn = 7
+        self.nbline = 6
         self.nbToken = 4
         self.numberOfPlayer = 2
 
@@ -19,6 +18,7 @@ class GameP4(AbstractJeu):
 
     def jouer_un_coup(self, coup, gridClass):
         #coup = {'player' : ... , 'id_partie': ... , 'colonne': ...}
+        from jeuxservice.jeux.p4game import PlayerP4
         playerClass = PlayerP4(coup[0],
                                color= DAOparticipation.get_couleur(pseudo=coup[0], id_partie=coup[1]),
                                ordre= DAOparticipation.get_position_ordre(pseudo=coup[0], id_partie=coup[1])

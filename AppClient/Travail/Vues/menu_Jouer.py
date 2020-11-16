@@ -17,7 +17,7 @@ class Jouer(AbstractView):
             self.action_jouer = [
                 {
                     'type': 'input',
-                    'name': 'action jeu oie',
+                    'name': 'action',
                     'message' : "Pour jeter les dés, veuillez appuyer sur la touche entrée."
                 }
             ]
@@ -25,16 +25,12 @@ class Jouer(AbstractView):
             self.action_jouer = [
                 {
                     'type': 'input',
-                    'name': 'action jeu p4',
+                    'name': 'action',
                     'message': "Veuillez saisir le numéro de la colonne dans laquelle vous souhaitez jouer votre pion."
                 }
             ]
         else:
             self.action_jouer = [{'type':'list', 'message':'bug dans classe jouer.'}]
-
-    def get_choix_joueur(self):
-        action = inquirer.prompt(self.action_jouer)
-        return action
 
 
     def jouer(self):
@@ -43,9 +39,13 @@ class Jouer(AbstractView):
         self.print_message(Resultat)
         self.print_grille(Resultat["Grille"])
 
-        print("la tu joues tkt")
-        #self.jouer_son_tour()
-        #self.get_etat_partie()
+        self.jouer_son_tour()
+
+        Resultat = Player1.demander_grille()
+        self.print_message(Resultat)
+        self.print_grille(Resultat["Grille"])
+
+
 
     def print_grille(self, _grid):
         self.nbcolumn, self.nbline = 7, 6
@@ -53,7 +53,7 @@ class Jouer(AbstractView):
         line = "|"
         separator = "-"
         abscisse = " "
-        for k in range(self.nbcolumn):
+        for k in range(self.nbline):
             separator = separator + "----"
 
             if k == 0:
@@ -66,8 +66,8 @@ class Jouer(AbstractView):
                 abscisse = abscisse + str(k) + "   "
 
         print(separator)
-        for i in range(self.nbline - 1, -1, -1):
-            for j in range(self.nbcolumn):
+        for i in range(self.nbcolumn - 1, -1, -1):
+            for j in range(self.nbline):
 
                 if _grid[j][i] == 0:
                     line = line + "   |"
@@ -84,4 +84,7 @@ class Jouer(AbstractView):
         print(abscisse)
 
 
-
+    def jouer_son_tour(self):
+        action = inquirer.prompt(self.action_jouer)
+        #actoion --> {'action': '2'}
+        return action
