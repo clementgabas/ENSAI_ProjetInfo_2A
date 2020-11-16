@@ -4,6 +4,30 @@ db_address = DBgestion.get_db_address()
 
 
 def afficher_classement_jeu(nom_jeu,pseudo):
+    """
+            Fonction qui retourne les 10 premiers du classement mondial du jeu demandé
+
+            Parameters
+            ----------
+            nom_jeu : str
+                Nom du jeu demandé pour le classement
+            pseudo : str
+                Pseudo pour pour lequel on affiche le classement
+
+            Raises
+            ------
+            ConnectionAbortedError
+                Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+            Returns
+            -------
+             classement_jeu : list
+                    Liste des dix premiers du classement mondial du jeu demandé comprenant rang, pseudo,
+                    nombre de points, nombre parties jouées et nombre parties gagnées
+                    ainsi que ceux du pseudo qui demande.
+
+
+            """
     try:
         con = sqlite3.connect(db_address)
         cursor= con.cursor()
@@ -34,15 +58,37 @@ def afficher_classement_jeu(nom_jeu,pseudo):
     return classement_jeu
 
 def afficher_classement_general(pseudo):
+    """
+                Fonction qui retourne les 10 premiers du classement mondial général
+
+                Parameters
+                ----------
+                pseudo : str
+                    Pseudo pour pour lequel on affiche le classement
+
+                Raises
+                ------
+                ConnectionAbortedError
+                    Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+                Returns
+                -------
+                 classement_general : list
+                    Liste des dix premiers du classement mondial général comprenant rang, pseudo,nombre de points
+                    en somme cumulée, nombre parties jouées et nombre parties gagnées
+                    ainsi que ceux du pseudo qui demande.
+
+                """
     try:
         con = sqlite3.connect(db_address)
-        cursor= con.cursor()
+        cursor = con.cursor()
         cursor.execute("SELECT RANK () OVER ( ORDER BY SUM(nb_points) DESC, nb_parties_jouees ASC ) as rang,"
                        " pseudo, SUM(nb_points) AS nb_tot, nb_parties_jouees ,nb_parties_gagnees "
                        "FROM Scores  GROUP BY pseudo ORDER BY rang ASC LIMIT 10")
 
         cursor2 = con.cursor()
-        cursor2.execute("SELECT pseudo, SUM(nb_points), nb_parties_jouees ,nb_parties_gagnees FROM Scores WHERE pseudo = ? ", (pseudo,))
+        cursor2.execute("SELECT pseudo, SUM(nb_points), nb_parties_jouees ,nb_parties_gagnees"
+                        " FROM Scores WHERE pseudo = ? ", (pseudo,))
 
         classement_general_user = cursor2.fetchall()
         classement_general_all = cursor.fetchall()
@@ -63,6 +109,30 @@ def afficher_classement_general(pseudo):
     return classement_general
 
 def afficher_classement_jeu_friends(nom_jeu,pseudo):
+    """
+                Fonction qui retourne les 10 premiers du classement entre amis du jeu demandé
+
+                Parameters
+                ----------
+                nom_jeu : str
+                    Nom du jeu demandé pour le classement
+                pseudo : str
+                    Pseudo pour pour lequel on affiche le classement
+
+                Raises
+                ------
+                ConnectionAbortedError
+                    Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+                Returns
+                -------
+                 classement_jeu_friends : list
+                        Liste des dix premiers du classement entre amis du jeu demandé comprenant rang, pseudo,
+                        nombre de points, nombre parties jouées et nombre parties gagnées
+                        ainsi que ceux du pseudo qui demande.
+
+
+                """
     try:
         con = sqlite3.connect(db_address)
         cursor= con.cursor()
@@ -99,6 +169,27 @@ def afficher_classement_jeu_friends(nom_jeu,pseudo):
     return classement_jeu_friends
 
 def afficher_classement_general_friends(pseudo):
+    """
+                    Fonction qui retourne les 10 premiers du classement entre amis général
+
+                    Parameters
+                    ----------
+                    pseudo : str
+                        Pseudo pour pour lequel on affiche le classement
+
+                    Raises
+                    ------
+                    ConnectionAbortedError
+                        Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+                    Returns
+                    -------
+                     classement_general_friends : list
+                        Liste des dix premiers du classement entre amis général comprenant rang, pseudo,nombre de points
+                        en somme cumulée, nombre parties jouées et nombre parties gagnées
+                        ainsi que ceux du pseudo qui demande.
+
+                    """
     try:
         con = sqlite3.connect(db_address)
         cursor= con.cursor()
@@ -122,7 +213,8 @@ def afficher_classement_general_friends(pseudo):
             if pseudo in i :
                 pos_friends_user.append(i)
         if pos_friends_user==[]:
-            pos_friends_user.append(['hors classement',classement_general_friends_user[0][0],classement_general_friends_user[0][1]])
+            pos_friends_user.append(['hors classement',
+                                     classement_general_friends_user[0][0],classement_general_friends_user[0][1]])
 
         classement_general_friends = classement_general_friends_all + [["","",""]] + pos_friends_user
     except:

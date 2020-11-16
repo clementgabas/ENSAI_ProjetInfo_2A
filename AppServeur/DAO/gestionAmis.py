@@ -146,6 +146,28 @@ def get_liste_amis(pseudo):
     return liste_amis
 
 def get_est_connecte_liste_amis(liste_amis):
+    """
+        Fonction qui retourne la liste des amis
+
+        Parameters
+        ----------
+        liste_amis : list
+            Liste de tuple regroupant pseudo et date d'ajout des amis.
+
+        Raises
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        Returns
+        -------
+        si liste_amis existe :
+        liste : list
+            Liste des amis contenant pseudo date d'ajout, son état : Connecté ou Déconnecté,
+             ansi que  son status : En partie ou Pas en partie.
+        sinon :
+        liste_amis : list
+        """
     if liste_amis:
         #liste_amis est de la forme [('pseudo', 'date'), ('pseudo', 'date')]
         liste = []
@@ -177,7 +199,7 @@ def get_est_connecte_liste_amis(liste_amis):
             elif en_partie_ami == 'False':
                 en_partie_ami = "Pas en partie"
             else:
-                en_partie_ami = 'ni true ni false c est etrange2'
+                en_partie_ami = 'ni true ni false c est etrange'
             liste.append((pseudo_ami, date_ami, est_connecte_ami, en_partie_ami))
         return liste
     else:
