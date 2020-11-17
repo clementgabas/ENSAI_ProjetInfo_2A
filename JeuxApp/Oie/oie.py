@@ -162,6 +162,9 @@ class Dice:
         for i in range(self._numofdice):
             self._diceresult[i] = random.randint(1, self._numoffaces)
 
+    def Get_numOfDice(self):
+        return self._numofdice
+
     def dicevalue(self, num):
 
         """
@@ -662,7 +665,10 @@ class Game:
         if currentPlayer.test_waitingturn() == 1:  # test si le joueur ne doit pas passer son tour
             actualBox = currentPlayer.get_actualbox()  # récupère sa case actuelle
             self.gooseTray.throw()  # lancer les dés
-            print("    lancer de dés:", self.gooseTray._diceresult[0], "+", self.gooseTray._diceresult[1], "=",
+            sumofdiceLabel = str(self.gooseTray._diceresult[0])
+            for i in range(1, self.gooseTray.Get_numOfDice()):
+                sumofdiceLabel += "+" + str(self.gooseTray._diceresult[i])
+            print("    lancer de dés:", sumofdiceLabel, "=",
             self.gooseTray.sumofdices())  # affiche par ex 2+3 = 5
             currentPlayer.add_dice(self.gooseTray.sumofdices())  # on ajoute dés à case actuelle
             currentPlayer.set_actualbox(self.gooseTray.compute_lastbox(
