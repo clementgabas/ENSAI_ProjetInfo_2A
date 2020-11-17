@@ -6,11 +6,12 @@ Created on Wed Oct 28 09:12:37 2020
 @author: romanepares
 """
 
+
 # -- gestion de l'affichage couleur dans le cmd.exe de Windows.
 # -- Si vous utilisez ansicon.exe ou un terminal de commande prennant en charge les séquences ANSI, ce package n'est pas nécessaire.
-#import colorama
+import colorama
 
-#colorama.init()
+colorama.init()
 
 
 class Player:
@@ -21,9 +22,9 @@ class Player:
     def Set_Param(self, name, color):
         self._name = name
         self._color = color
-        if self._color == "Jaune":  # Croix A MODIFIER
+        if self._color == "Jaune":
             self._token = 1
-        elif self._color == "Rouge":  # Rond A MODIFIER
+        elif self._color == "Rouge":
             self._token = 2
 
     def Get_Token(self):
@@ -156,9 +157,10 @@ class Grid:
 
 class Game:
     gameTurn = 0
-    numberOfPlayer = 2
+    numberOfPlayer = 0
     actualPlayerIndex = 0
     val_column_input = -1
+
     def __init__(self):
         self.listOfPlayers = []
         self.nbcolumn = 10
@@ -171,29 +173,29 @@ class Game:
         abscisse = " "
 
         for k in range(self.nbcolumn):
-            separator = separator + "----"
+            separator = separator + "-----"
 
             if k == 0:
-                abscisse = 2 * abscisse + str(k) + "   "
+                abscisse = 2 * abscisse + str(k) + "    "
 
             elif k >= 10:
-                abscisse = abscisse + str(k) + "  "
+                abscisse = abscisse + str(k) + "   "
 
             else:
-                abscisse = abscisse + str(k) + "   "
+                abscisse = abscisse + str(k) + "    "
 
         print(separator)
         for i in range(self.nbline - 1, -1, -1):
             for j in range(self.nbcolumn):
 
                 if self.power4Grid._gridList[j][i] == 0:
-                    line = line + "   |"
+                    line = line + "    |"
 
                 elif self.power4Grid._gridList[j][i] == 1:
-                    line = line + " X |"
+                    line = line + " \033[30;43;1m  \033[0m |"
 
                 elif self.power4Grid._gridList[j][i] == 2:
-                    line = line + " O |"
+                    line = line + " \033[30;41;1m  \033[0m |"
 
             print(line)
             print(separator)
@@ -213,8 +215,8 @@ class Game:
                 endRequest = True
 
             elif request in ("M", "m"):
+                endRequestCol = False
                 while not endRequest:
-                    endRequestCol = False
                     while not endRequestCol:
                         _nbcol = input("Nombre de colonnes (entre 5 et 20) :")
 
@@ -266,6 +268,7 @@ class Game:
         self.power4Grid = Grid(self.nbline, self.nbcolumn, self.nbToken)  # nb lignes, nb colonnes, nb jetons alignés
 
     def set_Players(self, playerClass):
+        self.numberOfPlayer += 1
         self.listOfPlayers.append(playerClass)
 
     def NewGameTurn(self):
@@ -301,32 +304,32 @@ class Game:
             return False
 
     def TestEndOfGame(self):
-        if self.power4Grid.TestEndOfGame():
+        if not self.power4Grid.TestIfWin() and self.power4Grid.TestEndOfGame():
             print("Personne ne gagne")
             return True
         else:
             return False
 
     def Play(self):
-            test_input = False
+        test_input = False
 
-            while test_input == False:
-                column_input = input(
-                    self.listOfPlayers[self.actualPlayerIndex]._name + " choisissez une colonne pour votre jeton (allant de 0 à " + str(
-                        self.nbcolumn - 1) + "):")
-                try:
-                    val_column_input = int(column_input)
-                    if 0 <= val_column_input <= (self.nbcolumn - 1):
-                        if self.power4Grid.TestEndColumn(val_column_input):
-                            print("La colonne est pleine!")
-                        else:
-                            test_input = True
+        while test_input == False:
+            column_input = input(
+                self.listOfPlayers[
+                    self.actualPlayerIndex]._name + " choisissez une colonne pour votre jeton (allant de 0 à " + str(
+                    self.nbcolumn - 1) + "):")
+            try:
+                val_column_input = int(column_input)
+                if 0 <= val_column_input <= (self.nbcolumn - 1):
+                    if self.power4Grid.TestEndColumn(val_column_input):
+                        print("La colonne est pleine!")
+                    else:
+                        test_input = True
 
-                except ValueError:
-                    print("Le numero de colonne n'est pas valide !")
-            self.power4Grid.Throw(val_column_input, self.listOfPlayers[self.actualPlayerIndex].Get_Token())
-            self.printGrid()
-
+            except ValueError:
+                print("Le numero de colonne n'est pas valide !")
+        self.power4Grid.Throw(val_column_input, self.listOfPlayers[self.actualPlayerIndex].Get_Token())
+        self.printGrid()
 
 
 # main
@@ -336,12 +339,11 @@ import sys
 
 sys.path.insert(1, '/Classes')
 
-#from Game import *
+# from Game import *
 
-#from game import Game
+# from game import Game
 
-
-#main
+# main
 gameP4 = Game()
 gameP4.Init()
 player1 = Player()
@@ -362,12 +364,12 @@ print("\n Début de partieeeeeeeeee ! \n")
 gameP4.printGrid()
 
 while endOfGame == False:
-    num_coup = gameP4.NewGameTurn()#***bdd***
+    num_coup = gameP4.NewGameTurn()  # ***bdd***
     for j in range(gameP4.Get_NumberPlayers()):
         gameP4.Set_CurrentPlayer(j)  # affecte le joueur actuel (celui qui joue)
-        pseudo_joueur = gameP4.Get_PlayerName()#***bdd***
+        pseudo_joueur = gameP4.Get_PlayerName()  # ***bdd***
         gameP4.Play()
-        position = gameP4.Get_ColumnNumber()#***bdd***
+        position = gameP4.Get_ColumnNumber()  # ***bdd***
         endOfGame = gameP4.TestIfWin()
         endOfGame |= gameP4.TestEndOfGame()
         if endOfGame == True:
