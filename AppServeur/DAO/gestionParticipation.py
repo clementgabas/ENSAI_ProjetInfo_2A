@@ -1,7 +1,7 @@
 import sqlite3
 import DAO.gestion as DBgestion
 db_address = DBgestion.get_db_address()
-liste_couleurs_autorisees = ['bleu', 'rouge', 'vert', 'jaune', 'magenta', 'cyan', 'gris']
+liste_couleurs_autorisees = ['bleu', 'rouge', 'vert', 'jaune', 'magenta', 'cyan', 'blanc']
 
 def update_est_pret(pseudo, id_partie, TrueOrFalse):
     """
@@ -367,6 +367,19 @@ def get_all_players(id_partie):
         liste_players = cursor.fetchall()[0]
     except:
         print("erreur dans get_all_players")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return liste_players
+
+def get_liste_couleur(id_partie):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT couleur FROM Participation WHERE id_partie = ? ORDER BY ordre", (id_partie,))
+        liste_players = cursor.fetchall()
+    except:
+        print("erreur dans get_liste_couleur")
         raise ConnectionAbortedError
     finally:
         con.close()

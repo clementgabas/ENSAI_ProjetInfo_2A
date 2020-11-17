@@ -70,7 +70,12 @@ def get_grille():
 
     print(f"La grille a été simulée dans la salle {id_partie}")
 
-    response = {"status_code": http_codes.ok, "message": "Grille simulée", 'grid': grille}  # code 200
+    #-- on recupère aussi une liste donnant les couleurs dans l'ordre pour l'affichage couleur
+    #liste = [rouge, bleu, vert] car le joueur etant premier dans l'ordre a la couleur rouge, le 2nd vert, etc...
+    liste_couleur = DAOparticipation.get_liste_couleur(id_partie)
+    print(f"La liste des couleurs ordonnee fournit {liste_couleur}")
+
+    response = {"status_code": http_codes.ok, "message": "Grille simulée", 'grid': grille, 'liste_couleur_ordonnee': liste_couleur}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
 
 #@app.route("/home/game/room/grid", methods=["POST"]) #requetage pour jouer son coup
@@ -141,6 +146,8 @@ def gestion_fin_partie():
         print(f"Liste des joueurs dans la salle : " + str(liste_players))
         for player in liste_players:
             DAOparties.delete_from_participation(id_partie, player, -1)
+        #on supprimer egalement tous les coups de la table Coups
+        DAOcoups.delete_all_coups(id_partie)
         DAOparties.delete_partie(id_partie)
         print(f"La salle {id_partie} était vide et a donc été supprimée")
 

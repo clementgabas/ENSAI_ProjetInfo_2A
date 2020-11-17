@@ -2,6 +2,8 @@ import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 from Player.PlayerClass import Player
 import time
+import colorama
+colorama.init()
 
 #from printFunctions import timePrint as print
 
@@ -38,7 +40,7 @@ class Jouer(AbstractView):
         Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
         Resultat = Player1.demander_grille()
         self.print_message(Resultat)
-        self.print_grille(Resultat["Grille"])
+        self.print_grille(Resultat["Grille"], Resultat["liste_couleur_ordonnee"])
 
         Resultat1 = Player1.demander_si_vainqueur()
         if not Resultat1["Statut"]:
@@ -51,7 +53,7 @@ class Jouer(AbstractView):
 
             Resultat3 = Player1.demander_grille()
             self.print_message(Resultat3)
-            self.print_grille(Resultat3["Grille"])
+            self.print_grille(Resultat3["Grille"], Resultat3["liste_couleur_ordonnee"])
 
             Resultat4 = Player1.demander_si_vainqueur()
             if Resultat4["Statut"]:
@@ -62,8 +64,24 @@ class Jouer(AbstractView):
 
 
 
-    def print_grille(self, _grid):
+    def print_grille(self, _grid, liste_couleur_ordonnee):
         self.nbcolumn, self.nbline = 7, 7
+
+        def get_symbole_couleur(_color):
+            if _color == "rouge":
+                return " \033[30;41;1m  \033[0m"
+            elif _color == "vert":
+                return " \033[30;42;1m  \033[0m"
+            elif _color == "jaune":
+                return " \033[30;43;1m  \033[0m"
+            elif _color == "bleu":
+                return " \033[30;44;1m  \033[0m"
+            elif _color == "magenta":
+                return " \033[30;45;1m  \033[0m"
+            elif _color == "cyan":
+                return " \033[30;46;1m  \033[0m"
+            elif _color == "blanc":
+                return " \033[30;47;1m  \033[0m"
 
         line = "|"
         separator = "-"
@@ -88,10 +106,12 @@ class Jouer(AbstractView):
                     line = line + "   |"
 
                 elif _grid[j][i] == 1:
-                    line = line + " X |"
+                    carre_col = get_symbole_couleur(liste_couleur_ordonnee[0][0])
+                    line = line + carre_col + "|"
 
                 elif _grid[j][i] == 2:
-                    line = line + " O |"
+                    carre_col = get_symbole_couleur(liste_couleur_ordonnee[1][0])
+                    line = line + carre_col + "|"
 
             print(line)
             print(separator)

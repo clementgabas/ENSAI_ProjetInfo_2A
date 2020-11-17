@@ -192,6 +192,7 @@ class Player(User):
         if res.status_code == 200:
             Resultat = self.update_resultat(True)
             Resultat["Grille"] = res.json()["grid"]
+            Resultat["liste_couleur_ordonnee"] = res.json()["liste_couleur_ordonnee"]
         else:
             Resultat = self.update_resultat(False, "erreur dans PlayerClass.demander_grille")
         return Resultat

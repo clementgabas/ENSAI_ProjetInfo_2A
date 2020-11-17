@@ -197,3 +197,15 @@ def get_all_coups(id_partie):
         con.close()
     return liste_coups
 
+def delete_all_coups(id_partie):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("DELETE FROM Coups WHERE id_partie = ?;", (id_partie,))
+        con.commit()
+    except:
+        print("erreur dans delete_all_coups")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()

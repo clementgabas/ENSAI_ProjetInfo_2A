@@ -580,9 +580,9 @@ class Game:
             return "\033[34;49;1m"  # \033[0m"
         elif _color == "Magenta":
             return "\033[35;49;1m"  # \033[0m"
-        elif _color == "Cyan":
+        elif _color == "cyan":
             return "\033[36;40;1m"  # \033[0m"
-        elif _color == "Noir":
+        elif _color == "gris":
             return "\033[30;40;1m"  # \033[0m"
 
     def Set_NormalColor(self):
