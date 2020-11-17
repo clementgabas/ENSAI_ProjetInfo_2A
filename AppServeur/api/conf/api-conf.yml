@@ -1,4 +1,4 @@
 version: 1.0.0
 host: localhost
 port: 9090
-url_prefix: covid-api-1
+url_prefix: jeux_api
