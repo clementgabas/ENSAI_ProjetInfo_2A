@@ -20,7 +20,7 @@ class Menu_Accueil(AbstractView):
                 'message': "Que souhaitez-vous faire ?",
                 'choices': [
                     'Me connecter',
-                    'Jouer en tant qu\'anonyme',
+                    #'Jouer en tant qu\'anonyme',
                     'Créer un compte utilisateur',
                     inquirer.Separator(),
                     'Quitter l\'application',

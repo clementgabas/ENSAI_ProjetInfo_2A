@@ -24,7 +24,7 @@ class Salon(AbstractView):
                 'message' : "Que souhaitez-vous faire ?",
                           'choices' : [
                               'Voir les membres de la salle',
-                              'Modifier les paramètres de la salle',
+                              #'Modifier les paramètres de la salle',
                               "Être prêt",
                               inquirer.Separator(),
                               'Quitter la salle',
