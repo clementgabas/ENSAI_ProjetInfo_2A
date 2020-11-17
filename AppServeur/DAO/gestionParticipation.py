@@ -358,3 +358,16 @@ def number_of_ready(id_partie):
     finally:
         con.close()
     return nombre
+
+def get_all_players(id_partie):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT pseudo FROM Participation WHERE id_partie = ?", (id_partie,))
+        liste_players = cursor.fetchall()[0]
+    except:
+        print("erreur dans get_all_players")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return liste_players

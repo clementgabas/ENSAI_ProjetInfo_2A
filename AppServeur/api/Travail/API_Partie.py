@@ -61,6 +61,7 @@ def get_grille():
 
     #-- on requete la DB pour obtenir l'ensemble des coups qui ont eu lieu dans une partie
     liste_coups = DAOcoups.get_all_coups(id_partie)
+    print("Liste des coups : " + str(liste_coups))
 
     #-- on envoit cette liste à jeux service qui va simuler tous les coups et renvoyer la grille dans cet etat
     plateau = GridP4(numHeight=7, numWidth=7, tokenWinNumber=4) #pour l'instant, on ne travaille que avec des parties par default
@@ -124,11 +125,22 @@ def gestion_fin_partie():
     id_partie, jeu, pseudo, win_bool = request.json.get('id_partie'), request.json.get('jeu').upper(), request.json.get('pseudo'), request.json.get('win_bool')
 
     #-- on retire le joueur de la table participation
-    DAOparties.delete_from_participation(id_partie, pseudo, 0) #deletfromparticipation meyt directement a jour le nb_de_place
+    #en fait, on ne le retire pas de la table participation sinon les fin de parties vont bug chez les autres vu que les imulations ne pourront plus marcher.
+    #du coup, on met a jour le nb_de_place dans la table partie mais on ne retire pas de la table participation
+    #et seulement quand on supprime la table partie, on supprime toutes les occurances dans la table participatipon
+
+    nb_places_dispos = DAOparties.check_cb_places_libres(id_partie)
+    DAOparties.update_parties_nb_place(id_partie, nb_places_dispos + 1)
+
     print(f"L'utilisateur {pseudo} a bien été retiré de la salle {id_partie}")
     nbr_places_restantes = DAOparties.check_cb_places_libres(id_partie)
     print(f"La salle {id_partie} a dorenavant {nbr_places_restantes} de libres.")
     if DAOparties.get_nbr_participants(id_partie)==0: #si c'était le dernier joueur dans la salle, on supprime la salle
+        #avant de supprimer la salle, on récupère la liste de tous les joueurs de la salle
+        liste_players = DAOparticipation.get_all_players(id_partie)
+        print(f"Liste des joueurs dans la salle : " + str(liste_players))
+        for player in liste_players:
+            DAOparties.delete_from_participation(id_partie, player, -1)
         DAOparties.delete_partie(id_partie)
         print(f"La salle {id_partie} était vide et a donc été supprimée")
 

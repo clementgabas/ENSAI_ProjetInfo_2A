@@ -282,7 +282,8 @@ def delete_from_participation(id_partie, pseudo, nb_places):
         cursor = con.cursor()
         cursor.execute("DELETE FROM Participation WHERE pseudo = ? AND id_partie = ?;", (pseudo, id_partie))
         con.commit()
-        update_parties_nb_place(id_partie, nb_places + 1)
+        if nb_places != -1:
+            update_parties_nb_place(id_partie, nb_places + 1)
     except:
         print("erreur dans delete_from_participation")
         con.rollback()
