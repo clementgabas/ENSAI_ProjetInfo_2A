@@ -29,6 +29,15 @@ from api.Travail.Base import *
 
 #@app.route('/home/main/profil/classment/jeu', methods=['GET']) #affichage classement jeu de l'oie
 def afficher_classement():
+    """
+    Fonction qui traite la requete d'affichage du classement d'un jeu.
+
+    :return
+    --------
+    Code 200 :
+        Affichage réussi.
+    """
+
     request.get_json(force=True)
     nom_jeu = request.json.get("nom_jeu")
     pseudo = request.json.get("pseudo")
@@ -47,6 +56,14 @@ def afficher_classement():
 
 #@app.route('/home/main/profil/classment/general', methods=['GET']) #affichage classement général
 def afficher_classement_general():
+    """
+        Fonction qui traite la requete d'affichage du classement général.
+
+        :return
+        --------
+        Code 200 :
+            Affichage réussi.
+        """
     request.get_json(force=True)
     pseudo = request.json.get("pseudo")
     print(f" Demande de {pseudo} d'accès au classement général")

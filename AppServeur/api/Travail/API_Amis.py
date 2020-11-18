@@ -30,6 +30,14 @@ from api.Travail.Base import *
 #----------------------------- Friends ---------------------------------------------
 #@app.route('/home/main/profil/friends', methods=['GET']) #affichage liste amis
 def afficher_liste_amis():
+    """
+    Fonction qui traite la requete d'affichage la liste d'amis.
+
+    :return
+    --------
+    Code 200 :
+        Affichage réussie.
+    """
     request.get_json(force=True)
     pseudo = request.json.get('pseudo')
     print(f"Demande d'affichage de la liste d'amis de pseudo = {pseudo}.")
@@ -43,6 +51,18 @@ def afficher_liste_amis():
 
 #@app.route('/home/main/profil/friends', methods=['POST']) #ajout d'un ami
 def ajout_ami():
+    """
+    Fonction qui traite la requete d'ajout d'un utilisateur dans la liste d'amis.
+
+    :returns
+    --------
+    Code 404 :
+        - Si l'identifiant fourni n'existe pas.
+    Code 208 :
+        - Si l'utilisateur est déjà dans la liste d'amis.
+    Code 200 :
+        Ajout réussi.
+    """
     request.get_json(force=True)
     pseudo, pseudo_ami = request.json.get('pseudo'), request.json.get('pseudo_ami')
     print(f"Demande de pseudo = {pseudo} d'ajouter pseudo = {pseudo_ami} à sa liste d'amis.")
@@ -68,6 +88,18 @@ def ajout_ami():
 
 #@app.route('/home/main/profil/friends', methods=['DELETE']) #suppression d'un ami
 def supp_ami():
+    """
+    Fonction qui traite la requete de suppression d'un utilisateur de la liste d'amis.
+
+    :returns
+    --------
+    Code 404 :
+        - Si l'identifiant fourni n'existe pas.
+    Code 208 :
+        - Si l'utilisateur n'est pas dans la liste d'amis.
+    Code 200 :
+        Suppression réussie.
+    """
     request.get_json(force=True)
     pseudo, pseudo_ami = request.json.get('pseudo'), request.json.get('pseudo_ami')
     print(f"Demande de pseudo = {pseudo} de supprimer pseudo = {pseudo_ami} de sa liste d'amis.")

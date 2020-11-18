@@ -22,13 +22,13 @@ def add_new_coup(id_partie, num_coup , pseudo_joueur, new_position, prochain_tou
         prochain_tour : int
             entier qui défini si le joueur peut jouer son coup la prochaine fois que ce sera son tour
 
-        Raises
+        Raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
              un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Returns
+        Return
         -------
         None.
     """
@@ -54,15 +54,14 @@ def get_last_coup(id_partie): #get
         id_partie : int
             identifiant de la partie
 
-        Raises
+        Raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
-
         ValueError
             Si une erreur a lieu dans la valeur récupéré lors de la requète SQL
 
-        Returns
+        Return
         -------
         last_coup : tuple
             Tuple contenant le numéro du dernier coup joué dans la partie
@@ -98,11 +97,10 @@ def get_old_coup(id_partie, pseudo_joueur):
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
-
         ValueError
             Si une erreur a lieu dans la valeur prochain_tour est superieure à 1 lors de la requète SQL
 
-        Returns
+        Return
         -------
         old_coup : tuple
                 Tuple contenant l'identifiant de la partie, numéro du dernier coup joué par le joueur,
@@ -142,13 +140,13 @@ def add_coup_zero(id_partie, pseudo):
         pseudo_joueur : str
                 pseudo du joueur qui a joué ,ou non, le coup à ajouter
 
-        Raises
+        Raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
              un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Returns
+        Return
         -------
         None.
     """
@@ -169,16 +167,19 @@ def add_coup_zero(id_partie, pseudo):
 
 def get_all_coups(id_partie):
     """
-           Fonction qui retourne tous les coups joués dans la partie
+           Fonction qui retourne tous les coups joués dans la partie.
+
            Parameters
            ----------
            id_partie : int
                identifiant de la partie
-           Raises
+
+           Raise
            ------
            ConnectionAbortedError
                Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
-           Returns
+
+           Return
            -------
            liste_coups : list
                    Tuple contenant l'identifiant de la partie, numéro du coup ,
@@ -198,6 +199,25 @@ def get_all_coups(id_partie):
     return liste_coups
 
 def delete_all_coups(id_partie):
+    """
+        Procédure qui supprime tous le coups de la partie.
+
+        Parameter
+        ----------
+        id_partie : int
+            identifiant de la partie auquelle on veut supprimer tous les coups
+
+
+        Raise
+        ------
+        ConnectionAbortedError
+            Si une erreur se produit au cours de la communication avec la DB,
+             un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
+
+        Return
+        -------
+        None.
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()

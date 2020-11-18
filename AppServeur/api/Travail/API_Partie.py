@@ -17,6 +17,18 @@ from api.Travail.Base import make_reponse
 
 #@app.route('/home/game/room/turns', methods=['GET']) #dsavoir si c'est son tour de jouer
 def est_ce_mon_tour():
+    """
+    Fonction qui traite la requete de vérification si c'est le tour d'un utilisateur
+
+    :returns
+    --------
+    Code 449 :
+        - Si ce n'est pas le tour de l'utilisateur.
+    Code 403 :
+        - Si l'utilisateur ne peut pas jouer son tour.
+    Code 200 :
+        Si c'est le tour de l'utilisateur.
+    """
     request.get_json(force=True)
     id_partie, pseudo = request.json.get('id_salle'), request.json.get('pseudo')
     print(f"L'utilisateur {pseudo} demande si c'est son tour dans la salle {id_partie}.")
@@ -44,6 +56,14 @@ def est_ce_mon_tour():
 
 #@app.route('/home/game/room/turns', methods=['PUT']) #passer son tour et maj la db pour savoir a qui ca sera le tour apres
 def passer_son_tour():
+    """
+    Fonction qui traite la requete de passage de tour d'un joueur.
+
+    :return
+    --------
+    Code 200 :
+        La requète réussie.
+    """
     request.get_json(force=True)
     id_partie, pseudo = request.json.get('id_salle'), request.json.get('pseudo')
     print(f"Le joueur {pseudo} passe son tour dans la salle {id_partie}")
@@ -55,6 +75,14 @@ def passer_son_tour():
 
 #@app.route("/home/game/room/grid", methods=["GET"]) #requetage pour obtenir l'etat de la grille
 def get_grille():
+    """
+    Fonction qui traite la requete de recuperation de la grille de jeu.
+
+    :return
+    --------
+    Code 200 :
+        La requète réussie.
+    """
     request.get_json(force=True)
     id_partie, jeu = request.json.get('id_partie'), request.json.get('jeu')
     print(f"La grille est demandée dans la salle {id_partie}")
@@ -80,6 +108,19 @@ def get_grille():
 
 #@app.route("/home/game/room/grid", methods=["POST"]) #requetage pour jouer son coup
 def jouer_son_tour():
+    """
+    Fonction qui traite la requete "jouer son tour" d'un utilisateur
+
+    :returns
+    --------
+    Code 401 :
+        - Si l'identifiant fourni n'existe pas.
+        - Si le mot de passe est incorrecte.
+    Code 403 :
+        - Si l'utilisateur est déjà connecté.
+    Code 200 :
+        La Connexion réussie.
+    """
     request.get_json(force=True)
     id_partie, pseudo, position, jeu = request.json.get('id_partie'), request.json.get('pseudo'), request.json.get('position'), request.json.get('jeu')
     if jeu.lower() == "p4":
@@ -110,6 +151,14 @@ def jouer_son_tour():
 
 #@app.route("/home/game/room/grid", methods=["PUT"])
 def demander_si_vainqueur():
+    """
+    Fonction qui traite la requete de vérification si il y a un vainqueur.
+
+    :return
+    --------
+    Code 200 :
+        Si il y a bien un vainqueur.
+    """
     request.get_json(force=True)
     id_partie, jeu = request.json.get('id_partie'), request.json.get('jeu')
     print(f"Demande de savoir si la grille de la salle {id_partie} est gagnante dans le jeu {jeu} ")
@@ -126,6 +175,15 @@ def demander_si_vainqueur():
 
 #@app.route("/home/game/room/end", methods=["PUT"])
 def gestion_fin_partie():
+    """
+    Fonction qui traite la requete de gestion de fin de partie.
+
+    :return
+    --------
+    Code 200 :
+        Requete bien effecuté.
+    """
+
     request.get_json(force=True)
     id_partie, jeu, pseudo, win_bool = request.json.get('id_partie'), request.json.get('jeu').upper(), request.json.get('pseudo'), request.json.get('win_bool')
 

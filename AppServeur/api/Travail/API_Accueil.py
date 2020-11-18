@@ -30,6 +30,18 @@ from api.Travail.Base import *
 
 #@app.route('/home/users', methods = ['POST']) #creation d'un nouvel utilisateur
 def new_user():
+    """
+    Fonction qui traite la requète de création d'un nouvel utilisateur
+
+    :returns
+    --------
+    Code 409 :
+        - Si l'identifiant est déjà utilisé.
+        - Si  le pseudo est déjà utilisé.
+
+    Code 200 :
+        Si l'utilisateur a bien été ajouté à la base de donnée
+    """
     request.get_json(force=True)
     username, hpassword, pseudo = request.json.get('username'), request.json.get('hpassword'),\
                                   request.json.get('pseudo')
@@ -59,6 +71,19 @@ def new_user():
 
 #@app.route('/home/connexion', methods = ['GET']) #connexion d'un utilisateur
 def identification():
+    """
+    Fonction qui traite la requète d'identification d'un utilisateur
+
+    :returns
+    --------
+    Code 401 :
+        - Si l'identifiant fourni n'existe pas.
+        - Si le mot de passe est incorrecte.
+    Code 403 :
+        - Si l'utilisateur est déjà connecté.
+    Code 200 :
+        La Connexion réussie.
+    """
     request.get_json(force=True)
     username, password= request.json.get('username'), request.json.get('password')
     print(f"Demande d'identification (identifiant ={username}).")
@@ -93,6 +118,17 @@ def identification():
 
 #@app.route('/home/deconnexion', methods = ['GET']) #deconnexion d'un utilisateur
 def deconnect():
+    """
+    Fonction qui traite la requète déconnexion d'un utilisateur
+
+    :returns
+    --------
+    Code 401 :
+        - Si le pseudo fourni est incorrecte.
+
+    Code 200 :
+        La décoonnexion réussie.
+    """
     request.get_json(force=True)
     pseudo = request.json.get('pseudo')
     print(f"Demande de déconenxion (pseudo = {pseudo}).")

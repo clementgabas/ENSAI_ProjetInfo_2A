@@ -30,6 +30,17 @@ from api.Travail.Base import *
 #----------------------------- USER ------------------------------------------
 #@app.route('/home/main/profil/user/pseudo', methods=['PUT']) #modification du pseudo
 def modif_pseudo():
+    """
+    Fonction qui traite la requete de modification de pseudo.
+
+    :returns
+    --------
+    Code 409 :
+        Si le pseudo demandé est déjà utilisé.
+    Code 200 :
+        Si le pseudo a bien été modifié.
+
+    """
     request.get_json(force=True)
     old_pseudo, new_pseudo = request.json.get('old_pseudo'), request.json.get('new_pseudo')
     print(f"Demande de pseudo = {old_pseudo} de modifier son pseudo en pseudo = {new_pseudo}.")
@@ -48,6 +59,17 @@ def modif_pseudo():
 
 #@app.route('/home/main/profil/user/password', methods=['PUT']) #modification du mot de passe
 def modif_password():
+    """
+    Fonction qui traite la requete de modification de mot de passe.
+
+    :returns
+    --------
+    Code 401 :
+        Si l'ancien mot de passe entré n'est pas le bon.
+    Code 200 :
+        Si le mot de passe a bien été modifié.
+
+    """
     request.get_json(force=True)
     pseudo, old_password, new_password = request.json.get('pseudo'), request.json.get('old_password'),\
                                          request.json.get('new_password')
@@ -73,6 +95,15 @@ def modif_password():
 
 #@app.route('/home/main/profil/user/stat', methods=['GET']) #afficher stat perso
 def afficher_stats_perso():
+    """
+    Fonction qui traite la requete d'affichage des statistiques personnelles d'un utilisateur.
+
+    :return
+    --------
+    Code 200 :
+        Si la requete est bien éffectuée.
+
+    """
     request.get_json(force=True)
     pseudo = request.json.get('pseudo')
     print(f"Demande d'affichage des statistiques personnelles du pseudo = {pseudo}.")
@@ -86,6 +117,15 @@ def afficher_stats_perso():
 
 #@app.route('/home/main/profil/user/stat', methods=['PUT']) #reinitialiser stat perso
 def modifier_stats_perso():
+    """
+        Fonction qui traite la requete de réinitialisation des statistiques personnelles d'un utilisateur.
+
+        :return
+        --------
+        Code 200 :
+            Si la requete est bien éffectuée.
+
+        """
     request.get_json(force=True)
     pseudo = request.json.get('pseudo')
     print(f"Demande de réitialisation des statistiques personnelles du pseudo = {pseudo}.")
