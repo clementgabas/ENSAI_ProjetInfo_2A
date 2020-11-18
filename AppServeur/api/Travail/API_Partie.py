@@ -18,7 +18,7 @@ from api.Travail.Base import make_reponse
 #@app.route('/home/game/room/turns', methods=['GET']) #dsavoir si c'est son tour de jouer
 def est_ce_mon_tour():
     """
-    Fonction qui traite la requete de vérification si c'est le tour d'un utilisateur
+    Fonction qui traite la requête de vérification si c'est le tour d'un utilisateur
 
     :returns
     --------
@@ -57,7 +57,7 @@ def est_ce_mon_tour():
 #@app.route('/home/game/room/turns', methods=['PUT']) #passer son tour et maj la db pour savoir a qui ca sera le tour apres
 def passer_son_tour():
     """
-    Fonction qui traite la requete de passage de tour d'un joueur.
+    Fonction qui traite la requête de passage de tour d'un joueur.
 
     :return
     --------
@@ -76,7 +76,7 @@ def passer_son_tour():
 #@app.route("/home/game/room/grid", methods=["GET"]) #requetage pour obtenir l'etat de la grille
 def get_grille():
     """
-    Fonction qui traite la requete de recuperation de la grille de jeu.
+    Fonction qui traite la requête de recuperation de la grille de jeu.
 
     :return
     --------
@@ -109,7 +109,7 @@ def get_grille():
 #@app.route("/home/game/room/grid", methods=["POST"]) #requetage pour jouer son coup
 def jouer_son_tour():
     """
-    Fonction qui traite la requete "jouer son tour" d'un utilisateur
+    Fonction qui traite la requête "jouer son tour" d'un utilisateur
 
     :returns
     --------
@@ -152,7 +152,7 @@ def jouer_son_tour():
 #@app.route("/home/game/room/grid", methods=["PUT"])
 def demander_si_vainqueur():
     """
-    Fonction qui traite la requete de vérification si il y a un vainqueur.
+    Fonction qui traite la requête de vérification si il y a un vainqueur.
 
     :return
     --------
@@ -176,12 +176,12 @@ def demander_si_vainqueur():
 #@app.route("/home/game/room/end", methods=["PUT"])
 def gestion_fin_partie():
     """
-    Fonction qui traite la requete de gestion de fin de partie.
+    Fonction qui traite la requête de gestion de fin de partie.
 
     :return
     --------
     Code 200 :
-        Requete bien effecuté.
+        Requête bien effecuté.
     """
 
     request.get_json(force=True)

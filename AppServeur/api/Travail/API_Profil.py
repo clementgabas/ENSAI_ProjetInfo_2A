@@ -31,7 +31,7 @@ from api.Travail.Base import *
 #@app.route('/home/main/profil/user/pseudo', methods=['PUT']) #modification du pseudo
 def modif_pseudo():
     """
-    Fonction qui traite la requete de modification de pseudo.
+    Fonction qui traite la requête de modification de pseudo.
 
     :returns
     --------
@@ -60,7 +60,7 @@ def modif_pseudo():
 #@app.route('/home/main/profil/user/password', methods=['PUT']) #modification du mot de passe
 def modif_password():
     """
-    Fonction qui traite la requete de modification de mot de passe.
+    Fonction qui traite la requête de modification de mot de passe.
 
     :returns
     --------
@@ -96,12 +96,12 @@ def modif_password():
 #@app.route('/home/main/profil/user/stat', methods=['GET']) #afficher stat perso
 def afficher_stats_perso():
     """
-    Fonction qui traite la requete d'affichage des statistiques personnelles d'un utilisateur.
+    Fonction qui traite la requête d'affichage des statistiques personnelles d'un utilisateur.
 
     :return
     --------
     Code 200 :
-        Si la requete est bien éffectuée.
+        Si la requête est bien éffectuée.
 
     """
     request.get_json(force=True)
@@ -118,12 +118,12 @@ def afficher_stats_perso():
 #@app.route('/home/main/profil/user/stat', methods=['PUT']) #reinitialiser stat perso
 def modifier_stats_perso():
     """
-        Fonction qui traite la requete de réinitialisation des statistiques personnelles d'un utilisateur.
+        Fonction qui traite la requête de réinitialisation des statistiques personnelles d'un utilisateur.
 
         :return
         --------
         Code 200 :
-            Si la requete est bien éffectuée.
+            Si la requête est bien éffectuée.
 
         """
     request.get_json(force=True)

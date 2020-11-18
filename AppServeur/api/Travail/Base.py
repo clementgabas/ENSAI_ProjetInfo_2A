@@ -2,9 +2,6 @@ from flask import jsonify
 
 from requests import codes as http_codes
 
-
-
-
 def make_reponse(p_object=None, status_code=http_codes.OK):
     if p_object is None and status_code == http_codes.NOT_FOUND:
         p_object = {

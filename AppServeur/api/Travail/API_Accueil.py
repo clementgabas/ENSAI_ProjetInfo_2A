@@ -31,7 +31,7 @@ from api.Travail.Base import *
 #@app.route('/home/users', methods = ['POST']) #creation d'un nouvel utilisateur
 def new_user():
     """
-    Fonction qui traite la requète de création d'un nouvel utilisateur
+    Fonction qui traite la requête de création d'un nouvel utilisateur
 
     :returns
     --------
@@ -72,7 +72,7 @@ def new_user():
 #@app.route('/home/connexion', methods = ['GET']) #connexion d'un utilisateur
 def identification():
     """
-    Fonction qui traite la requète d'identification d'un utilisateur
+    Fonction qui traite la requête d'identification d'un utilisateur
 
     :returns
     --------
@@ -119,7 +119,7 @@ def identification():
 #@app.route('/home/deconnexion', methods = ['GET']) #deconnexion d'un utilisateur
 def deconnect():
     """
-    Fonction qui traite la requète déconnexion d'un utilisateur
+    Fonction qui traite la requête déconnexion d'un utilisateur
 
     :returns
     --------

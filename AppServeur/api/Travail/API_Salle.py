@@ -29,6 +29,15 @@ from api.Travail.Base import *
 #----------------------------- home/game -------------------------------------------
 #@app.route('/home/game/room', methods=['POST'])
 def creer_salle():
+    """
+    Fonction qui traite la requête de création d'une salle pour jouer.
+
+    :return
+    -------
+    Code 200 :
+        Si la salle a bien été créée.
+    """
+
     request.get_json(force=True)
     pseudo_chef, game = request.json.get('pseudo_chef_salle'), request.json.get('game')
     print(f"{pseudo_chef} créée une salle pour jouer au jeu : {game}.")
@@ -55,6 +64,20 @@ def creer_salle():
 
 #@app.route('/home/game/room', methods=['PUT'])
 def rejoindre_salle():
+    """
+    Fonction qui traite la requête "rejoindre une salle"
+
+    :returns
+    --------
+    Code 404 :
+        - Si le numéro de salle entré est inexistant.
+        - Si le jeu séléctionné ne correspond pas.
+    Code 401 :
+        Si la salle est déjà pleine.
+    Code 200 :
+        Si l'utilisateur a bien rejoint la salle.
+    """
+
     request.get_json(force=True)
     pseudo, id_salle, jeu = request.json.get('pseudo'), request.json.get("id_salle"), request.json.get("jeu")
     print(f"Le joueur {pseudo} demande à rejoindre la salle {id_salle} sur le jeu : {jeu}")
@@ -92,6 +115,16 @@ def rejoindre_salle():
 
 #@app.route('/home/game/room', methods=['DELETE'])
 def quitter_salle():
+    """
+    Fonction qui traite la requête "quitter une salle"
+
+    :returns
+    --------
+    Code 401 :
+        Si l'utilisateur est chef de salle est qu'il n'est pas le dernier dedans, il ne peut quitter la salle.
+    Code 200 :
+        Si l'utilisateur a bien quitté la salle.
+    """
     request.get_json(force=True)
     pseudo, id_salle, est_chef_salle = request.json.get('pseudo'), \
                                        request.json.get("id_salle"), request.json.get("est_chef_salle")
@@ -104,7 +137,7 @@ def quitter_salle():
         #-- s'il est le dernier a quitter la salle, il la quitte, sinon, il ne peut pas la quitter.
         if DAOparties.check_cb_places_libres(id_salle)+1 != DAOparties.check_cb_places_tot(id_salle):
             print(f"Le joueur {pseudo} est chef de la salle {id_salle} il ne peut la quitter car il n'est pas seul")
-            response = {"status_code": http_codes.unauthorized, "message": "Utilisateur supprimé de la salle.",
+            response = {"status_code": http_codes.unauthorized, "message": "Ne peut quitter la salle.",
                         "id_salle": id_salle}  # code 401
             return make_reponse(response, http_codes.unauthorized)  # code 401
 
@@ -123,6 +156,14 @@ def quitter_salle():
 
 #@app.route('/home/game/room', methods=['GET'])
 def voir_membres_salle():
+    """
+    Fonction qui traite la requête d'affichage des membres de la salle.
+
+    :return
+    --------
+    Code 200 :
+        Si la requête a bien été exécutée.
+    """
     request.get_json(force=True)
     id_salle = request.json.get("id_salle")
     print(f"Demande d'affichage des membres de la salle {id_salle}")

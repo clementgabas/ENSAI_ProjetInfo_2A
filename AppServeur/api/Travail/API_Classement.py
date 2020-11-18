@@ -30,7 +30,7 @@ from api.Travail.Base import *
 #@app.route('/home/main/profil/classment/jeu', methods=['GET']) #affichage classement jeu de l'oie
 def afficher_classement():
     """
-    Fonction qui traite la requete d'affichage du classement d'un jeu.
+    Fonction qui traite la requête d'affichage du classement d'un jeu.
 
     :return
     --------
@@ -57,7 +57,7 @@ def afficher_classement():
 #@app.route('/home/main/profil/classment/general', methods=['GET']) #affichage classement général
 def afficher_classement_general():
     """
-        Fonction qui traite la requete d'affichage du classement général.
+        Fonction qui traite la requête d'affichage du classement général.
 
         :return
         --------

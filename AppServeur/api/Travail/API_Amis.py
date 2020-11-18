@@ -31,7 +31,7 @@ from api.Travail.Base import *
 #@app.route('/home/main/profil/friends', methods=['GET']) #affichage liste amis
 def afficher_liste_amis():
     """
-    Fonction qui traite la requete d'affichage la liste d'amis.
+    Fonction qui traite la requête d'affichage la liste d'amis.
 
     :return
     --------
@@ -52,7 +52,7 @@ def afficher_liste_amis():
 #@app.route('/home/main/profil/friends', methods=['POST']) #ajout d'un ami
 def ajout_ami():
     """
-    Fonction qui traite la requete d'ajout d'un utilisateur dans la liste d'amis.
+    Fonction qui traite la requête d'ajout d'un utilisateur dans la liste d'amis.
 
     :returns
     --------
@@ -89,7 +89,7 @@ def ajout_ami():
 #@app.route('/home/main/profil/friends', methods=['DELETE']) #suppression d'un ami
 def supp_ami():
     """
-    Fonction qui traite la requete de suppression d'un utilisateur de la liste d'amis.
+    Fonction qui traite la requête de suppression d'un utilisateur de la liste d'amis.
 
     :returns
     --------

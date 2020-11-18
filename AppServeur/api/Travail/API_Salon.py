@@ -14,6 +14,16 @@ from api.Travail.Base import make_reponse
 
 #@app.route('/home/game/room/settings', methods=['GET']) #ajout de parametre
 def get_param_p4():
+    """
+    Fonction qui traite la requête de verification de non existence des parametres la partie de p4
+
+    :returns
+    --------
+    Code 409 :
+        Si des parametres ont déjà été définis
+    Code 200 :
+        Si des parametres n'ont pas encore été définis.
+    """
     request.get_json(force=True)
     id_partie, duree_tour, condition_victoire, Taille_plateau = request.json.get('id_partie'), \
                                                                 request.json.get('duree_tour'), \
@@ -28,6 +38,14 @@ def get_param_p4():
 
 #@app.route('/home/game/room/settings', methods=['POST']) #ajout de parametre
 def ajout_param_partie_P4():
+    """
+    Fonction qui traite la requête d'jout des parametres la partie de p4
+
+    :return
+    -------
+    Code 200 :
+        Si des parametres ont bien été ajoutés.
+    """
     request.get_json(force=True)
     id_partie, duree_tour, condition_victoire, Taille_plateau  = request.json.get('id_partie'), \
                                                                  request.json.get('duree_tour'), \
@@ -43,6 +61,14 @@ def ajout_param_partie_P4():
 
 #@app.route('/home/game/room/settings', methods=['PUT']) #modif de parametre
 def maj_param_partie_p4():
+    """
+    Fonction qui traite la requête de mise à jour des parametres la partie de p4
+
+    :return
+    -------
+    Code 200 :
+        Si des parametres ont bien été mis à jour.
+    """
     request.get_json(force=True)
     id_partie, duree_tour, condition_victoire, Taille_plateau = request.json.get('id_partie'), \
                                                                 request.json.get('duree_tour'), \
@@ -61,6 +87,16 @@ def maj_param_partie_p4():
 
 #@app.route("/home/game/room/colors", methods=["GET"])
 def get_liste_couleur_dispos():
+    """
+    Fonction qui traite la requête de verification des couleurs disponibles pour la partie.
+
+    :returns
+    --------
+    Code 403 :
+        Si il n'y a pas assez de joueur pour lancer la partie
+    Code 200 :
+        Si la requête peut être correctement effecutée.
+    """
     request.get_json(force=True)
     id_partie = request.json.get("id_salle")
     # -- on vérifie si il y a au moins 2 personnes dans la salle sinon il pourrait lancer une partie solo, ce qui casserait tout
@@ -77,12 +113,22 @@ def get_liste_couleur_dispos():
     print(f"La liste des couleurs disponibles pour la partie {id_partie} a été transmise.")
 
     response = {"status_code": http_codes.ok, "message": "", "liste_couleurs_dispos":liste_couleurs_dispos}
-    return make_reponse(response, http_codes.ok)
+    return make_reponse(response, http_codes.ok) # Code 200
 #----------------------------- home/game -------------------------------------------
 #----------------------------- Lunch/game -------------------------------------------
 
 #@app.route("/home/game/room/colors", methods=["POST"])
 def ajout_couleur():
+    """
+    Fonction qui traite la requête de la selection d'une couleur par un utilisateur pour la partie.
+
+    :returns
+    --------
+    Code 409 :
+        Si la couleur sélectionné a déja été choisie par quelqu'un d'autre.
+    Code 200 :
+        Si la requête est correctement effecutée.
+    """
     request.get_json(force=True)
     id_partie, pseudo, couleur = request.json.get("id_salle"), request.json.get("pseudo"), request.json.get("couleur")
 
@@ -105,6 +151,16 @@ def ajout_couleur():
 
 #@app.route('/home/game/room/turns', methods=['POST']) #dire qu'on est pret à jouer
 def je_suis_pret():
+    """
+    Fonction qui traite la requête de mis à jour du status d'être prêt.
+
+    :returns
+    --------
+    Code 400 :
+        Si la il y a un problème dans le jeu en entrée.
+    Code 200 :
+        Si la requête est correctement effecutée.
+    """
     request.get_json(force=True)
     pseudo, id_salle, est_chef, jeu = request.json.get('pseudo'), request.json.get('id_salle'), request.json.get('est_chef'), request.json.get('jeu')
     print(f"L'utilisateur {pseudo} demande à être prêt dans la salle {id_salle}.")
@@ -120,7 +176,7 @@ def je_suis_pret():
         DAOscores.update_nb_parties_jouees(pseudo, "Oie", old_number + 1)
     else:
         print("erreur dans le nom du jeu")
-        response = {"status_code": http_codes.bad, "message": "Utilisateur pret."}  # code 400
+        response = {"status_code": http_codes.bad, "message": "Erreur dans le jeu"}  # code 400
         return make_reponse(response, http_codes.bad)  # code 400
     print(f"L'utilisateur {pseudo} a maintenant joué {old_number + 1} parties de {jeu}")
 
@@ -136,6 +192,18 @@ def je_suis_pret():
 
 #@app.route('/home/game/room/launch', methods=['GET']) #savoir si on peut lancer la partie pour le chef
 def gestion_tour_lancement_partie():
+    """
+    Fonction qui traite la requête de mis à jour du status d'être prêt.
+
+    :returns
+    --------
+    Code 406 :
+        Si au moins un participant n'est pas pret.
+    Code 200 :
+        Si tous les participants sont prets.
+    Code 401 :
+        Si il n'y a plus de chef dans la partie.
+    """
     request.get_json(force=True)
     pseudo, id_salle, est_chef = request.json.get('pseudo'), request.json.get('id_salle'), request.json.get('est_chef')
 
@@ -161,6 +229,14 @@ def gestion_tour_lancement_partie():
 
 #@app.route('/home/game/room/launch', methods=['POST'])
 def lancer_partie():
+    """
+    Fonction qui traite la requête de lancement de partie.
+
+    :return
+    -------
+    Code 200 :
+        Si la requête a bien été effectuée.
+    """
     request.get_json(force=True)
     id_partie = request.json.get('id_salle')
     #-- on DAO pour update la table partie et mettre statut = 'en cours'
