@@ -3,6 +3,22 @@ from flask import jsonify
 from requests import codes as http_codes
 
 def make_reponse(p_object=None, status_code=http_codes.OK):
+    """
+    Fonction qui permet de formater toutes les sorties api au même format
+
+    :parameter
+    ----------
+    p_object : dict
+        Dictionaire contenant le code http de la reponse, et un message personnalisé.
+    status_code : int
+        Code http corespondant à la réponse de la requête.
+
+
+    :return
+    -------
+    json_response : json
+        Renvoie le que doit renvoyer l'API
+    """
     if p_object is None and status_code == http_codes.NOT_FOUND:
         p_object = {
             "status": {
