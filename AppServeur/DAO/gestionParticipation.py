@@ -8,7 +8,7 @@ def update_est_pret(pseudo, id_partie, TrueOrFalse):
         Procédure qui met à jour le bouléen est_pret dans la table Participation pour un jouur particulier,
         dans une salle particulière
 
-        Parameters
+        :parameter
         ----------
         pseudo: str
             pseudo du joueur qui signale si il est prêt ou non
@@ -17,7 +17,7 @@ def update_est_pret(pseudo, id_partie, TrueOrFalse):
         TrueOrFalse : str
             reponse du joueur, à savoir si il est prêt ou non
 
-        Raises
+        :raises
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
@@ -25,7 +25,7 @@ def update_est_pret(pseudo, id_partie, TrueOrFalse):
         ValueError
             Si l'argument TrueOrFalse n'est ni 'true' ni 'false'.
 
-        Returns
+        :return
         -------
         None.
     """
@@ -55,18 +55,18 @@ def get_ordre(id_partie):
     """
         Fonction qui retourne les joueurs et l'odre dans lequel ils vont jouer cette partie.
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
 
-        Returns
+        :return
         -------
         ordre : list
                 Liste contenant le couple le pseudo et l'ordre dans lequel il vont jouer la partie, tout cela ordonnée
@@ -90,19 +90,19 @@ def get_position_ordre(pseudo, id_partie):
     """
         Fonction qui retourne l'odre dans lequel un joueur en particulier va jouer son tour.
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie
         pseudo: str
             pseudo du joueur
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
 
-        Returns
+        :return
         -------
         ordre : int
                 Entier définissant l'ordre du joueur en question.
@@ -126,20 +126,20 @@ def update_ordre(pseudo, id_partie):
         Procédure qui met à jour l'ordre de passage d'un joueur dans une partie
         Cette procédure est faite dans la table Participation
 
-        Parameters
+        :parameter
         ----------
         pseudo: str
             pseudo du joueur à qui on doit mettre à jour l'ordre de passage
         id_partie : int
             identifiant de la partie dans laquelle on met à jour l'odre de passage
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
             un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
     """
@@ -163,17 +163,17 @@ def get_used_color(id_partie):
     """
         Fonction qui retourne la liste des couleurs déjà choisies par les joueurs d'une partie.
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         liste : list
                 Liste des couleurs déjà prises dans la partie en question.
@@ -199,15 +199,15 @@ def get_free_color(id_partie):
     """
         Fonction qui retourne la liste des couleurs encore disponibles pour les joueurs d'une partie.
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie
-        Raises
+        :raise
         ------
-        None ######
+        None
 
-        Returns
+        :return
         -------
         liste : list
                 Liste des couleurs encore disponibles dans la partie en question.
@@ -225,18 +225,18 @@ def is_color_free(id_partie, color):
     """
         Fonction qui retourne un booléen selon la disponibilitée d'une couleur dans une partie
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie
         color : str
             couleur en question
 
-        Raises
+        :raise
         ------
         None
 
-        Returns
+        :return
         -------
         Bool :
             True :
@@ -256,7 +256,7 @@ def update_color(pseudo, id_partie, color):
         Procédure qui attribu à un joueur la couleur choisie dans une partie
         Cette procédure est faite dans la table Participation
 
-        Parameters
+        :parameter
         ----------
         pseudo: str
             pseudo du joueur qui a choisi une couleur
@@ -265,13 +265,13 @@ def update_color(pseudo, id_partie, color):
         color : str
             couleur choisie par le joueur pour cette partie
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
             un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
     """
@@ -293,20 +293,20 @@ def get_couleur(pseudo, id_partie):
     """
         Fonction qui retourne un la couleur choisie par un joueur particulier dans une partie
 
-        Parameters
+        :parameter
         ----------
         pseudo: str
             pseudo du joueur auquel on cherche à savoir la couleur choisie
         id_partie : int
             identifiant de la partie
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
             un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Returns
+        :return
         -------
         couleur : str
             Couleur attribuée au joueur.
@@ -329,18 +329,18 @@ def number_of_ready(id_partie):
     """
         Fonction qui retourne le nombre de joueur prêt dans la partie
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
             un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Returns
+        :return
         -------
         nombre : int
             Nombre de joueur actuellement prêt à jouer dans la partie.

@@ -3,6 +3,27 @@ import DAO.gestion as DBgestion
 db_address = DBgestion.get_db_address()
 
 def get_nb_parties_jouees(pseudo, jeu):
+    """
+            Fonction qui renvoie le nombre de partie jouées pour un utilisateur.
+
+            :parameter
+            ----------
+            pseudo : str
+                Pseudo pour pour lequel on renvoie le nombre de partie jouées
+            jeu : str
+                Nom du jeu demandé
+
+            :raise
+            ------
+            ConnectionAbortedError
+                Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+            :return
+            -------
+            nombre : int
+                Le nombre de partie jouées pour un utilisateur.
+
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -16,6 +37,27 @@ def get_nb_parties_jouees(pseudo, jeu):
     return nombre
 
 def get_nb_parties_gagnees(pseudo, jeu):
+    """
+            Fonction qui renvoie le nombre de partie gagnées pour un utilisateur.
+
+            :parameter
+            ----------
+            pseudo : str
+                Pseudo pour pour lequel on renvoie le nombre de partie gagnées
+            jeu : str
+                Nom du jeu demandé
+
+            :raise
+            ------
+            ConnectionAbortedError
+                Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+            :return
+            -------
+            nombre : int
+                Le nombre de partie gagnées pour un utilisateur.
+
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -29,6 +71,28 @@ def get_nb_parties_gagnees(pseudo, jeu):
     return nombre
 
 def update_nb_parties_jouees(pseudo, jeu, new_value):
+    """
+            Procédure qui met à jour le nombre de partie jouées pour un utilisateur.
+
+            :parameter
+            ----------
+            pseudo : str
+                Pseudo pour pour lequel on renvoie le nombre de partie jouées
+            jeu : str
+                Nom du jeu demandé
+            new_value : int
+                nouvelle valeur du nombre de partie jouées
+
+            :raise
+            ------
+            ConnectionAbortedError
+                Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+            :return
+            -------
+            None
+
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
@@ -42,6 +106,28 @@ def update_nb_parties_jouees(pseudo, jeu, new_value):
         con.close()
 
 def update_nb_parties_gagnees(pseudo, jeu, new_value):
+    """
+            Procédure qui met à jour le nombre de partie gagnées pour un utilisateur.
+
+            :parameter
+            ----------
+            pseudo : str
+                Pseudo pour pour lequel on renvoie le nombre de partie gagnées
+            jeu : str
+                Nom du jeu demandé
+            new_value : int
+                nouvelle valeur du nombre de partie gagnées
+
+            :raise
+            ------
+            ConnectionAbortedError
+                Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+            :return
+            -------
+            None
+
+    """
     try:
         con = sqlite3.connect(db_address)
         cursor = con.cursor()

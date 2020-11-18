@@ -9,7 +9,7 @@ def add_partie(pseudo_chef, jeu, nb_places_tot):
     """
         Fonction qui enregistre une nouvelle partie dans la table Parties et qui retourne le numéro de la partie
 
-        Parameters
+        :parameter
         ----------
         pseudo_chef : str
             pseudo du joueur chef, celui qui crée la salle
@@ -18,12 +18,12 @@ def add_partie(pseudo_chef, jeu, nb_places_tot):
         nb_places_tot : int
             nombre de place maximale dans la partie
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         id_partie : int
             identifiant de la salle qui est aussi celui de la partie.
@@ -54,17 +54,17 @@ def does_partie_exist(id_partie):
     """
         Fonction qui verifie l'existence d'une partie via la table Parties
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie qui est recherchée
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         bool :
             False : Si l'identifiant de la partie n'est pas dans la tabble Parties, donc si la partie n'existe pas.
@@ -92,17 +92,17 @@ def check_cb_places_libres(id_partie):
     """
         Fonction qui verifie le nombre de places libres dans une partie via la table Parties
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie qui est vérifiée
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         nb : int
             Nombre de place libre qu'il y a dans la partie
@@ -125,18 +125,18 @@ def check_cb_places_tot(id_partie):
     """
         Fonction qui verifie le nombre total de places dans une partie via la table Parties
 
-        Parameters
+        :parameter
         ----------
 
         id_partie : int
             identifiant de la partie qui est vérifiée
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         nb : int
             Nombre total de place qu'il y a dans la partie
@@ -160,16 +160,16 @@ def get_nbr_participants(id_partie):
         Fonction qui verifie le nombre de participant dans une partie les fonctions
         check_cb_places_tot et check_cb_places_libres
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie qui est vérifiée
 
-        Raises
+        :raise
         ------
         None
 
-        Returns
+        :return
         -------
         type = int :
             Nombre de particimpant qu'il y a dans la partie
@@ -183,19 +183,19 @@ def update_parties_nb_place(id_partie, nb_places_restantes):
     """
         Procédure qui met à jour le nombre  de places restante dans une partie via la table Parties
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie qui est à mettre à jour
         nb_places_restantes : int
             nombre de place restante à mettre à jour
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None
     """
@@ -216,7 +216,7 @@ def add_to_participation(id_partie, pseudo, nb_places):
     """
         Procédure qui met à jour le nombre  de places restante dans une partie via la table Parties
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie qui est à mettre à jour
@@ -225,7 +225,7 @@ def add_to_participation(id_partie, pseudo, nb_places):
         nb_places : int
             nombre de place restante dans la partie que rejoins le joueur.
 
-        Raises
+        :raises
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
@@ -233,7 +233,7 @@ def add_to_participation(id_partie, pseudo, nb_places):
             Si le nombre de place restante dans la partie est nulle, le joueur ne peut rejoindre la partie car il n'y a
             plus de place pour lui
 
-        Returns
+        :return
         -------
         None
     """
@@ -259,7 +259,7 @@ def delete_from_participation(id_partie, pseudo, nb_places):
         Procédure qui supprime un participant d'une partie via la table Participation et qui met à jouer le nombre de
         places restantes dans la table Parties
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie qui est à mettre à jour
@@ -268,12 +268,12 @@ def delete_from_participation(id_partie, pseudo, nb_places):
         nb_places : int
             nombre de place restante dans la partie avant que le joueur ne la quitte.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None
     """
@@ -296,17 +296,17 @@ def delete_partie(id_partie):
     """
         Procédure qui supprime une partie via la table Parties.
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie qui est à supprimer
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None
     """
@@ -327,17 +327,17 @@ def get_membres_salle(id_salle):
     """
         Fonction qui renvoie tous les participants présent dans une salle.
 
-        Parameters
+        :parameter
         ----------
         id_salle : int
             identifiant de la partie (i.e salle) qui est vérifiée
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         membre : list
             Liste contenant les pseudos des membres présent dans la salle.
@@ -360,17 +360,17 @@ def get_jeu_salle(id_salle):
     """
         Fonction qui renvoie le jeu pour lequel la salle a été créée via la table Parties.
 
-        Parameters
+        :parameter
         ----------
         id_salle : int
             identifiant de la partie (i.e salle) qui est vérifiée
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         jeu : list
             Liste à un élément contenant le jeu pour lequel la salle a été créée.
@@ -393,17 +393,17 @@ def lancer_partie(id_salle):
     """
         Procédure qui lance une partie, via la table Parties en mettant à jour les valeurs de statut et aquiltour.
 
-        Parameters
+        :parameter
         ----------
         id_salle : int
             identifiant de la partie qui est à mettre à jour
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None
     """
@@ -424,17 +424,17 @@ def get_aquiltour(id_salle):  ##
     """
         Fonction qui renvoie le numéro du joueur qui doit jouer via la table Parties.
 
-        Parameters
+        :parameter
         ----------
         id_salle : int
             identifiant de la partie (i.e salle) qui est vérifiée
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         aquiltour : int
             Numéro du joueur qui doit jouer son tour dans la partie
@@ -458,17 +458,17 @@ def update_aquiltour(id_salle):
         Procédure qui met à jour le numero du joueur qui doit jouer, via la table Parties,
         en mettant à jour la valeur de aquiltour.
 
-        Parameters
+        :parameter
         ----------
         id_salle : int
             identifiant de la partie qui est à mettre à jour
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None
     """

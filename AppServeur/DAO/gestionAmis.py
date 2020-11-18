@@ -7,14 +7,14 @@ def are_pseudos_friends(pseudo1, pseudo2):
     """
     Fonction qui renvoit True si pseudo1 est ami avec pseudo2, False sinon.
 
-    Parameters
+    :parameter
     ----------
     pseudo1 : str
         Pseudo dont on vérifie s'il possède une relation d'amitié avec le pseudo2.
     pseudo2 : str
         Pseudo dont on vérifie si le pseudo1 possède une relation d'amitié avec lui.
 
-    Raises
+    :raise
     ------
     ConnectionAbortedError
         Si une erreur se produit au cours de la connection avec la DB, l'erreur est levée..
@@ -46,14 +46,14 @@ def add_amitie(pseudo1, pseudo2):
     """
     Procédure qui ajoute à pseudo1 une amitié avec pseudo2
 
-    Parameters
+    :parameter
     ----------
     pseudo1 : str
         Pseudo pour lequel on ajoute une relation d'amitié avec pseudo2.
     pseudo2 : str
         Pseudo qui va servir à ajouter une relation d'amitié à pseudo1.
 
-    Raises
+    :raise
     ------
     ConnectionAbortedError
         Si une erreur se produit au cours de la communication avec la DB, un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
@@ -80,19 +80,19 @@ def sup_amitie(pseudo1, pseudo2):
     """
     Procédure qui supprime à pseudo1 son amitié avec pseudo2
 
-    Parameters
+    :parameter
     ----------
     pseudo1 : str
         Pseudo pour lequel on va supprimer son lien d'amitié avec pseudo2.
     pseudo2 : str
         Pseudo dont on se sert pour savoir quel lien d'amitié supprimer à pseudo1.
 
-    Raises
+    :raise
     ------
     ConnectionAbortedError
         Si une erreur se produit au cours de la communication avec la DB, un rollback jusqu'au précédant commit à lieu et l'erreur est levée.
 
-    Returns
+    :return
     -------
     None.
 
@@ -117,17 +117,17 @@ def get_liste_amis(pseudo):
     """
     Fonction qui retourne la liste des amis de pseudo
 
-    Parameters
+    :parameter
     ----------
     pseudo : str
         Pseudo pour lequel on va afficher la liste de ses amis.
 
-    Raises
+    :raise
     ------
     ConnectionAbortedError
         Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-    Returns
+    :return
     -------
     liste_amis : list
         Liste des amis de pseudo.
@@ -149,17 +149,17 @@ def get_est_connecte_liste_amis(liste_amis):
     """
         Fonction qui retourne la liste des amis
 
-        Parameters
+        :parameter
         ----------
         liste_amis : list
             Liste de tuple regroupant pseudo et date d'ajout des amis.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         si liste_amis existe :
         liste : list

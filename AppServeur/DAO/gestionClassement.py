@@ -7,19 +7,19 @@ def afficher_classement_jeu(nom_jeu,pseudo):
     """
         Fonction qui retourne les 10 premiers du classement mondial du jeu demandé
 
-        Parameters
+        :parameter
         ----------
         nom_jeu : str
             Nom du jeu demandé pour le classement
         pseudo : str
             Pseudo pour pour lequel on affiche le classement
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
          classement_jeu : list
                 Liste des dix premiers du classement mondial du jeu demandé comprenant rang, pseudo,
@@ -61,17 +61,17 @@ def afficher_classement_general(pseudo):
     """
         Fonction qui retourne les 10 premiers du classement mondial général
 
-        Parameters
+        :parameter
         ----------
         pseudo : str
             Pseudo pour pour lequel on affiche le classement
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         classement_general : list
             Liste des dix premiers du classement mondial général comprenant rang, pseudo,nombre de points
@@ -112,19 +112,19 @@ def afficher_classement_jeu_friends(nom_jeu,pseudo):
     """
         Fonction qui retourne les 10 premiers du classement entre amis du jeu demandé
 
-        Parameters
+        :parameter
         ----------
         nom_jeu : str
             Nom du jeu demandé pour le classement
         pseudo : str
             Pseudo pour pour lequel on affiche le classement
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         classement_jeu_friends : list
             Liste des dix premiers du classement entre amis du jeu demandé comprenant rang, pseudo,
@@ -172,17 +172,17 @@ def afficher_classement_general_friends(pseudo):
     """
         Fonction qui retourne les 10 premiers du classement entre amis général
 
-        Parameters
+        :parameter
         ----------
         pseudo : str
             Pseudo pour pour lequel on affiche le classement
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         classement_general_friends : list
             Liste des dix premiers du classement entre amis général comprenant rang, pseudo,nombre de points

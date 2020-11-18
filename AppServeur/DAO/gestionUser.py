@@ -7,17 +7,17 @@ def does_pseudo_exist(pseudo):
     """
     Fonction qui renvoie True si il existe dans la DB un utilisateur ayant ce pseudo, qui renvoie False sinon.
 
-    Parameters
+    :parameter
     ----------
     pseudo : str
         Pseudo dont on vérifie l'existance dans la DB.
 
-    Raises
+    :raise
     ------
     ConnectionAbortedError
         Si une erreur se produit au cours de la communication avec la DB, l'erreur est levée..
 
-    Returns
+    :return
     -------
     Bool : Bool
         Booléen qui précise si oui ou non le pseudo existe dans la DB.
@@ -44,17 +44,17 @@ def does_username_exist(username):
     """
     Fonction qui renvoie True si il existe dans la DB un utilisateur ayant cet identifiant, renvoie False sinon.
 
-    Parameters
+    :parameter
     ----------
     username : str
         Identifiant dont on cherche l'existance dans la DB.
 
-    Raises
+    :raise
     ------
     ConnectionAbortedError
         Si une erreur se produit au cours de la communication avec la DB, l'erreur est levée.
 
-    Returns
+    :return
     -------
     Bool : Bool
         Booléen qui précise si oui ou non l'identifiant existe dans la DB.
@@ -83,7 +83,7 @@ def add_user(username, pseudo, hpassword):
     """
     Procédure qui ajoute une utilisateur à la DB.
 
-    Parameters
+    :parameter
     ----------
     username : str
         Identifiant de l'utilisateur.
@@ -92,13 +92,13 @@ def add_user(username, pseudo, hpassword):
     hpassword : str
         Hash du mot de passe de l'utilisateur.
 
-    Raises
+    :raise
     ------
     ConnectionAbortedError
         Si un erreur se produit au cours de la communication avec la DB,
         un rollback jusqu'au précédant commit à lieu et l'erreur est levée.
 
-    Returns
+    :return
     -------
     None.
 
@@ -121,18 +121,18 @@ def add_user_score(pseudo):
     """
         Procédure qui ajoute un utilisateur à la DB score.
 
-        Parameters
+        :parameter
         ----------
         pseudo : str
             Pseudo de l'utilisateur.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si un erreur se produit au cours de la communication avec la DB,
             un rollback jusqu'au précédant commit à lieu et l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
 
@@ -158,19 +158,19 @@ def get_hpass_username(username):
     """
     Fonction qui renvoie le hash de mot de passe stocké dans la DB pour un identifiant donné.
 
-    Parameters
+    :parameter
     ----------
     username : str
         Identifiant associé au hmdp recherché.
 
-    Raises
+    :raises
     ------
     ConnectionAbortedError
         Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
     ValueError
         pass
 
-    Returns
+    :return
     -------
     hpass : str
         Renvoie le hash du mot de passe associé à l'identifiant en entrée.
@@ -195,19 +195,19 @@ def get_hpass_pseudo(pseudo):
     """
     Fonction qui renvoie le hash de mot de passe stocké dans la DB pour un pseudo donné.
 
-    Parameters
+    :parameter
     ----------
     pseudo : str
         pseudo associé au hmdp recherché.
 
-    Raises
+    :raises
     ------
     ConnectionAbortedError
         Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
     ValueError
         pass
 
-    Returns
+    :return
     -------
     hpass : str
         Renvoie le hash du mot de passe associé au pseudo en entrée.
@@ -232,19 +232,19 @@ def get_pseudo(username):
     """
     Fonction qui renvoie le pseudo associé à un identifiant dans la DB
 
-    Parameters
+    :parameter
     ----------
     username : str
         Identifiant dont on souhaite le pseudo associé.
 
-    Raises
+    :raises
     ------
     ConnectionAbortedError
         Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
     ValueError
         Si le pseudo n'existe pas.
 
-    Returns
+    :return
     -------
     pseudo : str
         Pseudo associé à l'identifiant en entrée.
@@ -269,17 +269,17 @@ def get_est_connecte(username):
     """
         Fonction qui renvoie True si l'utilisateur ayant cet identifiant est connecté , renvoie False sinon.
 
-        Parameters
+        :parameter
         ----------
         username : str
             Identifiant dont on cherche l'existance dans la DB.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         Bool : Bool
             Booléen qui précise si oui ou non l'identifiant est connecté dans la DB.
@@ -313,7 +313,7 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
         Procédure qui permet de modifier la valeur est_connecté pour un utilisateur dans la DB en fonction de
         son pseudo ou de son identifiant.
 
-        Parameters
+        :parameter
         ----------
         ide : str
             nom de l'identifiant ou du pseudo de l'utilisateur dont on veut modifier la valeur du est_connecte.
@@ -324,7 +324,7 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
             Il faut préciser si on veut mettre est_connecte à True ou à False.
             nouvel_etat est donc à valeur dans ('True','False'). The default is 'True'.
 
-        Raises
+        :raises
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
@@ -332,7 +332,7 @@ def update_est_connecte(ide, username_or_pseudo = 'username', nouvel_etat = 'Tru
             Si  :   - username_or_pseudo n'est ni égale au pseudo ni à l'identifiant
                     - nouvel_etat n'est pas un booléen
 
-        Returns
+        :return
         -------
         None.
 
@@ -373,7 +373,7 @@ def update_en_partie_pseudo(pseudo, nouvel_etat):
     """
         Procédure qui permet de modifier la valeur en_partie pour un utilisateur dans la DB en fonction de son pseudo.
 
-        Parameters
+        :parameter
         ----------
         pseudo : str
             pseudo de l'utilisateur dont on veut modifier la valeur du en_partie.
@@ -381,14 +381,14 @@ def update_en_partie_pseudo(pseudo, nouvel_etat):
             Il faut préciser si on veut mettre en_partie à True ou à False.
             nouvel_etat est donc à valeur dans ('True','False')
 
-        Raises
+        :raises
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
         ValueError
             Si nouvel_etat n'est pas un booléen.
 
-        Returns
+        :return
         -------
         None.
 
@@ -412,19 +412,19 @@ def update_pseudo_table_utilisateur(old_pseudo, new_pseudo):
     """
         Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Utilisateurs.
 
-        Parameters
+        :parameter
         ----------
         old_pseudo : str
             pseudo de l'utilisateur qu'on veut modifier.
         new_pseudo : str
             pseudo de l'utilisateur qu'on veut mettre à la place.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
 
@@ -445,19 +445,19 @@ def update_pseudo_table_liste_amis(old_pseudo, new_pseudo):
     """
         Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Liste_Amis.
 
-        Parameters
+        :parameter
         ----------
         old_pseudo : str
             pseudo de l'utilisateur qu'on veut modifier.
         new_pseudo : str
             pseudo de l'utilisateur qu'on veut mettre à la place.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
 
@@ -479,19 +479,19 @@ def update_pseudo_table_score(old_pseudo, new_pseudo):
     """
         Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Scores.
 
-        Parameters
+        :parameter
         ----------
         old_pseudo : str
             pseudo de l'utilisateur qu'on veut modifier.
         new_pseudo : str
             pseudo de l'utilisateur qu'on veut mettre à la place.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
 
@@ -512,19 +512,19 @@ def update_pseudo_table_partie(old_pseudo, new_pseudo):
     """
         Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Parties.
 
-        Parameters
+        :parameter
         ----------
         old_pseudo : str
             pseudo de l'utilisateur qu'on veut modifier.
         new_pseudo : str
             pseudo de l'utilisateur qu'on veut mettre à la place.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
 
@@ -545,19 +545,19 @@ def update_pseudo_table_participation(old_pseudo, new_pseudo):
     """
         Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Participation.
 
-        Parameters
+        :parameter
         ----------
         old_pseudo : str
             pseudo de l'utilisateur qu'on veut modifier.
         new_pseudo : str
             pseudo de l'utilisateur qu'on veut mettre à la place.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
 
@@ -578,19 +578,19 @@ def update_pseudo_table_coup(old_pseudo, new_pseudo):
     """
         Procédure qui permet de mettre à jour le pseudo d'un utilisateur dans la table Coups.
 
-        Parameters
+        :parameter
         ----------
         old_pseudo : str
             pseudo de l'utilisateur qu'on veut modifier.
         new_pseudo : str
             pseudo de l'utilisateur qu'on veut mettre à la place.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
 
@@ -617,18 +617,18 @@ def update_pseudo(old_pseudo, new_pseudo):
                             update_pseudo_table_partie(old_pseudo, new_pseudo),
                             update_pseudo_table_participation(old_pseudo, new_pseudo),
                             update_pseudo_table_coup(old_pseudo, new_pseudo),
-        Parameters
+        :parameter
         ----------
         old_pseudo : str
             pseudo de l'utilisateur qu'on veut modifier.
         new_pseudo : str
             pseudo de l'utilisateur qu'on veut mettre à la place.
 
-        Raises
+        :raise
         ------
         None
 
-        Returns
+        :return
         -------
         None.
 
@@ -645,19 +645,19 @@ def update_password(pseudo, new_hpassword):
         Procédure qui permet de modifier le mot de passe pour un utilisateur dans la table Utilisateurs
         en fonction de son pseudo.
 
-        Parameters
+        :parameter
         ----------
         pseudo : str
             pseudo de l'utilisateur dont on veut modifier le mot de passe.
         new_hpassword : str
             nouveau mot de passe hashé
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
 
@@ -678,17 +678,17 @@ def get_stat(pseudo):
     """
     Fonction qui renvoie les statistique personnelles associées à un pseudo dans la table Utilisateurs.
 
-    Parameters
+    :parameter
     ----------
     pseudo : str
         pseudo dont on souhaite les statistique personnelles associées.
 
-    Raises
+    :raise
     ------
     ConnectionAbortedError
         Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-    Returns
+    :return
     -------
     stat_perso : list
         Liste à un élément : le couple [nb_parties_jouees, nb_parties_gagnees].
@@ -710,17 +710,17 @@ def update_stat(pseudo):
     """
         Procédure qui réinitialise les statistique personnelles associées à un pseudo dans la table Utilisateurs.
 
-        Parameters
+        :parameter
         ----------
         pseudo : str
             pseudo de l'utilisateur dont on veut modifier le mot de passe.
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
     """
@@ -743,16 +743,16 @@ def put_all_users_disconnected():
         Procédure qui réinitialise la valeur de est_connecte en False pour tous les utilisateurs
         dans la table Utilisateurs.
 
-        Parameters
+        :parameter
         ----------
         None
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
     """
@@ -775,17 +775,17 @@ def delete_user_pseudo(pseudo):
     """
         Procédure qui supprime tous les éléments de la table Utilisateurs à un pseudo associé.
 
-        Parameters
+        :parameter
         ----------
         pseudo : str
             pseudo de l'utilisateur que l'on veut supprimer .
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
     """

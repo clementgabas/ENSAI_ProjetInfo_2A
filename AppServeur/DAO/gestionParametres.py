@@ -10,7 +10,7 @@ def add_parametre(id_Partie,duree_tour, condition_victoire, Taille_plateau):
         Procédure qui enregistre de nouveaux paramètres
         couposéés de id_Partie, duree_tour , condition_victoire et Taille_plateau
 
-        Parameters
+        :parameter
         ----------
         id_Partie : int
             identifiant de la partie auquelle on modifie les paramètres
@@ -21,13 +21,13 @@ def add_parametre(id_Partie,duree_tour, condition_victoire, Taille_plateau):
         Taille_plateau : int
             Taille du plateau de jeu
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
              un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
         """
@@ -49,17 +49,17 @@ def verif_parametre(id_partie):
     """
         Fonction qui vérifie si la partie a déjà des paramètres
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-        Returns
+        :return
         -------
         Booléen :
             True si des paramètres ont déjà été définis.
@@ -93,7 +93,7 @@ def put_parametre(id_Partie, duree_tour, condition_victoire, Taille_plateau):
         Procédure qui met à jour de les paramètres
         couposéés de id_Partie, duree_tour , condition_victoire et Taille_plateau
 
-        Parameters
+        :parameter
         ----------
         id_Partie : int
             identifiant de la partie auquelle on modifie les paramètres
@@ -104,13 +104,13 @@ def put_parametre(id_Partie, duree_tour, condition_victoire, Taille_plateau):
         Taille_plateau : int
             Taille du plateau de jeu
 
-        Raises
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
              un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Returns
+        :return
         -------
         None.
         """

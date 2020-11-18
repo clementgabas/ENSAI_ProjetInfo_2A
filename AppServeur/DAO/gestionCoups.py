@@ -9,7 +9,7 @@ def add_new_coup(id_partie, num_coup , pseudo_joueur, new_position, prochain_tou
         Procédure qui enregistre un nouveau coup
         composé de id_partie, num_coup , pseudo_joueur, new_position et prochain_tour
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie auquelle on ajoute un nouveau coup
@@ -22,13 +22,13 @@ def add_new_coup(id_partie, num_coup , pseudo_joueur, new_position, prochain_tou
         prochain_tour : int
             entier qui défini si le joueur peut jouer son coup la prochaine fois que ce sera son tour
 
-        Raise
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
              un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Return
+        :return
         -------
         None.
     """
@@ -49,19 +49,19 @@ def get_last_coup(id_partie): #get
     """
         Fonction qui retourne le dérnier coup joué dans la partie
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie
 
-        Raise
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
         ValueError
             Si une erreur a lieu dans la valeur récupéré lors de la requète SQL
 
-        Return
+        :return
         -------
         last_coup : tuple
             Tuple contenant le numéro du dernier coup joué dans la partie
@@ -86,21 +86,21 @@ def get_old_coup(id_partie, pseudo_joueur):
     """
         Fonction qui retourne le dérnier coup joué dans la partie
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie
         pseudo_joueur : text
             pseudo du joueur à qui c'est le tour
 
-        Raises
+        :raises
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
         ValueError
             Si une erreur a lieu dans la valeur prochain_tour est superieure à 1 lors de la requète SQL
 
-        Return
+        :return
         -------
         old_coup : tuple
                 Tuple contenant l'identifiant de la partie, numéro du dernier coup joué par le joueur,
@@ -133,20 +133,20 @@ def add_coup_zero(id_partie, pseudo):
         composé de id_partie, num_coup -compris entre 0 et 1 exclu-, pseudo_joueur,
         new_position égal à -1 et prochain_tour égal à 1
 
-        Parameters
+        :parameter
         ----------
         id_partie : int
             identifiant de la partie auquelle on ajoute un nouveau coup
         pseudo_joueur : str
                 pseudo du joueur qui a joué ,ou non, le coup à ajouter
 
-        Raise
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
              un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Return
+        :return
         -------
         None.
     """
@@ -169,17 +169,17 @@ def get_all_coups(id_partie):
     """
            Fonction qui retourne tous les coups joués dans la partie.
 
-           Parameters
+           :parameter
            ----------
            id_partie : int
                identifiant de la partie
 
-           Raise
+           :raise
            ------
            ConnectionAbortedError
                Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
 
-           Return
+           :return
            -------
            liste_coups : list
                    Tuple contenant l'identifiant de la partie, numéro du coup ,
@@ -208,13 +208,13 @@ def delete_all_coups(id_partie):
             identifiant de la partie auquelle on veut supprimer tous les coups
 
 
-        Raise
+        :raise
         ------
         ConnectionAbortedError
             Si une erreur se produit au cours de la communication avec la DB,
              un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-        Return
+        :return
         -------
         None.
     """
