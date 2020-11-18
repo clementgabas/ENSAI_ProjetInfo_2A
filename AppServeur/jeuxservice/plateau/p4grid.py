@@ -1,7 +1,7 @@
 from jeuxservice.plateau.abstractgrid import AbstractGrid
 import DAO.gestionParticipation as DAOparticipation
 
-class GridP4(AbstractGrid):
+class Grid(AbstractGrid):
 
     def __init__(self, numHeight, numWidth, tokenWinNumber):
         self._numHeight = numHeight
@@ -12,11 +12,7 @@ class GridP4(AbstractGrid):
         for k in range(self._numWidth):
             self._gridList.append([0] * self._numHeight)
 
-    def simulatation(self, liste_coups):
-        for coup in liste_coups:
-            colonne_jouee = coup[3]
-            ordre_joueur = DAOparticipation.get_position_ordre(pseudo=coup[2], id_partie=coup[0])
-            self.Throw(colonne_jouee, ordre_joueur)
+    
 
     def Throw(self, x, tokenColor):
         y = 0

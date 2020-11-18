@@ -1,6 +1,6 @@
 from jeuxservice.player.abstractplayer import AbstractPlayer
 
-class PlayerOie(AbstractPlayer):
+class Player(AbstractPlayer):
 
     def __init__(self, name, color, ordre):
         AbstractPlayer.__init__(name, color, ordre)
