@@ -19,7 +19,7 @@ def are_pseudos_friends(pseudo1, pseudo2):
     ConnectionAbortedError
         Si une erreur se produit au cours de la connection avec la DB, l'erreur est levée..
 
-    Returns
+    :return
     -------
     Bool : Bool
         Booléen qui précise si oui ou non le pseudo1 possède une relation d'amitié avec le pseudo 2.
@@ -58,7 +58,7 @@ def add_amitie(pseudo1, pseudo2):
     ConnectionAbortedError
         Si une erreur se produit au cours de la communication avec la DB, un rollback jusqu'au commit précédant a lieu et l'erreur est levée.
 
-    Returns
+    :return
     -------
     None.
 
