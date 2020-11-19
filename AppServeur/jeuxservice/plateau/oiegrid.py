@@ -1,23 +1,22 @@
 from jeuxservice.plateau.abstractgrid import AbstractGrid
 import DAO.gestionParticipation as DAOparticipation
 
-class Tray(AbstractGrid, Dice):
-    """
-    Plateau qui hérité de la classe dé
-    Sert à définir le nombre de cases, les particularités des cases
-    """
-    
+class GridGoose(AbstractGrid, Dice):
+
+    _nbBox = 1  # nb de cases
+    _boxList = []  # tableau de classes 'box'
+
     def __init__(self, numofdice, numoffaces, nbBox):
         """
         Initialisation nb dés, nb faces et le nb de cases
         """
-        self._nbBox = nbBox # nb de cases
-        self._boxList = []  # tableau de classes 'box'
+        self._nbBox = nbBox
         Dice.__init__(self, numofdice, numoffaces)
         # Dimensione le tableau _boxList en fonction de _nbBox
         for i in range(self._nbBox + 1):
             box = Box("None")  # On instancie une classe box
             self._boxList.append(box)  # Qui est ajoutée au tableau _boxList
+
 
     def Set_GameByDefault(self):
         """
@@ -45,6 +44,7 @@ class Tray(AbstractGrid, Dice):
         self.set_rules(58, "Skull")
         self.set_rules(59, "Goose")
 
+
     def set_rules(self, boxnumber, boxtype):
         """
         Affecte une règle à une case
@@ -53,12 +53,14 @@ class Tray(AbstractGrid, Dice):
         box = self._boxList[boxnumber]  # Récupère l'instance de la box dans le tableau
         box.setType(boxtype)  # Et on lui affecte la règle
 
+
     def get_type(self, boxnumber):
         """
         Obtenir la règle d'une case en donnant son numéro
         """
         box = self._boxList[boxnumber]
         return box._boxType
+
 
     def search_box(self, start, end, test):
         """
@@ -70,6 +72,7 @@ class Tray(AbstractGrid, Dice):
                 return i
         return -1
 
+
     def compute_dice(self):
         """
         recherche de combinaison de dés
@@ -77,11 +80,13 @@ class Tray(AbstractGrid, Dice):
         dice1 = 0
         dice2 = 0
         # recherche de la combinaison 6 + 3
+
         for i in range(self._numofdice):
             if self._diceresult[i] == 6:
                 dice1 = 1
             elif self._diceresult[i] == 3:
                 dice2 = 1
+
         if dice1 == 1 and dice2 == 1:
             # on recherche la case Dice63
             foundbox = self.search_box(0, self._nbBox, "Dice63")
@@ -89,18 +94,22 @@ class Tray(AbstractGrid, Dice):
                 return foundbox, 1  # retourne le tuple: index de la case Dice63 , combinaison speciale trouve == 1
         dice1 = 0
         dice2 = 0
+
         # recherche de la combinaison 5 + 4
         for i in range(self._numofdice):
             if self._diceresult[i] == 5:
                 dice1 = 1
             elif self._diceresult[i] == 4:
                 dice2 = 1
+
         if dice1 == 1 and dice2 == 1:
             # on recherche la case Dice54
             foundbox = self.search_box(0, self._nbBox, "Dice54")
             if foundbox != -1:
                 return foundbox, 1  # retourne le tuple: index de la case Dice54 , combinaison speciale trouve == 1
+
         return -1, 0  # retourne le tuple: index fictif , combinaison speciale non trouve == 0
+
 
     def compute_rule(self, boxnumber, previousbox):
         """
@@ -108,25 +117,34 @@ class Tray(AbstractGrid, Dice):
         """
         # return tuple type/box/nextturn
         box = self._boxList[boxnumber]
+
         if box._boxType == "Goose":
             return 1, boxnumber + self.sumofdices(), 1
         elif box._boxType == "Bridge":
+
             foundbox = self.search_box(boxnumber + 1, self._nbBox, "Bridge")
             if foundbox != -1:
-                return 1, foundbox, 1
+                return 1, foundbox, 1;
             return boxnumber, 1
+
         elif box._boxType == "Hotel":
             return 1, boxnumber, 4
+
         elif box._boxType == "Jail":
             return 2, boxnumber, 0, previousbox, 1
+
         elif box._boxType == "Well":
             return 2, boxnumber, 0, boxnumber, 1
+
         elif box._boxType == "Labyrinth":
             return 1, boxnumber - 12, 1
+
         elif box._boxType == "Skull":
             return 1, 0, 1
-        return 0, boxnumber, 1
 
+        return 0, boxnumber, 1
+    
+    
     def compute_lastbox(self, boxnumber):
         """
         Gérer fin du plateau pour qu'un dé trop grand revienne en arrière
@@ -134,6 +152,7 @@ class Tray(AbstractGrid, Dice):
         if boxnumber > self._nbBox:
             boxnumber = self._nbBox - (boxnumber - self._nbBox)
         return boxnumber
+
 
     def test_If_Win(self, boxnumber):
         """
@@ -158,6 +177,7 @@ class Box:
         """
         self._boxType = boxType
 
+
 class Dice:
     """
     Permet de gérer les dés : le lancer, le nb de dés, le nombre de valeurs (faces)
@@ -177,6 +197,7 @@ class Dice:
         for i in range(self._numofdice):
             self._diceresult.append(0)
 
+
     def throw(self):
         """
         Jeté de dés : pour chaque dé, on fait un random (entre 1 et nb faces) et on stocke ce résultat dans _diceresult
@@ -184,14 +205,13 @@ class Dice:
         for i in range(self._numofdice):
             self._diceresult[i] = random.randint(1, self._numoffaces)
 
-    def Get_numOfDice(self):
-        return self._numofdice
 
     def dicevalue(self, num):
         """
         Demande le résultat d'un lancer de dé en donnant l'id du dé (_dicevalue[0] donne le premier dé)
         """
         return self._diceresult[num]
+
 
     def sumofdices(self):
         """

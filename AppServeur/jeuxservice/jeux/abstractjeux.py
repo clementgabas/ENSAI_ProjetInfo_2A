@@ -1,20 +1,19 @@
 from abc import ABC
 
-class AbstractGrid(ABC):
+class AbstractJeu(ABC):
 
-    def __init__(self):
+    def __init__(self, id_partie):
+        self.listOfPlayers = []
+        self.id_partie = id_partie
+
+
+    def set_Players(self, playerClass):
+        self.listOfPlayers.append(playerClass)
+
+    def initialisation(self):
         pass
 
-    def TestIfWin(self):
-        pass
-
-    def TestEndOfGame(self):
-        pass
-
-    def ClearGrid(self):
-        pass
-
-    def getGrid(self):
+    def jouer_un_coup(self):
         pass
 
     def create_resultat(self):
@@ -25,3 +24,4 @@ class AbstractGrid(ABC):
         Resultat["Statut"] = statut
         Resultat["Message"] = message
         return Resultat
+    
