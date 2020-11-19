@@ -2,6 +2,7 @@ import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 from Player.PlayerClass import Player
 import time
+import random as rd
 import colorama
 colorama.init()
 
@@ -83,45 +84,54 @@ class Jouer(AbstractView):
             elif _color == "blanc":
                 return " \033[30;47;1m  \033[0m"
 
-        line = "|"
-        separator = "-"
-        abscisse = " "
-        for k in range(self.nbline):
-            separator = separator + "----"
-
-            if k == 0:
-                abscisse = 2 * abscisse + str(k) + "   "
-
-            elif k >= 10:
-                abscisse = abscisse + str(k) + "  "
-
-            else:
-                abscisse = abscisse + str(k) + "   "
-
-        print(separator)
-        for i in range(self.nbcolumn - 1, -1, -1):
-            for j in range(self.nbline):
-
-                if _grid[j][i] == 0:
-                    line = line + "   |"
-
-                elif _grid[j][i] == 1:
-                    carre_col = get_symbole_couleur(liste_couleur_ordonnee[0][0])
-                    line = line + carre_col + "|"
-
-                elif _grid[j][i] == 2:
-                    carre_col = get_symbole_couleur(liste_couleur_ordonnee[1][0])
-                    line = line + carre_col + "|"
-
-            print(line)
-            print(separator)
+        if self.game.lower() == "p4":
             line = "|"
-        print(abscisse)
+            separator = "-"
+            abscisse = " "
+            for k in range(self.nbline):
+                separator = separator + "----"
 
+                if k == 0:
+                    abscisse = 2 * abscisse + str(k) + "   "
+
+                elif k >= 10:
+                    abscisse = abscisse + str(k) + "  "
+
+                else:
+                    abscisse = abscisse + str(k) + "   "
+
+            print(separator)
+            for i in range(self.nbcolumn - 1, -1, -1):
+                for j in range(self.nbline):
+
+                    if _grid[j][i] == 0:
+                        line = line + "   |"
+
+                    elif _grid[j][i] == 1:
+                        carre_col = get_symbole_couleur(liste_couleur_ordonnee[0][0])
+                        line = line + carre_col + "|"
+
+                    elif _grid[j][i] == 2:
+                        carre_col = get_symbole_couleur(liste_couleur_ordonnee[1][0])
+                        line = line + carre_col + "|"
+
+                print(line)
+                print(separator)
+                line = "|"
+            print(abscisse)
+        elif self.game.lower() == 'oie':
+            pass
 
     def jouer_son_tour(self):
         action = inquirer.prompt(self.action_jouer)
-        #actoion --> {'action': '2'}
+        if self.game.lower() == 'p4':
+            pass
+            #actoion --> {'action': '2'}
+        elif self.game.lower() == 'oie':
+            dice1, dice2 = rd.randint(1, 6), rd.danint(1, 6)
+            dice1 += dice2*0.1
+            action = {'action': dice1}
+            #action --> {'action': 1.6 ou 3.2 ou 2.3
         return action
 
     def jouer(self):

@@ -85,16 +85,19 @@ def get_grille():
     """
     request.get_json(force=True)
     id_partie, jeu = request.json.get('id_partie'), request.json.get('jeu')
-    print(f"La grille est demandée dans la salle {id_partie}")
+    print(f"La grille est demandée dans la salle {id_partie} pour le jeu {jeu}")
 
     #-- on requete la DB pour obtenir l'ensemble des coups qui ont eu lieu dans une partie
     liste_coups = DAOcoups.get_all_coups(id_partie)
     print("Liste des coups : " + str(liste_coups))
 
-    #-- on envoit cette liste à jeux service qui va simuler tous les coups et renvoyer la grille dans cet etat
-    plateau = GridP4(numHeight=7, numWidth=7, tokenWinNumber=4) #pour l'instant, on ne travaille que avec des parties par default
-    plateau.simulatation(liste_coups)
-    grille = plateau.getGrid()
+    if jeu.lower() == "p4":
+        #-- on envoit cette liste à jeux service qui va simuler tous les coups et renvoyer la grille dans cet etat
+        plateau = GridP4(numHeight=7, numWidth=7, tokenWinNumber=4) #pour l'instant, on ne travaille que avec des parties par default
+        plateau.simulatation(liste_coups)
+        grille = plateau.getGrid()
+    elif jeu.lower() == 'oie':
+        pass
 
     print(f"La grille a été simulée dans la salle {id_partie}")
 
@@ -122,28 +125,44 @@ def jouer_son_tour():
         La Connexion réussie.
     """
     request.get_json(force=True)
-    id_partie, pseudo, position, jeu = request.json.get('id_partie'), request.json.get('pseudo'), request.json.get('position'), request.json.get('jeu')
+    id_partie, pseudo, jeu = request.json.get('id_partie'), request.json.get('pseudo'), request.json.get('jeu')
+    position = request.json.get('position')
+
+    if type(position) == float:
+        dice1, dice2 = math.floor(position), math.ceil((position%1)*10)
+        position = [dice1, dice2]
+
+
     if jeu.lower() == "p4":
         coup = {'player' : pseudo, 'id_partie': id_partie , 'colonne': position}
         print(
             f"L'utilisateur {pseudo} va jouer son tour dans la salle {id_partie} au P4. Il a joué dans la colonne {position}.")
+    elif jeu.lower() == "oie":
+        coup = {'player' : pseudo, 'id_partie': id_partie , 'dice1': position[0], 'dice2': position[1]}
+        print(
+            f"L'utilisateur {pseudo} va jouer son tour dans la salle {id_partie} au jeu de l'oie. Il a joué un {position[0]} et un {position[1]}.")
 
     #-- on demande a jeux service si le coup est valide
-    plateau = GridP4(numHeight=7, numWidth=7,
-                     tokenWinNumber=4)  # pour l'instant, on ne travaille que avec des parties par default
-    plateau.simulatation(DAOcoups.get_all_coups(id_partie))
+    if jeu.lower() == "p4":
+        plateau = GridP4(numHeight=7, numWidth=7,
+                         tokenWinNumber=4)  # pour l'instant, on ne travaille que avec des parties par default
+        plateau.simulatation(DAOcoups.get_all_coups(id_partie))
 
-    jeu = GameP4(id_partie)
-    Resultat = jeu.is_coup_valide(coup=coup, gridClass=plateau)
+        jeu = GameP4(id_partie)
+        Resultat = jeu.is_coup_valide(coup=coup, gridClass=plateau)
+    elif jeu.lower() == 'oie':
+        if not 0<position[0]<7 or not 0<position[1]<7:
+            Resultat = {"Statut": False, "Message": "Au moins l'un des 2 dés à une valeur innapropriée."}
 
     if not Resultat["Statut"]: #le coup n'est pas valide
         print(f"Le coup n'est pas valide")
         response = {"status_code": http_codes.forbidden, "message": Resultat["Message"]}  # code 403
         return make_reponse(response, http_codes.forbidden)  # code 403
     print("Le coup est valide")
+
+
     #-- on enregistre ce coup dans la bd
-    last_coup = DAOcoups.get_last_coup(id_partie)[0]
-    print(last_coup)
+    last_coup = DAOcoups.get_last_coup(id_partie)[0] #valeur du num_turn_précédent
     DAOcoups.add_new_coup(id_partie, math.floor(last_coup)+1, pseudo, position, 1)
     print("Le coup a été enregistré dans la DB")
     response = {"status_code": http_codes.ok, "message": "Coup joué et ajouté à la DB"}  # code 200
@@ -170,8 +189,18 @@ def demander_si_vainqueur():
 
         Bool = plateau.TestIfWin()
 
-        response = {"status_code": http_codes.ok, "message": "", "is_winner": Bool}  # code 200
-        return make_reponse(response, http_codes.ok)  # code 200
+    elif jeu.lower()=='oie':
+        Bool = False
+        pass
+
+    if Bool:
+        print(f"La partie {id_partie} est gagnante")
+    else:
+        print(f"La partie {id_partie} n'est pas gagnante")
+
+    response = {"status_code": http_codes.ok, "message": "", "is_winner": Bool}  # code 200
+    return make_reponse(response, http_codes.ok)  # code 200
+    
 
 #@app.route("/home/game/room/end", methods=["PUT"])
 def gestion_fin_partie():
