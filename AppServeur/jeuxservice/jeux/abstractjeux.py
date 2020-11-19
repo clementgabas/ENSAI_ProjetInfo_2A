@@ -5,6 +5,7 @@ class AbstractJeu(ABC):
     def __init__(self, id_partie):
         self.listOfPlayers = []
         self.id_partie = id_partie
+        self.numberOfPlayer = len(self.listOfPlayers)
 
 
     def set_Players(self, playerClass):

@@ -1,5 +1,6 @@
 from jeuxservice.jeux.abstractjeux import AbstractJeu
 from jeuxservice.plateau.p4grid import GridP4
+
 import DAO.gestionCoups as DAOcoups
 import DAO.gestionParticipation as DAOparticipation
 

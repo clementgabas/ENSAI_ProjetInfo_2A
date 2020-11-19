@@ -111,17 +111,14 @@ class GridP4(AbstractGrid):
             result = result and self._gridList[i][self._numHeight - 1] != 0
         return result
 
-
     def TestEndColumn(self, column):
         return self._gridList[column][self._numHeight - 1] != 0
-
 
     def ClearGrid(self):
         self._win = 0
         for k in range(self._numWidth):
             for l in range(self._numHeight):
                 self._gridList[k][l] = 0
-
 
     def getGrid(self):
         return self._gridList

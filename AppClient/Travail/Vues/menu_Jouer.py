@@ -128,9 +128,11 @@ class Jouer(AbstractView):
             pass
             #actoion --> {'action': '2'}
         elif self.game.lower() == 'oie':
-            dice1, dice2 = rd.randint(1, 6), rd.danint(1, 6)
+            dice1, dice2 = rd.randint(1, 6), rd.randint(1, 6)
+            print(f"Vous avez jeter un {dice1} et un {dice2}")
             dice1 += dice2*0.1
             action = {'action': dice1}
+
             #action --> {'action': 1.6 ou 3.2 ou 2.3
         return action
 

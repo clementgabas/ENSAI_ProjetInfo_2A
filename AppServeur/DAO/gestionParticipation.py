@@ -384,3 +384,16 @@ def get_liste_couleur(id_partie):
     finally:
         con.close()
     return liste_players
+
+def get_all_players2(id_partie):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT pseudo FROM Participation WHERE id_partie = ? ORDER BY ordre", (id_partie,))
+        liste_players = cursor.fetchall()
+    except:
+        print("erreur dans get_all_players")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return liste_players

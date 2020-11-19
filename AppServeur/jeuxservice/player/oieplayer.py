@@ -3,7 +3,7 @@ from jeuxservice.player.abstractplayer import AbstractPlayer
 class PlayerOie(AbstractPlayer):
 
     def __init__(self, name, color, ordre):
-        AbstractPlayer.__init__(name, color, ordre)
+        AbstractPlayer.__init__(self, name, color, ordre)
         self._nbwaitingturn = 1  # nb tours d'attente
         self._actualbox = 0  # case actuelle
         self._previousbox = 0  # case d'où l'on vient

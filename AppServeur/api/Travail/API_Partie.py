@@ -10,6 +10,7 @@ import DAO.gestionCoups as DAOcoups
 import DAO.gestionScores as DAOscores
 
 from jeuxservice.plateau.p4grid import GridP4
+from jeuxservice.plateau.oiegrid import Dice, Tray
 from jeuxservice.jeux.p4game import GameP4
 
 from api.Travail.Base import make_reponse
@@ -97,7 +98,10 @@ def get_grille():
         plateau.simulatation(liste_coups)
         grille = plateau.getGrid()
     elif jeu.lower() == 'oie':
-        pass
+        plateau = Tray(numofdice=2, numoffaces=6, nbBox=63, id_partie=id_partie) #pour le moment, on ne joue qu'avec des valeurs standards
+        plateau.simulation(liste_coups)
+        grille = plateau.getGrid()
+        print(f"grille oie : {grille}")
 
     print(f"La grille a été simulée dans la salle {id_partie}")
 
@@ -130,17 +134,17 @@ def jouer_son_tour():
 
     if type(position) == float:
         dice1, dice2 = math.floor(position), math.ceil((position%1)*10)
-        position = [dice1, dice2]
+        position2 = [dice1, dice2]
 
-
+    print(f"L'utilisateur {pseudo} joue la position {position} pour le jeu {jeu}")
     if jeu.lower() == "p4":
         coup = {'player' : pseudo, 'id_partie': id_partie , 'colonne': position}
         print(
             f"L'utilisateur {pseudo} va jouer son tour dans la salle {id_partie} au P4. Il a joué dans la colonne {position}.")
     elif jeu.lower() == "oie":
-        coup = {'player' : pseudo, 'id_partie': id_partie , 'dice1': position[0], 'dice2': position[1]}
+        coup = {'player' : pseudo, 'id_partie': id_partie , 'dice1': position2[0], 'dice2': position2[1]}
         print(
-            f"L'utilisateur {pseudo} va jouer son tour dans la salle {id_partie} au jeu de l'oie. Il a joué un {position[0]} et un {position[1]}.")
+            f"L'utilisateur {pseudo} va jouer son tour dans la salle {id_partie} au jeu de l'oie. Il a joué un {position2[0]} et un {position2[1]}.")
 
     #-- on demande a jeux service si le coup est valide
     if jeu.lower() == "p4":
@@ -151,8 +155,11 @@ def jouer_son_tour():
         jeu = GameP4(id_partie)
         Resultat = jeu.is_coup_valide(coup=coup, gridClass=plateau)
     elif jeu.lower() == 'oie':
-        if not 0<position[0]<7 or not 0<position[1]<7:
+        if not 0<position2[0]<7 or not 0<position2[1]<7:
+            print(f"Erreur dans les dés pour {pseudo} dans la salle {id_partie}")
             Resultat = {"Statut": False, "Message": "Au moins l'un des 2 dés à une valeur innapropriée."}
+        else:
+            Resultat = {"Statut": True, "Message": "Pas de problèmes dans les dés."}
 
     if not Resultat["Statut"]: #le coup n'est pas valide
         print(f"Le coup n'est pas valide")
@@ -200,7 +207,7 @@ def demander_si_vainqueur():
 
     response = {"status_code": http_codes.ok, "message": "", "is_winner": Bool}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
-    
+
 
 #@app.route("/home/game/room/end", methods=["PUT"])
 def gestion_fin_partie():
