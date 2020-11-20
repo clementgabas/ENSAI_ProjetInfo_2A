@@ -39,7 +39,7 @@ def creer_salle():
     """
 
     request.get_json(force=True)
-    pseudo_chef, game = request.json.get('pseudo_chef_salle'), request.json.get('game')
+    pseudo_chef, game, ami_anonyme = request.json.get('pseudo_chef_salle'), request.json.get('game'), request.json.get('ami_anonyme')
     print(f"{pseudo_chef} créée une salle pour jouer au jeu : {game}.")
     if game.lower() == 'p4':
         total_places = 2
@@ -49,7 +49,7 @@ def creer_salle():
         print("Nombre de place maximum : 5")
 
     #-- fonction qui créé la partie dans la table et qui renvoit son id
-    id_partie = DAOparties.add_partie(pseudo_chef, game, total_places)
+    id_partie = DAOparties.add_partie(pseudo_chef, game, total_places, ami_anonyme)
     print(f"création de la salle {id_partie} pour la partie de {pseudo_chef} sur le jeu : {game}")
     #-- on ajoute le joueur directement à sa salle dans la table participation
     nb_places_libres = DAOparties.check_cb_places_libres(id_partie)

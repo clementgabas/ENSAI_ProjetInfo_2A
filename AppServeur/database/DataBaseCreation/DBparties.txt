@@ -6,5 +6,6 @@ CREATE TABLE "Parties" (
 	"places_total"	INTEGER,
 	"places_dispo"	INTEGER,
 	"statut"	TEXT,
-	"aquiltour"	INTEGER
+	"aquiltour"	INTEGER,
+	"ami_anonyme"	TEXT
 );

@@ -9,7 +9,7 @@ from Player.PlayerClass import Player
 #Création du menu des classements.
 
 class Menu_Salle(AbstractView):
-    def __init__(self, pseudo = "user", jeu = "p4"):
+    def __init__(self, pseudo = "user", jeu = "p4", ami_anonyme="ami"):
         self.questions = [
             {
                 'type' : 'list',
@@ -25,6 +25,7 @@ class Menu_Salle(AbstractView):
         ]
         self.pseudo = pseudo
         self.game = jeu.lower()
+        self.ami_anonyme = ami_anonyme.lower()
 
     def display_info(self):
         pass #on a rien d'intéressant à dire ici

@@ -5,7 +5,7 @@ import DAO.gestion as DBgestion
 db_address = DBgestion.get_db_address()
 
 
-def add_partie(pseudo_chef, jeu, nb_places_tot):
+def add_partie(pseudo_chef, jeu, nb_places_tot, ami_anonyme):
     """
         Fonction qui enregistre une nouvelle partie dans la table Parties et qui retourne le numéro de la partie
 
@@ -17,6 +17,8 @@ def add_partie(pseudo_chef, jeu, nb_places_tot):
             Nom du jeu sur lequel va se jouer la partie
         nb_places_tot : int
             nombre de place maximale dans la partie
+        ami_anonyme : str
+            précise si la salle est pour jouer avec des amis ou contre des inconnus
 
         :raise
         ------
@@ -35,8 +37,8 @@ def add_partie(pseudo_chef, jeu, nb_places_tot):
         cursor = con.cursor()
         heure = str(datetime.now())
         cursor.execute(
-            "INSERT INTO Parties (jeu, date_debut, pseudo_proprietaire, places_total, places_dispo, statut) "
-            "VALUES (?,?,?,?,?, 'en préparation')", (jeu, heure, pseudo_chef, nb_places_tot, nb_places_tot,))
+            "INSERT INTO Parties (jeu, date_debut, pseudo_proprietaire, places_total, places_dispo, statut, ami_anonyme) "
+            "VALUES (?,?,?,?,?, 'en préparation', ?)", (jeu, heure, pseudo_chef, nb_places_tot, nb_places_tot, ami_anonyme))
         cursor.execute("SELECT id_partie from Parties WHERE pseudo_proprietaire = ? "
                        "AND date_debut = ?", (pseudo_chef, heure))
         id_partie = cursor.fetchone()[0]

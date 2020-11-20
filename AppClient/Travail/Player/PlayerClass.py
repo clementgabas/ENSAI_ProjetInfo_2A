@@ -10,11 +10,12 @@ absolute_address = get_absolute_address()
 
 class Player(User):
 
-    def __init__(self, pseudo, jeu, id_salle, chef_salle):
+    def __init__(self, pseudo, jeu, id_salle, chef_salle, ami_anonyme="ami"):
         self.pseudo = pseudo
         self.id_salle = id_salle
         self.est_chef = chef_salle
         self.jeu = jeu
+        self.ami_anonyme = ami_anonyme
 
 
 
@@ -24,7 +25,7 @@ class Player(User):
         relative_address = "/home/game/room"
         adresse = make_address(absolute_address, relative_address)
 
-        dataPost = {'pseudo_chef_salle': self.pseudo, 'game': self.jeu}
+        dataPost = {'pseudo_chef_salle': self.pseudo, 'game': self.jeu, "ami_anonyme": self.ami_anonyme}
         res = requests.post(adresse, data=json.dumps(dataPost))
 
         if res.status_code == 200:
@@ -229,14 +230,14 @@ class Player(User):
             Resultat = self.update_resultat(False, "erreur dans PlayerClass.jouer_son_tour")
         return Resultat
 
-    def gestion_fin_partie(self, win_bool):
+    def gestion_fin_partie(self, self_win):
         #-- fonction qui nous retire de la table participation pour cette partie,
         # qui update si on a gagné notre nb de parties gagnees dans la table score
         # et qui update notre score (si la partie est anonyme
         relative_address = "/home/game/room/end"
         adresse = make_address(absolute_address, relative_address)
 
-        dataPost = {'pseudo': self.pseudo, 'id_partie': self.id_salle, 'jeu': self.jeu.lower(), 'win_bool': win_bool}
+        dataPost = {'pseudo': self.pseudo, 'id_partie': self.id_salle, 'jeu': self.jeu.lower(), 'win_bool': self_win}
         res = requests.put(adresse, data=json.dumps(dataPost))
 
         if res.status_code==200:
