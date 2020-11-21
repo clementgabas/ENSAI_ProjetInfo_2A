@@ -10,7 +10,10 @@ class PlayerOie(AbstractPlayer):
 
 
     def __str__(self):
-        return f"Joueur : {self._name} ; Couleur : {self._color} ; Ordre de jeu : {self._ordre} ; nbwaitingturn : {self._nbwaitingturn} ; actualbox : {self._actualbox} : previousbox : {self._previousbox}"
+        return f"Le joueur {self._name}, de couleur {self._color}, jouant en {self._ordre +1} position, se situais précédemment sur la case {self._previousbox} et est maitenant sur la case {self._actualbox}. Il a {self._nbwaitingturn} tours d'attente"
+
+    def get_dico(self):
+        return {'Joueur' : self._name, 'Couleur' : self._color, 'Ordre_de_jeu' : self._ordre, 'nbwaitingturn' : self._nbwaitingturn, 'actualbox' : self._actualbox, 'previousbox' : self._previousbox}
 
     def set_waitingturn(self, nbwaitingturn):
         """

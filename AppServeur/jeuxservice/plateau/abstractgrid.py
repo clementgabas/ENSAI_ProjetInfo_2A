@@ -8,15 +8,6 @@ class AbstractGrid(ABC):
     def TestIfWin(self):
         pass
 
-    def TestEndOfGame(self):
-        pass
-
-    def ClearGrid(self):
-        pass
-
-    def getGrid(self):
-        pass
-
     def create_resultat(self):
         return {"Statut": "", "Message": ""}
 

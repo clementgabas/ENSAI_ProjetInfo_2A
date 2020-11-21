@@ -40,13 +40,11 @@ class Dice:
         dice2 = round(coup%1*10)
         return (dice1, dice2)
 
-
     def dicevalue(self, num):
         """
         Demande le résultat d'un lancer de dé en donnant l'id du dé (_dicevalue[0] donne le premier dé)
         """
         return self._diceresult[num]
-
 
     def sumofdices(self):
         """
@@ -108,17 +106,13 @@ class Tray(AbstractGrid, Dice):
         L = []
         for i in range(len(liste_couleur_ordonnee)):
             L.append([liste_players_ordonnee[i], liste_couleur_ordonnee[i]])
-        print(f"Liste des joueurs avant de les passer en playerObject : {L}")
         L2 = []
         for k in range(len(L)):
-            name, color, ordre = L[k][0], L[k][1], k
+            name, color, ordre = L[k][0][0], L[k][1][0], k
             joueur = PlayerOie(name, color, ordre)
             L2.append(joueur)
-
-        print(f"Liste des joueurs finaux playerClass : {str(L2)}")
         self.listOfPlayers = L2
         print(f"Liste des joueurs : {self.listOfPlayers}")
-
 
     def simulation(self, liste_coups):
         self.make_liste_of_players()
@@ -128,13 +122,10 @@ class Tray(AbstractGrid, Dice):
             dice1, dice2 = self.get_dices(colonne_jouee)
             ordre_joueur = DAOparticipation.get_position_ordre(pseudo=coup[2], id_partie=coup[0])
             self.Throw(dice1, dice2, ordre_joueur)
-        print("\n Résultat de la simulation : \n")
+        dico = {}
         for player in self.listOfPlayers:
-            print(player)
-
-    def change_player_box(self, old, new, playerClass):
-        self._gridList[old] = 0
-        self._gridList[new] = playerClass._color
+            dico[f"{player._name}"] = player.get_dico()
+        return dico
 
     def Throw(self, dice1, dice2, ordre):
         currentplayer = self.listOfPlayers[ordre-1]  # récupère le joueur actuel (celui qui joue)

@@ -68,6 +68,8 @@ class Jouer(AbstractView):
     def print_grille(self, _grid, liste_couleur_ordonnee):
         self.nbcolumn, self.nbline = 7, 7
 
+        print("\n")
+
         def get_symbole_couleur(_color):
             if _color == "rouge":
                 return " \033[30;41;1m  \033[0m"
@@ -119,8 +121,11 @@ class Jouer(AbstractView):
                 print(separator)
                 line = "|"
             print(abscisse)
+            print("\n")
+
         elif self.game.lower() == 'oie':
-            pass
+            print("Pour le moment, on a la grille comme ca mais on va la print joliement tkt")
+            print(_grid)
 
     def jouer_son_tour(self):
         action = inquirer.prompt(self.action_jouer)

@@ -99,8 +99,7 @@ def get_grille():
         grille = plateau.getGrid()
     elif jeu.lower() == 'oie':
         plateau = Tray(numofdice=2, numoffaces=6, nbBox=63, id_partie=id_partie) #pour le moment, on ne joue qu'avec des valeurs standards
-        plateau.simulation(liste_coups)
-        grille = plateau.getGrid()
+        grille = plateau.simulation(liste_coups)
         print(f"grille oie : {grille}")
 
     print(f"La grille a été simulée dans la salle {id_partie}")
@@ -111,7 +110,7 @@ def get_grille():
     print(f"La liste des couleurs ordonnee fournit {liste_couleur}")
 
     response = {"status_code": http_codes.ok, "message": "Grille simulée", 'grid': grille, 'liste_couleur_ordonnee': liste_couleur}  # code 200
-    return make_reponse(response, http_codes.ok)  # code 200
+    return make_reponse(dict(response), http_codes.ok)  # code 200
 
 #@app.route("/home/game/room/grid", methods=["POST"]) #requetage pour jouer son coup
 def jouer_son_tour():
