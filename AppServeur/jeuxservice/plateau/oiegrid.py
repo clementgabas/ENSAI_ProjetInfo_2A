@@ -99,6 +99,7 @@ class Tray(AbstractGrid, Dice):
             self._boxList.append(box)  # Qui est ajoutée au tableau _boxList
 
         self.listOfPlayers = []
+        self.nbOfPlayer = len(self.listOfPlayers)
         self.id_partie = id_partie
 
     def make_liste_of_players(self):
@@ -127,6 +128,9 @@ class Tray(AbstractGrid, Dice):
             dice1, dice2 = self.get_dices(colonne_jouee)
             ordre_joueur = DAOparticipation.get_position_ordre(pseudo=coup[2], id_partie=coup[0])
             self.Throw(dice1, dice2, ordre_joueur)
+        print("\n Résultat de la simulation : \n")
+        for player in self.listOfPlayers:
+            print(player)
 
     def change_player_box(self, old, new, playerClass):
         self._gridList[old] = 0
@@ -323,7 +327,7 @@ class Tray(AbstractGrid, Dice):
             return 2, boxnumber, 0, previousbox, 1
 
         elif box._boxType == "Well":
-            if len(self.listOfPlayers) >2:
+            if self.nbOfPlayer >2:
                 print("Case puit. Vous ne pourrez sortir et rejouer que lorsqu'un autre joueur tombera sur cette case. En attendant, passez votre tour.")
                 return 2, boxnumber, 0, boxnumber, 1
             else: #a 2 joueurs, on ne peut pas joue ravec le puit ET la prison sinon on peut bloquer la partie.

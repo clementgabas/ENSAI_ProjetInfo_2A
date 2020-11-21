@@ -8,6 +8,10 @@ class PlayerOie(AbstractPlayer):
         self._actualbox = 0  # case actuelle
         self._previousbox = 0  # case d'où l'on vient
 
+
+    def __str__(self):
+        return f"Joueur : {self._name} ; Couleur : {self._color} ; Ordre de jeu : {self._ordre} ; nbwaitingturn : {self._nbwaitingturn} ; actualbox : {self._actualbox} : previousbox : {self._previousbox}"
+
     def set_waitingturn(self, nbwaitingturn):
         """
         Modifier le nombre de tours d'attente
@@ -37,13 +41,11 @@ class PlayerOie(AbstractPlayer):
         """
         self._nbwaitingturn = -1
 
-
     def get_actualbox(self):
         """
         Obtenir la case où il se situe actuellement
         """
         return self._actualbox
-
 
     def set_actualbox(self, box):
         """
@@ -56,7 +58,6 @@ class PlayerOie(AbstractPlayer):
         Définir la case où il se situe
         """
         self._previousbox = box
-
 
     def add_dice(self, value):
         """
