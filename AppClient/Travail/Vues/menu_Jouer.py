@@ -124,6 +124,114 @@ class Jouer(AbstractView):
             print("\n")
 
         elif self.game.lower() == 'oie':
+            #-- on récupère une grille sous la forme du dico suivant :
+            #-- {'pseudo1' : {'Joueur' : pseudo, 'Couleur' : color, 'Ordre_de_jeu' : ordre, 'nbwaitingturn' : nbwaitingturn, 'actualbox' : actualbox, 'previousbox' : previousbox}
+            nbBox = 63
+            caseWidth = 11
+            lineType = "|"
+            linePlayer = "|"
+            lineNumber = "|"
+            separator = "-"
+            l = nbBox
+            for k in range(nbBox):
+                separator = separator + "------------"
+
+            max = nbBox
+
+
+
+            def set_boxList():
+                boxList = []
+                for i in range(nbBox + 1):
+                    if i in (6, 12):
+                        box = "Bridge"
+                    elif i in (23,):
+                        box = "Hotel"
+                    elif i in (63,):
+                        box = "Dice63"
+                    elif i in (31,):
+                        box = "Well"
+                    elif i in (42,):
+                        box = "Labyrinth"
+                    elif i in (52,):
+                        box = "Jail"
+                    elif i in (53,):
+                        box = "Dice54"
+                    elif i in (58,):
+                        box = "skull"
+                    elif i in (9, 14, 18, 23, 27, 32, 36, 41, 45, 50, 54, 59):
+                        box = "Goose"
+                    else:
+                        box = "None"
+                    boxList.append(box)
+                return boxList
+
+            boxList = set_boxList()
+            for i in range(max, -1, -1):
+                addType = " "
+                box = boxList[i]
+
+                if box != "None":
+                    addType = addType + box
+
+                for h in range(caseWidth - len(addType)):
+                    addType = addType + " "
+                lineType = lineType + addType + "|"
+                    # creation des joueurs
+                addPlayer = " "
+                nbPlayer = 0  # compte le nombre de joueur pour decrementer de 1 la largeur de case
+
+                for joueur in _grid:
+                    player = _grid[joueur]
+                    if int(player["actualbox"]) == i:
+                        addPlayer = addPlayer + get_symbole_couleur(str(player["Couleur"])) + " \033[0m "
+                        nbPlayer = nbPlayer + 2
+
+                for h in range(caseWidth - nbPlayer - 2):
+                    addPlayer = addPlayer + " "
+                linePlayer = linePlayer + addPlayer + " |"
+
+                    # creation du numero de case
+                if i == 0:
+                    addNumber = "  Départ"
+
+                elif i == max:
+                    addNumber = "    Fin"
+
+                else:
+                    addNumber = "    " + str(i)
+
+                for h in range(caseWidth - len(addNumber)):
+                    addNumber = addNumber + " "
+
+                lineNumber = lineNumber + addNumber + "|"
+                l = l - 1
+
+                if l == 0 and i != 0:
+                    print(separator)
+                    print(lineType)
+                    print(linePlayer)
+                    print(lineNumber)
+                    lineType = "|"
+                    linePlayer = "|"
+                    lineNumber = "|"
+                    l = nbBox
+
+            print(separator)
+            print(lineType)
+            print(linePlayer)
+            print(lineNumber)
+            print(separator)
+
+
+
+
+
+
+
+
+
+
             print("Pour le moment, on a la grille comme ca mais on va la print joliement tkt")
             print(_grid)
 

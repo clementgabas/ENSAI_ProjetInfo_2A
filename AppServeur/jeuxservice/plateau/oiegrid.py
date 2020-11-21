@@ -87,9 +87,6 @@ class Tray(AbstractGrid, Dice):
         """
         self._nbBox = nbBox
         Dice.__init__(self, numofdice, numoffaces)
-        self._gridList = []
-        for k in range(self._nbBox):
-            self._gridList.append([0])
 
         # Dimensione le tableau _boxList en fonction de _nbBox
         for i in range(self._nbBox + 1):
