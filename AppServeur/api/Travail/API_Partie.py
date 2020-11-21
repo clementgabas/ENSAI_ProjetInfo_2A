@@ -133,7 +133,7 @@ def jouer_son_tour():
     position = request.json.get('position')
 
     if type(position) == float:
-        dice1, dice2 = math.floor(position), math.ceil((position%1)*10)
+        dice1, dice2 = math.floor(position), round((position%1)*10)
         position2 = [dice1, dice2]
 
     print(f"L'utilisateur {pseudo} joue la position {position} pour le jeu {jeu}")

@@ -37,7 +37,7 @@ class Dice:
     def get_dices(self, coup):
         #coup = 1.2 ou coup = 6.3 ou coup = 4.4
         dice1 = math.floor(coup)
-        dice2 = math.ceil(coup%1)
+        dice2 = round(coup%1*10)
         return (dice1, dice2)
 
 
@@ -121,6 +121,7 @@ class Tray(AbstractGrid, Dice):
 
     def simulation(self, liste_coups):
         self.make_liste_of_players()
+        self.Set_GameByDefault()
         for coup in liste_coups:
             colonne_jouee = coup[3]
             dice1, dice2 = self.get_dices(colonne_jouee)
@@ -132,22 +133,26 @@ class Tray(AbstractGrid, Dice):
         self._gridList[new] = playerClass._color
 
     def Throw(self, dice1, dice2, ordre):
-        currentplayer = self.listOfPlayers[ordre]  # récupère le joueur actuel (celui qui joue)
+        currentplayer = self.listOfPlayers[ordre-1]  # récupère le joueur actuel (celui qui joue)
 
         if currentplayer.test_waitingturn() == 1:  # test si le joueur ne doit pas passer son tour
+            currentplayer.set_previousbox(currentplayer.get_actualbox())
             actualBox = currentplayer.get_actualbox()  # récupère sa case actuelle
             self.throw(dice1, dice2) #on récupère ces dés
             currentplayer.add_dice(self.sumofdices())  # on ajoute dés à case actuelle
             currentplayer.set_actualbox(self.compute_lastbox(currentplayer.get_actualbox()))  # on déplace le joeur sur new case & on vérifie qu'il ne dépasse pas la dernière case
 
+            print(f"{currentplayer._name} est en sur la case {currentplayer._actualbox} et était juste avant sur la case {currentplayer._previousbox}")
 
             # Teste victoire joueur ?
             if self.test_If_Win(currentplayer.get_actualbox()) == 1: #victoire du joueur
+                print("partie finie")
                 endOfGame = 1
                 return endOfGame
 
             # Si pas victoire, renvoie résultat du test combinaison spéciale de dés
             resultDiceRules = self.compute_dice()
+            print(f"resultDiceRules : {resultDiceRules}")
 
             # On regarde s'il a fait une combinaison spéciale de dés (par exemple doubles)
             if resultDiceRules[1] == 1:
@@ -246,6 +251,7 @@ class Tray(AbstractGrid, Dice):
         for i in range(start, end):
             # recherche la première case (suivante) qui a la règle 'test'
             if self.get_type(i) == test:
+                print(f"case trouvée : {i} pour la règle {test}")
                 return i
         return -1
 
@@ -264,6 +270,7 @@ class Tray(AbstractGrid, Dice):
                 dice2 = 1
 
         if dice1 == 1 and dice2 == 1:
+            print("Vous avez fait un 6 et un 3. Vous allez donc sur la case la plus proche pour la règle Dice63")
             # on recherche la case Dice63
             foundbox = self.search_box(0, self._nbBox, "Dice63")
             if foundbox != -1:
@@ -279,6 +286,8 @@ class Tray(AbstractGrid, Dice):
                 dice2 = 1
 
         if dice1 == 1 and dice2 == 1:
+            print("Vous avez fait un 4 et un 5. Vous allez donc sur la case la plus proche pour la règle Dice54")
+
             # on recherche la case Dice54
             foundbox = self.search_box(0, self._nbBox, "Dice54")
             if foundbox != -1:
@@ -294,27 +303,38 @@ class Tray(AbstractGrid, Dice):
         box = self._boxList[boxnumber]
 
         if box._boxType == "Goose":
+            print("Vous êtes sur une oie, avancez à nouveau du nombre de points réalisés.")
             return 1, boxnumber + self.sumofdices(), 1
         elif box._boxType == "Bridge":
-
+            print("case pont. Si vous êtes en case 6, allez en case 12. Si vous êtes en case 12, allez en case 6.")
             foundbox = self.search_box(boxnumber + 1, self._nbBox, "Bridge")
             if foundbox != -1:
                 return 1, foundbox, 1;
             return boxnumber, 1
 
         elif box._boxType == "Hotel":
+            print("Vous êtes tombés sur la case Hotel et devrez donc passer 2 fois votre tour.")
             return 1, boxnumber, 4
 
         elif box._boxType == "Jail":
+            print(
+                "Case prison. Vous ne pourrez sortir et rejouer que lorsqu'un autre joueur tombera sur cette case. En attendant, passez votre tour.")
+
             return 2, boxnumber, 0, previousbox, 1
 
         elif box._boxType == "Well":
-            return 2, boxnumber, 0, boxnumber, 1
+            if len(self.listOfPlayers) >2:
+                print("Case puit. Vous ne pourrez sortir et rejouer que lorsqu'un autre joueur tombera sur cette case. En attendant, passez votre tour.")
+                return 2, boxnumber, 0, boxnumber, 1
+            else: #a 2 joueurs, on ne peut pas joue ravec le puit ET la prison sinon on peut bloquer la partie.
+                pass
 
         elif box._boxType == "Labyrinth":
+            print("Vous êtes sur la case labyrinth. Reculez de 12 cases.")
             return 1, boxnumber - 12, 1
 
         elif box._boxType == "Skull":
+            print("Vous êtes sur la case tête de mort. Recommencez depuis le début!!!")
             return 1, 0, 1
 
         return 0, boxnumber, 1

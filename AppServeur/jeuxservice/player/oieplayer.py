@@ -51,6 +51,12 @@ class PlayerOie(AbstractPlayer):
         """
         self._actualbox = box
 
+    def set_previousbox(self, box):
+        """
+        Définir la case où il se situe
+        """
+        self._previousbox = box
+
 
     def add_dice(self, value):
         """
