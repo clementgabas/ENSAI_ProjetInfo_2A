@@ -59,6 +59,27 @@ class Player(User):
             Resultat = self.update_resultat(False, "erreur non prévue : " + str(res.status_code))
         return Resultat
 
+    def rejoindre_salle_anonyme(self):
+        relative_address = "/home/game/room/anonyme"
+        adresse = make_address(absolute_address, relative_address)
+
+        
+        res = requests.put(adresse, data=json.dumps(dataPost)) #on recupere le id_salle
+        dataPost = {'pseudo': self.pseudo, 'id_salle': res["id_salle"], 'jeu':self.jeu}
+
+        if res.status_code == 200:
+            Resultat = self.update_resultat(True, f"Vous avez bien été ajouté à la salle anonyme {id_salle}.")
+            Resultat["id_salle"] = id_salle
+        elif res.status_code == 401:
+            Resultat = self.update_resultat(False, f"La salle anonyme {id_salle} est pleine") #surbooking
+        elif res.status_code == 404:
+            Resultat = self.update_resultat(False, "Aucune salle anonyme de disponible")
+        elif res.status_code == 500:
+            Resultat = self.update_resultat(False, "erreur dans le code de l'api")
+        else:
+            Resultat = self.update_resultat(False, "erreur non prévue : " + str(res.status_code))
+        return Resultat
+
     def voir_membres_salle(self):
         relative_address = "/home/game/room"
         adresse = make_address(absolute_address, relative_address)

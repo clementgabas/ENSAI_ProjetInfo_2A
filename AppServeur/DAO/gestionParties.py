@@ -490,3 +490,31 @@ def update_aquiltour(id_salle):
         raise ConnectionAbortedError
     finally:
         con.close()
+
+def get_partie_avec_places_libres(_jeu):
+    """
+        Fonction qui verifie le nombre de places libres dans une partie via la table Parties
+
+        :raise
+        ------
+        ConnectionAbortedError
+            Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
+
+        :return
+        -------
+        nb : int
+            Nombre de place libre qu'il y a dans la partie
+
+    """
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT id_partie FROM Parties WHERE places_dispo > 0 AND statut <> 'en cours' AND ami_anonyme = 'anonyme' AND jeu = ? ORDER BY date_debut DESC", (_jeu))
+        id = cursor.fetchone()[0]
+    except:
+        print("erreur dans check_cb_places_libres")
+        raise ConnectionAbortedError
+        id = -1
+    finally:
+        con.close()
+        return id

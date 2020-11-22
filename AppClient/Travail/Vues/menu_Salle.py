@@ -9,23 +9,37 @@ from Player.PlayerClass import Player
 #Création du menu des classements.
 
 class Menu_Salle(AbstractView):
-    def __init__(self, pseudo = "user", jeu = "p4", ami_anonyme="ami"):
-        self.questions = [
-            {
-                'type' : 'list',
-                'name' : 'menu_Salle',
-                'message' : "Que souhaitez-vous faire ?",
-                          'choices' : [
-                              'Créer une salle',
-                              'Rejoindre une salle',
-                              inquirer.Separator(),
-                              'Revenir au menu précédent',
-                          ]
-            },
-        ]
-        self.pseudo = pseudo
-        self.game = jeu.lower()
-        self.ami_anonyme = ami_anonyme.lower()
+    def __init__(self, pseudo = "user", jeu = "p4", ami_anonyme):
+      self.pseudo = pseudo
+      self.game = jeu.lower()
+      self.ami_anonyme = ami_anonyme.lower()
+      if ami_anonyme == "ami":
+          self.questions = [
+              {
+                  'type' : 'list',
+                  'name' : 'menu_Salle',
+                  'message' : "Que souhaitez-vous faire ?",
+                            'choices' : [
+                                'Créer une salle',
+                                'Rejoindre une salle', 
+                                inquirer.Separator(),
+                                'Revenir au menu précédent',
+                            ]
+              },
+          ]
+      elif ami_anonyme == "anonyme":
+          self.questions = [
+              {
+                  'type' : 'list',
+                  'name' : 'menu_Salle',
+                  'message' : "Que souhaitez-vous faire ?",
+                            'choices' : [
+                                'Lancer une partie',
+                                inquirer.Separator(),
+                                'Revenir au menu précédent',
+                            ]
+              },
+          ]
 
     def display_info(self):
         pass #on a rien d'intéressant à dire ici
@@ -37,6 +51,8 @@ class Menu_Salle(AbstractView):
                 return self.menu_creer_salle()
             elif self.reponse["menu_Salle"] == "Rejoindre une salle":
                 return self.menu_rejoindre_salle()
+            elif self.reponse["menu_Salle"] == "Lancer une partie":
+                return self.menu_rejoindre_salle_anonyme()         
             elif self.reponse["menu_Salle"] == "Revenir au menu précédent":
                 print("Vous allez être redirigés vers le menu précédent.")
                 import Vues.menu_Choix_Mode_Jeu as MCMJ
@@ -111,6 +127,18 @@ class Menu_Salle(AbstractView):
         else:
             print("Erreur non prévue dans Menu_Salle.menu_rejoindre_salle")
             return (self.menu_echec_rejoindre_salle())
+
+    def menu_rejoindre_salle_anonyme(self):
+        Player1 = Player(self.pseudo, self.game, None, None)
+        Resultat = Player1.rejoindre_salle_anonyme()
+        self.print_message(Resultat)
+        if Resultat["id_salle"] != -1:  #on a trouvé une salle anonyme
+            import Vues.menu_Salon as MS
+            salon = MS.Salon(self.pseudo, Resultat["id_salle"], self.game, False)
+            salon.display_info()
+            return (salon.make_choice())
+        else: #pas de salle anonyme dispo
+            self.menu_creer_salle()
 
     def menu_echec_rejoindre_salle(self):
         self.questions_retour = [

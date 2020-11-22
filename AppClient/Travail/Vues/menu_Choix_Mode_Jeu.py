@@ -36,13 +36,15 @@ class Menu_Choix_Mode_Jeu_Connecte(AbstractView):
 
             if self.reponse["menu_Choix_Mode_Jeu_Connecte"] == "Jouer avec des amis":
                 print(f"Vous avez choisi de jouer avec des amis au {self.game}.")
-                Amis = MS.Menu_Salle(pseudo=self.pseudo, jeu=self.game)
+                Amis = MS.Menu_Salle(pseudo=self.pseudo, jeu=self.game, ami_anonyme = "ami")
                 Amis.display_info()
                 return Amis.make_choice()
 
             elif self.reponse["menu_Choix_Mode_Jeu_Connecte"] == "Jouer contre des inconnus selon les règles officielles":
                 print(f"Vous avez décidé de jouer contre des inconnus selon les règles officielles au {self.game}")
-                print("*** On a pas encore cette view là. On devrait logiquement quitter l'appli. *** ")
+                Anonymes = MS.Menu_Salle(pseudo=self.pseudo, jeu=self.game, ami_anonyme = "anonyme")
+                Anonymes.display_info()
+                return Anonymes.make_choice()
 
 
             elif self.reponse["menu_Choix_Mode_Jeu_Connecte"] == "Revenir au menu précédent":
