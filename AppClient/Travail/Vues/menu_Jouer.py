@@ -63,8 +63,6 @@ class Jouer(AbstractView):
             win, self_win = True, False
         return {"win": win, "self_win": self_win}
 
-
-
     def print_grille(self, _grid, liste_couleur_ordonnee):
         self.nbcolumn, self.nbline = 7, 7
 
@@ -126,19 +124,16 @@ class Jouer(AbstractView):
         elif self.game.lower() == 'oie':
             #-- on récupère une grille sous la forme du dico suivant :
             #-- {'pseudo1' : {'Joueur' : pseudo, 'Couleur' : color, 'Ordre_de_jeu' : ordre, 'nbwaitingturn' : nbwaitingturn, 'actualbox' : actualbox, 'previousbox' : previousbox}
+            nbBoxByLine = 8  # **************************************
             nbBox = 63
-            caseWidth = 11
+            caseWidth = 13
             lineType = "|"
             linePlayer = "|"
             lineNumber = "|"
             separator = "-"
-            l = nbBox
-            for k in range(nbBox):
-                separator = separator + "------------"
-
-            max = nbBox
-
-
+            l = nbBoxByLine  # **************************************
+            for k in range(nbBoxByLine):  # **************************************
+                separator = separator + "--------------"
 
             def set_boxList():
                 boxList = []
@@ -147,7 +142,7 @@ class Jouer(AbstractView):
                         box = "Bridge"
                     elif i in (23,):
                         box = "Hotel"
-                    elif i in (63,):
+                    elif i in (26,):
                         box = "Dice63"
                     elif i in (31,):
                         box = "Well"
@@ -167,46 +162,50 @@ class Jouer(AbstractView):
                 return boxList
 
             boxList = set_boxList()
-            for i in range(max, -1, -1):
-                addType = " "
+            for i in range(nbBox, -1, -1):
+                addType = ""
                 box = boxList[i]
-
                 if box != "None":
+                    mid = int((caseWidth - len(addType)) / 2)
+                    for h in range(mid - int(len(box) / 2)):
+                        addType = addType + " "
                     addType = addType + box
-
                 for h in range(caseWidth - len(addType)):
                     addType = addType + " "
                 lineType = lineType + addType + "|"
-                    # creation des joueurs
-                addPlayer = " "
-                nbPlayer = 0  # compte le nombre de joueur pour decrementer de 1 la largeur de case
-
+                # creation des joueurs
+                addPlayer = ""
+                #nbPlayer = 0  # compte le nombre de joueur pour decrementer de 3 la largeur de case
+                playerPrint = ""
+                playerLenght = 0
                 for joueur in _grid:
                     player = _grid[joueur]
+                    # print(player)
                     if int(player["actualbox"]) == i:
-                        addPlayer = addPlayer + get_symbole_couleur(str(player["Couleur"])) + " \033[0m "
-                        nbPlayer = nbPlayer + 2
-
-                for h in range(caseWidth - nbPlayer - 2):
+                        playerPrint = playerPrint + get_symbole_couleur(str(player["Couleur"]))
+                        playerLenght = playerLenght + 3
+                midPlayer = int((caseWidth - playerLenght)/2)
+                for h in range(midPlayer):
                     addPlayer = addPlayer + " "
-                linePlayer = linePlayer + addPlayer + " |"
-
-                    # creation du numero de case
+                addPlayer = addPlayer + playerPrint
+                for n in range(caseWidth - playerLenght - midPlayer):
+                    addPlayer = addPlayer + " "
+                linePlayer = linePlayer + addPlayer + "|"
+                # creation du numero de case
+                addNumber = ""
                 if i == 0:
-                    addNumber = "  Départ"
-
-                elif i == max:
-                    addNumber = "    Fin"
-
+                    addNumber = "    Départ   "
+                elif i == nbBox:
+                    addNumber = "     Fin     "
                 else:
-                    addNumber = "    " + str(i)
-
-                for h in range(caseWidth - len(addNumber)):
-                    addNumber = addNumber + " "
-
+                    midNumber = int((caseWidth - len(str(i))) / 2)
+                    for g in range(midNumber):
+                        addNumber = addNumber + " "
+                    addNumber = addNumber + str(i)
+                    for h in range(caseWidth - len(addNumber)):
+                        addNumber = addNumber + " "
                 lineNumber = lineNumber + addNumber + "|"
                 l = l - 1
-
                 if l == 0 and i != 0:
                     print(separator)
                     print(lineType)
@@ -215,25 +214,14 @@ class Jouer(AbstractView):
                     lineType = "|"
                     linePlayer = "|"
                     lineNumber = "|"
-                    l = nbBox
-
+                    l = nbBoxByLine  # **************************************
             print(separator)
             print(lineType)
             print(linePlayer)
             print(lineNumber)
             print(separator)
-
-
-
-
-
-
-
-
-
-
-            print("Pour le moment, on a la grille comme ca mais on va la print joliement tkt")
-            print(_grid)
+            # print("Pour le moment, on a la grille comme ca mais on va la print joliement tkt")
+            # print(_grid)
 
     def jouer_son_tour(self):
         action = inquirer.prompt(self.action_jouer)
