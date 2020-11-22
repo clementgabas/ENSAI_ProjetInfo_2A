@@ -17,7 +17,7 @@ class Menu_Choix_Mode_Jeu_Connecte(AbstractView):
                 'message' : "Que souhaitez-vous faire ?",
                           'choices' : [
                               'Jouer avec des amis',
-                              #'Jouer contre des inconnus selon les règles officielles',
+                              'Jouer contre des inconnus selon les règles officielles',
                               inquirer.Separator(),
                               'Revenir au menu précédent',
                           ]

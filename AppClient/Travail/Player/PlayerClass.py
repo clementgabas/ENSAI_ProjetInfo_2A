@@ -18,8 +18,23 @@ class Player(User):
         self.ami_anonyme = ami_anonyme
 
 
+    def is_salle_anonyme_available(self):
+        relative_address = "/home/game/room/anonyme"
+        adresse = make_address(absolute_address, relative_address)
 
+        dataPost = {'pseudo': self.pseudo, 'game': self.jeu}
+        res = requests.get(adresse, data=json.dumps(dataPost))
 
+        if res.status_code == 200: #une salle anonyme est dispo
+            Resultat = self.update_resultat(True)
+            Resultat["id_salle"] = res.json()['id_salle']
+        elif res.status_code == 404:
+            Resultat = self.update_resultat(False)
+        elif res.status_code == 500:
+            Resultat = self.update_resultat(False, "erreur dans le code de l'api")
+        else:
+            Resultat = self.update_resultat(False, "erreur non prévue : " + str(res.status_code))
+        return Resultat
 
     def creer_salle(self):
         relative_address = "/home/game/room"
@@ -29,7 +44,10 @@ class Player(User):
         res = requests.post(adresse, data=json.dumps(dataPost))
 
         if res.status_code == 200:
-            Resultat = self.update_resultat(True, f"Une salle (numéro {res.json()['id_salle']}) vient d'être créée. Vos amis peuvent la rejoindre via son numéro.")
+            if self.ami_anonyme == "ami":
+                Resultat = self.update_resultat(True, f"Une salle (numéro {res.json()['id_salle']}) vient d'être créée. Vos amis peuvent la rejoindre via son numéro.")
+            else:
+                Resultat = self.update_resultat(True)
             Resultat["id_salle"] = res.json()['id_salle']
         elif res.status_code == 404:
             Resultat = self.update_resultat(False, "erreur, l'api n'a pas été trouvée")
@@ -254,11 +272,11 @@ class Player(User):
     def gestion_fin_partie(self, self_win):
         #-- fonction qui nous retire de la table participation pour cette partie,
         # qui update si on a gagné notre nb de parties gagnees dans la table score
-        # et qui update notre score (si la partie est anonyme
+        # et qui update notre score (si la partie est anonyme)
         relative_address = "/home/game/room/end"
         adresse = make_address(absolute_address, relative_address)
 
-        dataPost = {'pseudo': self.pseudo, 'id_partie': self.id_salle, 'jeu': self.jeu.lower(), 'win_bool': self_win}
+        dataPost = {'pseudo': self.pseudo, 'id_partie': self.id_salle, 'jeu': self.jeu.lower(), 'win_bool': self_win, "ami_anonyme": self.ami_anonyme}
         res = requests.put(adresse, data=json.dumps(dataPost))
 
         if res.status_code==200:

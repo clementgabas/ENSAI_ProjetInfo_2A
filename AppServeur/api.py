@@ -2,10 +2,8 @@ import os
 
 
 
-from flask import Flask, jsonify, request, Blueprint
-from flask_cors import CORS
-from flask_restplus import Api, Resource
-from flask_restplus import abort
+from flask import Flask, request, Blueprint
+from flask_restplus import Api
 from flask_caching import Cache
 from loguru import logger
 from requests import codes as http_codes
@@ -156,6 +154,9 @@ def quitter_salle():
 def voir_membres_salle():
     return APIsalle.voir_membres_salle()
 
+@app.route('/home/game/room/anonyme', methods=['GET'])
+def is_salle_anonyme_dispo():
+    return APIsalle.is_salle_anonyme_dispo()
 
 #----------------------------- APIsalle -------------------------------------------
 #----------------------------- APIsalon -------------------------------------------

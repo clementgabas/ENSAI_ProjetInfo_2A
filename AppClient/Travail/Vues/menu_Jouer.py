@@ -268,7 +268,6 @@ class Jouer(AbstractView):
                 print("Vous avez gagné!")
             else:
                 print("Vous avez perdu!")
-            print("Il faut gérer les points!")
         return self.passer_tour(win_bool=True, self_win=self_win)
 
     def demander_tour(self):
@@ -296,7 +295,7 @@ class Jouer(AbstractView):
             print(f"erreur dans le passage de tour pour le joueur {self.pseudo}")
 
     def gestion_fin_partie(self, self_win):
-        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef)
+        Player1 = Player(self.pseudo, self.game, self.id_salle, self.est_chef,)
         Resultat = Player1.gestion_fin_partie(self_win)
         self.print_message(Resultat)
         if Resultat["Statut"]:
