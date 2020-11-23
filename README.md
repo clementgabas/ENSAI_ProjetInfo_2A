@@ -30,8 +30,7 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
     ```sh
     python -m pip install -r requirements.txt
     ```
-**Attention : Si lors du lancement de l'application serveur, un message d'erreur concernant le package werkzeug apparait, il faut rétrograder werkzeug à la version Werkzeug       == 0.16.1** via la commande
-
+    **Attention : Si lors du lancement de l'application serveur, un message d'erreur concernant le package werkzeug apparait, il faut rétrograder werkzeug à la version Werkzeug       == 0.16.1** via la commande
     ```sh
     python -m pip install Werkzeug==0.16.1
     ```
