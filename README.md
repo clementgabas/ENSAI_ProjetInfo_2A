@@ -1,4 +1,4 @@
-#APIjeux
+# APIjeux - README
 
 ## APIjeux -- Descriptif rapide l'application
 - ### Qu'est-ce qu'APIjeux, description du projet:
