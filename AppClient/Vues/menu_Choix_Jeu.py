@@ -1,9 +1,9 @@
-#Importation des modules
 import PyInquirer as inquirer
+
 from Vues.abstractView import AbstractView
 import Vues.menu_Choix_Mode_Jeu as MCMJ
 
-from printFunctions import timePrint as print
+from Vues.usefulfonctions.printFunctions import timePrint as print
 
 
 #Création du menu Créer compte

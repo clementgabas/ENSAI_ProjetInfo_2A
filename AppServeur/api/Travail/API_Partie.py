@@ -1,7 +1,4 @@
-import math
-
 from flask import request
-
 from requests import codes as http_codes
 
 import DAO.gestionParties as DAOparties
@@ -14,6 +11,8 @@ from jeuxservice.plateau.oiegrid import Dice, Tray
 from jeuxservice.jeux.p4game import GameP4
 
 from api.Travail.Base import make_reponse
+import math
+
 
 
 #@app.route('/home/game/room/turns', methods=['GET']) #dsavoir si c'est son tour de jouer
@@ -196,8 +195,11 @@ def demander_si_vainqueur():
         Bool = plateau.TestIfWin()
 
     elif jeu.lower()=='oie':
-        Bool = False
-        pass
+        plateau = Tray(numofdice=2, numoffaces=6, nbBox=63, id_partie=id_partie)  # pour l'instant, on ne travaille que avec des parties par default
+        plateau.simulatation(DAOcoups.get_all_coups(id_partie))
+
+        Bool = plateau.TestIfWin()
+
 
     if Bool:
         print(f"La partie {id_partie} est gagnante")

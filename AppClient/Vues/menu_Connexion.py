@@ -1,13 +1,9 @@
-#Importation des modules
 import PyInquirer as inquirer
+
 from Vues.abstractView import AbstractView
-import Vues.menu_Utilisateur_Co as MUC
 
-from printFunctions import timePrint as print
-from travailMDP.testmdp import *
+from Vues.usefulfonctions.printFunctions import timePrint as print
 
-import requests
-import json
 
 #Création du menu de connexion
 

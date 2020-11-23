@@ -1,9 +1,7 @@
-#Importation des modules
 import PyInquirer as inquirer
+
 from Vues.abstractView import AbstractView
 import Vues.menu_Salle as MS
-
-from datetime import datetime
 
 
 #Création du menu des classements.

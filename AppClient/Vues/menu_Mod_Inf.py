@@ -1,12 +1,9 @@
-#Importation des modules
 import PyInquirer as inquirer
+
 from Vues.abstractView import AbstractView
 
-from printFunctions import timePrint as print
-from travailMDP.testmdp import *
+from Vues.usefulfonctions.printFunctions import timePrint as print
 
-import requests
-import json
 from tabulate import tabulate
 #Création du menu de mofidification des informations.
 

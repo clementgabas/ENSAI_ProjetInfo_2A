@@ -4,6 +4,7 @@ import Vues.menu_Jouer as Play
 
 from printFunctions import timePrint as print
 
+
 from tabulate import tabulate
 import time
 
@@ -25,6 +26,7 @@ class Salon(AbstractView):
                           'choices' : [
                               'Voir les membres de la salle',
                               #'Modifier les paramètres de la salle',
+                              'Lire les règles',
                               "Être prêt",
                               inquirer.Separator(),
                               'Quitter la salle',
@@ -44,6 +46,14 @@ class Salon(AbstractView):
                 import Vues.menu_Parametres as MPara
                 MParametre1 = MPara.Menu_Parametre(self.pseudo, self.id_salle, self.game,  self.est_chef)
                 return MParametre1.make_choice()
+            elif self.reponse["Salon_acceuil"] == 'Lire les règles':
+                if self.game.lower() == 'p4':
+                    with open("Vues/règles/p4_rules.txt", "r") as rules:
+                        print(rules.read())
+                elif self.game.lower() == 'oie':
+                    with open("Vues/règles/oie_rules.txt", "r") as rules:
+                        print(rules.read())
+                return self.make_choice()
             elif self.reponse["Salon_accueil"] == "Être prêt":
                 self.choix_couleur(self.get_liste_couleurs_dispo())
                 if self.est_chef == True:

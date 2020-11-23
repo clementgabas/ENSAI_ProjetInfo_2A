@@ -1,7 +1,5 @@
 import os
 
-
-
 from flask import Flask, request, Blueprint
 from flask_restplus import Api
 from flask_caching import Cache
@@ -9,10 +7,7 @@ from loguru import logger
 from requests import codes as http_codes
 from api.commons import configuration
 
-
-
 import DAO.gestionUser as DAOuser
-
 
 import api.Travail.API_Accueil as APIhome
 import api.Travail.API_Amis as APIfriend

@@ -1,13 +1,10 @@
-# Importation des modules
-from datetime import datetime
-
 import PyInquirer as inquirer
+
 from Vues.abstractView import AbstractView
 import Vues.menu_Creer_Compte as MCC
 import Vues.menu_Connexion as MC
-import Vues.menu_Choix_Jeu as MCJ
 
-from printFunctions import timePrint as print
+from Vues.usefulfonctions.printFunctions import timePrint as print
 
 # Création du menu_Principal pour les utilisateurs
 

@@ -2,6 +2,9 @@ import PyInquirer as inquirer
 import requests
 import json
 
+#--- Ce menu n'est pas opérationel, ni même au bon format.
+#Ce menu n'est qu'au stade de réflection et n'est pas fonctionnel!
+
 
 class Menu_Parametre():
     def __init__(self,pseudo, id_salle, jeu, est_chef):

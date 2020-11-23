@@ -171,36 +171,26 @@ class Tray(AbstractGrid, Dice):
                         currentplayer.freeze_waiting()
 
                         for k in range(self.numberOfPlayer):
-                            if k != j:  # il ne s'agit pas du joueur en cours
-                                player = self.listOfPlayers[k]
+                            player = self.listOfPlayers[k]
 
-                                if player.get_actualbox() == currentplayer.get_actualbox():
-                                    # il s'agit du joueur sur la meme case
-                                    # on lui applique les regle de la case liberee
-                                    player.set_actualbox(
-                                        resultBoxRules[3])  # on affecte l'ancienne case du joueur actif
-                                    player.set_waitingturn(resultBoxRules[4])  # le joueur redemarre
-                                    break
+                            if player.get_actualbox() == currentplayer.get_actualbox():
+                                # il s'agit du joueur sur la meme case
+                                # on lui applique les regle de la case liberee
+                                player.set_actualbox(resultBoxRules[3])  # on affecte l'ancienne case du joueur actif
+                                player.set_waitingturn(resultBoxRules[4])  # le joueur redemarre
+                                break
 
             if self.test_If_Win(currentplayer.get_actualbox()) == 1:
                 endOfGame = 1
                 return endOfGame
 
-        else:
-            if currentplayer.get_waitingturn() == -1:
-                print("    pas de lancer - attente de délivrance")
-
-            else:
-                print("    pas de lancer - attente:", currentplayer.get_waitingturn() - 1, "tours")
-
-        print("        Termine le tour sur la case: ", currentplayer.get_actualbox())
 
     def Set_GameByDefault(self):
         """
         On definit les regles par defaut du jeu de l'oie
         """
         self.set_rules(6, "Bridge")
-        self.set_rules(9, "Goose")
+        self.set_rules(9, "Goose")# on sort cette règle si
         self.set_rules(12, "Bridge")
         self.set_rules(14, "Goose")
         self.set_rules(18, "Goose")

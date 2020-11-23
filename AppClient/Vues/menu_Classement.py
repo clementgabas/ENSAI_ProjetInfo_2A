@@ -1,10 +1,8 @@
-#Importation des modules
 import PyInquirer as inquirer
+
 from Vues.abstractView import AbstractView
 
-from printFunctions import timePrint as print
-import requests
-import json
+from Vues.usefulfonctions.printFunctions import timePrint as print
 from tabulate import tabulate
 
 #Création du menu des classements.

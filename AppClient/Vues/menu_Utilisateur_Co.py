@@ -1,12 +1,11 @@
-#Importation des modules
 import PyInquirer as inquirer
+
 from Vues.abstractView import AbstractView
 import Vues.menu_Choix_Jeu as MCJ
 import Vues.menu_Profil as MPro
 
-from printFunctions import timePrint as print
-import requests
-import json
+from Vues.usefulfonctions.printFunctions import timePrint as print
+
 
 #Création du menu pour les utilisateurs connectés
 

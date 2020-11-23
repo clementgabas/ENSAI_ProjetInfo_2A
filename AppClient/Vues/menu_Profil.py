@@ -1,12 +1,11 @@
-#Importation des modules
 import PyInquirer as inquirer
+
 from Vues.abstractView import AbstractView
 import Vues.menu_Mod_Inf as MMI
 import Vues.menu_Amis as MA
 import Vues.menu_Classement as MC
 
-
-from printFunctions import timePrint as print
+from Vues.usefulfonctions.printFunctions import timePrint as print
 
 #Création du menu profil
 

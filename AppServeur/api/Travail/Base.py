@@ -1,5 +1,4 @@
 from flask import jsonify
-
 from requests import codes as http_codes
 
 def make_reponse(p_object=None, status_code=http_codes.OK):

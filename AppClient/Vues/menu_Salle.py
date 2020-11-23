@@ -1,9 +1,9 @@
-#Importation des modules
 import PyInquirer as inquirer
-from Vues.abstractView import AbstractView
 
-from printFunctions import timePrint as print
+from Vues.abstractView import AbstractView
 from Player.PlayerClass import Player
+
+from Vues.usefulfonctions.printFunctions import timePrint as print
 
 
 #Création du menu des classements.

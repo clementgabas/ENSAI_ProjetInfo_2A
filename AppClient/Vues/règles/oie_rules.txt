@@ -1,0 +1,18 @@
+Ceci est notre propre version du jet de l'oie. Certaines règles sont un peu différentes du jeu officiel.
+
+Entre 2 et 5 joueurs s'affrontent. Ils jouent chacun leur tour. A chaque tour, ils lancent 2 dés et avancent leur piont du nombre de case correspondant.
+
+S'ils tombent sur une case "Oie" (Goose), ils avancent à nouveau d'autant de case que leur lancé.
+S'ils tombent sur une case "Pont" (Bridge), ils rejoignent l'autre case pont, que cela les fasse reculer ou avancer.
+S'ils tombent sur une case "Hotel", ils passent 2 tours.
+S'ils tombent sur une case "Puit" (Well), ils sont bloqués jusqu'à qu'un joueur tombe sur cette case et prenne leur place. Cette case n'est disponible qu'en jouant à plus de 2 joueurs.
+S'ils tombent sur une case "Prison" (Jail), ils sont bloqués jusqu'à qu'un joueur tombe sur cette case et prenne leur place.
+S'ils tombent sur une case "Labyrinthe" (Labyrinth), ils reculent de 12 cases.
+S'ils tombent sur une case "Tete de mort" (Skull), il recommancent au début.
+
+Si leur 2 dés forment un 6 et un 3, ils se rendent sur la case Dice63, que cela les fasse avancer ou reculer.
+Si leurs 2 dés forment un 4 et un 5, ils se rendent sur la case Dice54, que cela les fasse avancer ou reculer.
+
+Pour gagner, il faut tomber exactement sur la case 63. Si vous la dépasser, vous devez reculer d'autant de cases que vous ne l'avez dépasser.
+
+Bon jeux!

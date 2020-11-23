@@ -1,8 +1,11 @@
 import PyInquirer as inquirer
+
 from Vues.abstractView import AbstractView
 from Player.PlayerClass import Player
+
 import time
 import random as rd
+
 import colorama
 colorama.init()
 
@@ -138,7 +141,7 @@ class Jouer(AbstractView):
             def set_boxList():
                 boxList = []
                 for i in range(nbBox + 1):
-                    if i in (6, 12):
+                    if i in (12, ): #on a sorti la case 6
                         box = "Bridge"
                     elif i in (23,):
                         box = "Hotel"
