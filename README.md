@@ -26,6 +26,10 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
  - ## Packages python nécessaires :
    
     Les packages nécessaires au bon fonctionnement de chaque application (client et serveur) sont précisées dans les fichiers **AppClient/requirements.txt** et **AppServeur/requirements.txt**
+    Pour les intaller, le plus simple est d'utiliser pip et de lancer la commande suivante 
+    ```sh
+    python -m pip install -r requirements.txt
+    ```
 
     Ici, nous listons ci-dessous l'ensemble des packages python nécessaires pour les deux application confondues et expliquons en quelques lignes leur intérêt.
     > Application Cliente : 
