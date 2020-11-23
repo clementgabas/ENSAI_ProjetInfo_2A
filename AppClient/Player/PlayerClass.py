@@ -9,8 +9,24 @@ absolute_address = get_absolute_address()
 
 
 class Player(User):
+    """
+    Classe qui gère la partie "joueur" de l'utilisateur, qui débute à la création d'une salle est fini avec la fin de partie.
+    Cette classe hérite de la classe Userbase.
+    """
 
     def __init__(self, pseudo, jeu, id_salle, chef_salle, ami_anonyme="ami"):
+        """
+        Fonction init qui définie:
+            pseudo : str
+                Le pseudo de l'utilisateur
+            id_salle : int
+                identifiant de la salle qui est aussi celui de la partie.
+            est_chef : bool
+                Booléen qui définie si oui ou non l'utilisateur est chef de partie
+            ami_anonyme :str
+                attribut qui défini si la partie créée est pour jouer uniquement entre amis ou non.
+
+        """
         self.pseudo = pseudo
         self.id_salle = id_salle
         self.est_chef = chef_salle
@@ -19,6 +35,22 @@ class Player(User):
 
 
     def is_salle_anonyme_available(self):
+        """
+        Procédure qui vérifie si il existe une salle ouverte aux anonymes est encore disponible.
+
+        :return
+        -------
+        Resultat : dict
+            Dictionnaire contenant la réussite ou non de cette vérification et le message associé.
+                Si il existe une salle est qu'il y a encore de la place : le statut sera le booléen True.
+
+                Si il existe de telles salle mais quelles sont pleinnes : le statut sera le booléen False
+
+                Si une erreur a lieu pendant la procédure, le statut sera false et le message associé determinera
+                la raison de l'erreur
+
+
+        """
         relative_address = "/home/game/room/anonyme"
         adresse = make_address(absolute_address, relative_address)
 
@@ -37,6 +69,24 @@ class Player(User):
         return Resultat
 
     def creer_salle(self):
+        """
+        Fonction qui assure la création d'une salle pour jouer un un jeu.
+
+        :return
+        ------
+        Resultat : dict
+            Dictionnaire contenant la réussite ou non de la création d'une salle et le message associé
+
+                Si la partie a bien été créée, le statut sera le booléen True, deux possiblités permettent cette option :
+                    1- création d'une partie entre amis
+
+                    2- création d'une parite entre anonyme.
+
+                    le dictionnaire renverra aussi l'identifiant de la salle.
+
+                Si la partie n'a pas été crée due à differentes erreurs, le statut sera le booléen False
+
+        """
         relative_address = "/home/game/room"
         adresse = make_address(absolute_address, relative_address)
 
@@ -58,6 +108,25 @@ class Player(User):
         return Resultat
 
     def rejoindre_salle(self,id_salle):
+        """
+        Fonction qui gère le fait qu'un utilisateur rejoint une salle d'un amis.
+
+        :param
+        -------
+        id_salle: int
+             identifiant de la salle que veut rejoindre l'utilisateur.
+
+        :return
+        -------
+        Resultat : dict
+            Dictionnaire contenant la réussite ou non que l'utilisateur ai rejoint la partie , et le message associé.
+                Si l'utilisateur a réussi a rejoindre la salle, le statut sera le booléen True et
+                le dictionnaire renverra aussi l'identifiant de la salle.
+
+                Si l'utilisateur ne peut rejoindre la salle le statut sera le booléen False et le message associé
+                justifiera la cause pouvant être : Une erreur quelconque, le fait que la partie soit déja pleine
+                ou bien que cette partie n'existe pas.
+        """
         relative_address = "/home/game/room"
         adresse = make_address(absolute_address, relative_address)
 
@@ -78,6 +147,19 @@ class Player(User):
         return Resultat
 
     def rejoindre_salle_anonyme(self):
+        """
+        Fonction qui gère le fait qu'un utilisateur rejoint une salle d'anonyme.
+
+        :return
+        -------
+        Resultat : dict
+            Dictionnaire contenant la réussite ou non que l'utilisateur ai rejoint une partie , et le message associé.
+                Si l'utilisateur a réussi a rejoindre une salle, le statut sera le booléen True.
+
+                Si l'utilisateur ne peut rejoindre la salle le statut sera le booléen False et le message associé
+                justifiera la cause pouvant être : Une erreur quelconque, le fait que la partie soit déja pleine
+                ou qu'aucune salle ne soit disponible.
+        """
         relative_address = "/home/game/room/anonyme"
         adresse = make_address(absolute_address, relative_address)
 
@@ -99,6 +181,19 @@ class Player(User):
         return Resultat
 
     def voir_membres_salle(self):
+        """
+        Fonction qui permet de renvoyer les memebres présents dans une même salle.
+
+        :return
+        -------
+        Resultats : dict
+            Dictionnaire contenant la réussite ou non d'affichage des membres et le message associé.
+                Si l'affichage a bien lieu, le statut sera le booléen True et le dictionnaire renverra aussi
+                la liste des membres de la salle.
+
+                Sinon, le statut sera le booléen False et le message associé justifiera l'erreur.
+
+        """
         relative_address = "/home/game/room"
         adresse = make_address(absolute_address, relative_address)
 
@@ -113,6 +208,18 @@ class Player(User):
         return Resultat
 
     def quitter_salle(self):
+        """
+        Fonction qui permet à un utilisateur de quitter une salle.
+
+        :return
+        -------
+        Resultat : dict
+            Dictionnaire contenant la réussite ou non d'abandon de la salle et le message associé
+                Si l'abandon a bien eu lieu, le statut sera le booléen True.
+
+                Si l'abandon ne peut avoir lieu, car l'utilisateur est chef de salle par exemple,
+                le statut sera le booléen False et la cause sera justifée dans le message associé
+        """
         relative_address = "/home/game/room"
         adresse = make_address(absolute_address, relative_address)
 
@@ -125,6 +232,20 @@ class Player(User):
         return Resultat
 
     def get_liste_couleurs_dispos(self):
+        """
+        Fonction qui gère l'affichage de la liste des couleurs disponibles.
+
+        :return
+        -------
+        Resultat: dict
+            Dictionnaire contenant la réussite ou non d'affichage de cette liste et le message associé
+                Si l'affichage a bien lieu, le statut sera le booléen True et le dictionnaire renverra aussi
+                la liste des couleurs disponibles.
+
+                Sinon, le statut sera le booléen False, la cause justifiée dans le message associé peut être:
+                une erreur quelconque ou le fait que l'utilisateur soit seul dans la salle.
+
+        """
         relative_address = "/home/game/room/colors"
         adresse = make_address(absolute_address, relative_address)
 
@@ -141,6 +262,23 @@ class Player(User):
         return Resultat
 
     def choix_couleur(self, couleur_choisie):
+        """
+        Fonction qui gère le choix de la couleur séléctionnée par un utilisateur.
+
+        :param
+        ------
+        couleur_choisie: str
+            Couleur choisie par l'utilisateur
+
+        :return
+        ------
+        Resultat: dict
+            Dictionnaire contenant la réussite ou non de cette sélection, et le message associé
+                Si la sélection a bien eu lieu, le statut sera le booléen True.
+
+                Sinon, le statut sera le booléen False, le message associé justifiera la cause, pouvant être :
+                    une erreur quelconque ou le fait que la couleur ait été choisie par quelqu'un d'autre.
+        """
         relative_address = "/home/game/room/colors"
         adresse = make_address(absolute_address, relative_address)
 
@@ -156,6 +294,18 @@ class Player(User):
         return Resultat
 
     def etre_pret(self):
+        """
+         Fonction qui permet à un utilisateur se mettre prêt à débuter une partie.
+
+         :return
+         ------
+         Resultat: dict
+             Dictionnaire contenant la réussite ou non de l'actualisation du statut de l'utilisateur et le message associé
+                 Si l'actualisation a bien eu lieu, le statut sera le booléen True.
+
+                 Sinon, une erreur est relevée, le statut sera le booléen False. Le message associé justifiera
+                 la cause de l'erreur.
+         """
         relative_address = "/home/game/room/turns"
         adresse = make_address(absolute_address, relative_address)
 
@@ -168,6 +318,17 @@ class Player(User):
         return Resultat
 
     def is_everyone_ready(self):
+        """
+        Fonction qui gère la verification du status de tous les utilisateurs. Ansi elle s'assure que tous les utilisateurs
+        sont prêts à jouer
+
+        :return
+        -------
+        Resultat: dict
+            Dictionnaire contenant la réussite ou non de la véfication i.e si tout le monde est prêt et le message associé
+             Si tout le monde est prêt, le statut sera le booléen True.
+             Sinon, le statut sera le booléen False.
+        """
         relative_address = "/home/game/room/launch"
         adresse = make_address(absolute_address, relative_address)
 
@@ -182,6 +343,17 @@ class Player(User):
         return Resultat
 
     def lancer_partie(self):
+        """
+        Fonction qui gère le lancement d'une partie.
+
+        :return
+        -------
+        Resultat: dict
+            Dictionnaire contenant la réussite ou non de ce lancement et le message associé.
+                Si la partie s'est bien lancée, le statut sera le booléen True.
+
+                Sinon, le statut sera le booléen False. La cause sera justifiée dans le message associé
+        """
         relative_address = "/home/game/room/launch"
         adresse = make_address(absolute_address, relative_address)
 
@@ -195,6 +367,17 @@ class Player(User):
         return Resultat
 
     def passer_tour(self):
+        """
+        Fonction qui gère le passage de tour d'un utilisateur.
+
+        :return
+        ------
+        Resultat: dict
+            Dictionnaire contenant la réussite ou non de ce passage de tour et le message associé
+                Si l'action est bien éffectuée, le statut sera le booléen True.
+
+                Sinon, le statut sera le booléen False.
+        """
         relative_address = "/home/game/room/turns"
         adresse = make_address(absolute_address, relative_address)
 
@@ -207,6 +390,23 @@ class Player(User):
         return Resultat
 
     def demander_tour(self):
+        """
+         Fonction qui gère la demande de tour, ainsi l'interrogateur va savoir si c'est à lui de jouer ou non.
+
+         :return
+         -------
+         Resultat: dict
+             Dictionnaire contenant la réponse, positive ou non, de cette demande, et le message associé.
+                 Si c'est au tour de l'utilisateur et qu'il peut jouer,  le statut sera le booléen True.
+
+                 Deplus, le statut sera le booléen False si :
+                     -C'est au tour du joueur, mais il ne peut jouer son tour.
+
+                     -Ce n'est pas son tour.
+
+                     -Il y a une erreur quelconque.
+                 la cause sera justifiée dans le message associée
+         """
         relative_address = "/home/game/room/turns"
         adresse = make_address(absolute_address, relative_address)
 
@@ -223,6 +423,18 @@ class Player(User):
         return Resultat
 
     def demander_grille(self):
+        """
+        Fonction qui gère une demande d'affichage de la grille de jeu.
+
+        :return
+        -------
+        Resultat: dict
+            Dictionnaire contenant la réponse, positive ou non, d'affichage de cette grille ainsi que le message associé
+                Si la demande est bien traitée, le statut sera le booléen True et le dictionnaire renverra aussi
+                la grille et la liste des couleurs sélectionné ardonnée.
+
+                Sinon  le statut sera le booléen False.
+        """
         relative_address = "/home/game/room/grid"
         adresse = make_address(absolute_address, relative_address)
 
@@ -238,6 +450,22 @@ class Player(User):
         return Resultat
 
     def jouer_son_tour(self, action):
+        """
+        Fonction qui gère la demande de jouer son tour, avec une action particuliere, pour un utilisateur
+
+        :param
+        ------
+        action :
+         action en entrée, lancé de dé pour le jeu de l'oie et choix de colonne pour le P4.
+
+        :return
+        -------
+        Resultat: dict
+            Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si la demande est bien traitée, le statut sera le booléen True.
+
+                Sinon, le statut sera le booléen False, le message associé en précisera la raison.
+        """
         relative_address = "/home/game/room/grid"
         adresse = make_address(absolute_address, relative_address)
 
@@ -253,6 +481,20 @@ class Player(User):
         return Resultat
 
     def demander_si_vainqueur(self):
+        """
+        Fonction qui vérifie si l'utilisateur remporte la partie.
+
+        :return
+        -------
+        Resultat: dict
+            Dictionnaire contenant la réponse, positive ou non, d'execution de cette vérification ainsi que le message associé.
+                Si l'utilisateur a remporté la partie, le statut sera le booléen True.
+
+            Sinon, le statut sera le booléen False dans les cas suivant:
+                -Le joueur n'a pas remporté la partie
+
+                -Une erreur quelconque a eu lieu, dans ce cas, le message associé le précisera.
+        """
         relative_address = "/home/game/room/grid"
         adresse = make_address(absolute_address, relative_address)
 
@@ -270,6 +512,22 @@ class Player(User):
         return Resultat
 
     def gestion_fin_partie(self, self_win):
+        """
+        Fonction qui gère la fin de la partie ou ce trouve l'utilisateur, i.e qui mais à jour ses statistiques personnelles
+
+        :param
+        ------
+        self_win: bool
+            Parametre qui défini si l'utilisateur est le vainqueur de la partie.
+
+        :return
+        -------
+        Resultat: dict
+            Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si les statistiques ont été mises à jour, le statut sera le booléen True.
+
+                Sinon, le statut sera le booléen False et le message associcé précisera la cause.
+        """
         #-- fonction qui nous retire de la table participation pour cette partie,
         # qui update si on a gagné notre nb de parties gagnees dans la table score
         # et qui update notre score (si la partie est anonyme)

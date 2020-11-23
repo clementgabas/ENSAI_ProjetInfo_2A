@@ -10,9 +10,42 @@ absolute_address = get_absolute_address()
 
 
 class UserBase(AbstractUser):
-
+    """
+    Classe UserBase, classe qui hérite de la classe AbstractUser et qui représente la partie menu intiale,
+    au lancement de l'application.
+    """
 
     def creer_compte(self,identifiant,mdp,mdp2,pseudo):
+        """
+        Fonction qui a pour but de créer un compte pour un nouvel utilisateur.
+
+        :param
+        ------
+        identifiant : str
+            identifiant entré par le nouvel utilisateur.
+        mdp : str
+            Mot de passe entré par le nouvel utilisateur.
+        mdp2 : str
+            Confirmation du mot de passe entré par le nouvel utilisateur.
+        pseudo : str
+            Pseudo entré par le nouvel utilisateur.
+
+        :return
+        ------
+        Resultat: dict
+            Dictionnaire contenant la réussite ou non de création d'un utilisateur et le message associé
+                Si la création de compte c'est faite sans accroc, le statut sera le booléen True.
+
+                A l'inverse, le statut sera le booléen False si les erreurs suivantes, que précisera le message associé, arrivent :
+                    -Les mot de passes ne correspondent pas.
+
+                    -L'identifiant ou le mot de passe n'a pas été précisé.
+
+                    -L'identifiant ou le pseudo est déjà utilisé.
+
+                    -Des erreurs quelconques ont lieu.
+
+        """
         relative_address = "/home/users"
         adresse = make_address(absolute_address, relative_address)
 
@@ -52,6 +85,32 @@ class UserBase(AbstractUser):
         return Resultat
 
     def connexion(self,identifiant,mdp,):
+        """
+        Fonction qui gère la connexion d'un utilisateur.
+
+        :param
+        ------
+        identifiant : str
+            identifiant entré par l'utilisateur
+        mdp : str
+            mot de passe entré par l'utilisateur
+
+        :return
+        -------
+        Resultat: dict
+            Dictionnaire contenant la réussite ou non de connexion d'un utilisateur et le message associé.
+                Si la connexion se fait sans accrocs,  le statut sera le booléen True.
+
+                A l'inverse, le statut sera le booléen False si les erreurs, que précisera le message associé, arrivent:
+                    -L'identifiant ou le mot de passe n'a pas été précisé.
+
+                    -Identifiant ou mot de passe incorrect.
+
+                    -L'utilisateur est déjà connecté.
+
+                    -Des erreurs quelconques ont lieu.
+
+        """
         relative_address = "/home/connexion"
         adresse = make_address(absolute_address, relative_address)
 

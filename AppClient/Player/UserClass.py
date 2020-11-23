@@ -8,11 +8,31 @@ from Player.abstractUser import AbstractUser
 absolute_address = get_absolute_address()
 
 class User(AbstractUser):
+    """
+    Classe qui hérite de la classe abstraite AbstactUser et qui gere la partie menu d'un utilisateur connecté.
+    """
 
     def __init__(self, pseudo):
+        """
+        Fonction init qui définie:
+            pseudo : str
+                Le pseudo de l'utilisateur
+        """
         self.pseudo = pseudo
 
     def deconnexion(self):
+        """
+        Foction qui gère la déconnexion d'un utilisateur.
+
+        :return
+        -------
+        Resultat: dict
+            Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si l'utilisateur c'est déconnecté normalement, le statut sera le booléen True.
+
+                Sinon, le statut sera le booléen False, avec la raison de cette echec dans le message associé.
+
+        """
         relative_address = "/home/deconnexion"
         adresse = make_address(absolute_address, relative_address)
 
@@ -33,6 +53,27 @@ class User(AbstractUser):
 
 
     def ajout_ami(self,pseudo_ami):
+        """
+         Foction qui gère l'ajout d'un autre utilisateur dans la liste d'amis.
+
+        :param
+        -----
+         pseudo_ami: str
+            Pseudo de l'utilisateur à ajouter en ami.
+        :return
+        -----
+        Resultat: dict
+             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si l'ajout s'est fait sans accrocs, le statut sera le booléen True.
+
+                A l'inverse, le statut sera le booléen False si les erreurs suivantes, que précisera le message associé, arrivent :
+                    -Le pseudo n'existe pas.
+
+                    -Le lien d'amitié existe déja.
+
+                    -Des erreurs quelconques ont lieu.
+
+        """
         relative_address = "/home/main/profil/friends"
         adresse = make_address(absolute_address, relative_address)
 
@@ -56,6 +97,27 @@ class User(AbstractUser):
         return Resultat
 
     def supp_ami(self,pseudo_ami):
+        """
+         Foction qui gère la suppression d'un autre utilisateur dans la liste d'amis.
+
+        :param
+        -----
+         pseudo_ami: str
+            Pseudo de l'utilisateur à spprimer de la liste d'amis.
+        :return
+        -----
+        Resultat: dict
+             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si la suppression s'est faite sans accrocs, le statut sera le booléen True.
+
+                A l'inverse, le statut sera le booléen False si les erreurs suivantes, que précisera le message associé, arrivent :
+                    -Le pseudo n'existe pas.
+
+                    -Le lien d'amitié n'existe pas.
+
+                    -Des erreurs quelconques ont lieu.
+
+        """
         relative_address = "/home/main/profil/friends"
         adresse = make_address(absolute_address, relative_address)
 
@@ -79,6 +141,18 @@ class User(AbstractUser):
         return Resultat
 
     def afficher_amis(self):
+        """
+        Fonction qui gère la demande d'affichage de la liste d'amis de l'utilisateur.
+
+        :return
+        ------
+        Resultat: dict
+             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si le traitement de la demande d'affichage est faite sans accroc, le statut sera le booléen True
+                et le dictionnaire renverra aussi cette liste d'amis.
+
+                Sinon, le statut sera le booléen False, avec la raison de cette echec dans le message associé.
+        """
         relative_address = "/home/main/profil/friends"
         adresse = make_address(absolute_address, relative_address)
 
@@ -98,6 +172,30 @@ class User(AbstractUser):
         return Resultat
 
     def modifier_mdp(self,old_mdp,new_mdp1,new_mdp2):
+        """
+        Fonction qui gère la modification du mot de passe d'un utilisateur
+
+        :param
+        ------
+        old_mdp: str
+            Ancien mot de passe que l'utilisateur souhaite modifier.
+        new_mdp1: str
+            Mot de passe qu'il veut avoir
+        new_mdp2: str
+            confirmation de ce mot de passe
+        :return
+        ------
+        Resultat: dict
+             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si la modification de mot de passe est faite sans accrocs, le statut sera le booléen True.
+
+                A l'inverse, le statut sera le booléen False si les erreurs suivantes, que précisera le message associé, arrivent :
+                    -Les deux nouveaux mots de passes ne correspondent pas.
+
+                    -L'ancien mot de passe fournit ne correspond pas.
+
+                    -Des erreurs quelconques ont lieu.
+        """
         relative_address = "/home/main/profil/user/password"
         adresse = make_address(absolute_address, relative_address)
 
@@ -131,6 +229,26 @@ class User(AbstractUser):
 
 
     def modifier_pseudo(self,new_pseudo):
+        """
+        Fonction qui gère la modification du pseudo d'un utilisateur
+
+        :param
+        ------
+        new_pseudo: str
+            Nouveau pseudo que l'utilisateur veut avoir
+        :return
+        ------
+        Resultat: dict
+             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si la modification du pseudo est faite sans accrocs, le statut sera le booléen True.
+
+                A l'inverse, le statut sera le booléen False si les erreurs suivantes, que précisera le message associé, arrivent :
+                    -Le pseudo demandé est déjà utilisé.
+
+                    -Le nouveau pseudo est identique à l'ancien.
+
+                    -Des erreurs quelconques ont lieu.
+        """
         relative_address = "/home/main/profil/user/pseudo"
         adresse = make_address(absolute_address, relative_address)
 
@@ -155,6 +273,18 @@ class User(AbstractUser):
         return Resultat
 
     def acceder_stats_perso(self):
+        """
+            Fonction qui gère la demande d'affichage des statistiques de l'utilisateur.
+
+            :return
+            ------
+            Resultat: dict
+                Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                    Si le traitement de la demande d'affichage est faite sans accroc, le statut sera le booléen True
+                    et le dictionnaire renverra aussi ces statistiques.
+
+                    Sinon, le statut sera le booléen False, avec la raison de cette echec dans le message associé.
+            """
         relative_address = "/home/main/profil/user/stat"
         adresse = make_address(absolute_address, relative_address)
 
@@ -180,6 +310,17 @@ class User(AbstractUser):
         return Resultat
 
     def reinitialiser_stats_perso(self):
+        """
+        Fonction qui gère la demande de réinitialisation des statistiques de l'utilisateur.
+
+        :return
+        ------
+        Resultat: dict
+            Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si le traitement de la demande de réinitialisation est faite sans accroc, le statut sera le booléen True.
+
+                Sinon, le statut sera le booléen False, avec la raison de cette echec dans le message associé.
+        """
         relative_address = "/home/main/profil/user/stat"
         adresse = make_address(absolute_address, relative_address)
 
@@ -196,6 +337,18 @@ class User(AbstractUser):
         return Resultat
 
     def aff_classement_general(self):
+        """
+        Fonction qui gère la demande d'affichage du classement général de l'utilisateur.
+
+        :return
+        ------
+        Resultat: dict
+            Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si le traitement de la demande d'affichage est faite sans accroc, le statut sera le booléen True
+                et le dictionnaire renverra aussi le classement général mondial et celui entre amis.
+
+                Sinon, le statut sera le booléen False, avec la raison de cette echec dans le message associé.
+        """
         relative_address = "/home/main/profil/classment/general"
         adresse = make_address(absolute_address, relative_address)
 
@@ -216,6 +369,18 @@ class User(AbstractUser):
         return Resultat
 
     def aff_classement_jeu_oie(self):
+        """
+        Fonction qui gère la demande d'affichage du classement du jeu de l'oie de l'utilisateur.
+
+        :return
+        ------
+        Resultat: dict
+            Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si le traitement de la demande d'affichage est faite sans accroc, le statut sera le booléen True
+                et le dictionnaire renverra aussi le classement du jeu de l'oie mondial et celui entre amis.
+
+                Sinon, le statut sera le booléen False, avec la raison de cette echec dans le message associé.
+        """
         relative_address = "/home/main/profil/classment/jeu"
         adresse = make_address(absolute_address, relative_address)
 
@@ -236,6 +401,18 @@ class User(AbstractUser):
         return Resultat
 
     def aff_classement_P4(self):
+        """
+        Fonction qui gère la demande d'affichage du classement du puissance 4 de l'utilisateur.
+
+        :return
+        ------
+        Resultat: dict
+            Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
+                Si le traitement de la demande d'affichage est faite sans accroc, le statut sera le booléen True
+                et le dictionnaire renverra aussi le classement du puissance 4 mondial et celui entre amis.
+
+                Sinon, le statut sera le booléen False, avec la raison de cette echec dans le message associé.
+        """
         relative_address = "/home/main/profil/classment/jeu"
         adresse = make_address(absolute_address, relative_address)
 
