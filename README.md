@@ -1,6 +1,6 @@
 # APIjeux -- Descriptif rapide l'application
 - ## Qu'est-ce qu'APIjeux, description du projet:
-    APIjeux est le nom que nous avons choisi de donner à notre projet informatique du 1er semestre de 2ème année à l'ENSAI. L'objectif du projet est le développement d'une **RESTful API permettant de jouer, via une application cliente, à des jeux de plateau en ligne**.
+    APIjeux est le nom que nous avons choisi de donner à notre projet informatique du 1er semestre de 2ème année à l'ENSAI. L'objectif du projet est le développement d'une **RESTful API python permettant de jouer, via une application cliente, à des jeux de plateau en ligne**.
     L'un des principaux objectifs est que l'**application soit suffisament flexible pour supporter des jeux suffisamment variés sans trop de changements au niveau son code**.
 - ## Notre réalisation du projet:
     Pour réaliser notre projet informatique, nous avons choisi de développer deux jeux, à savoir le **Puissance4** et le **jeu de l'Oie**. En effet, nous avons estimé que ces deux jeux étaient suffisamment différents l'un de l'autre pour prouver la fléxibiliter de notre application.
