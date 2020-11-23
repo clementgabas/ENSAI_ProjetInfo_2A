@@ -9,9 +9,11 @@
 De plus, nous avons intégré la possibilité de jouer avec des amis ou contre des inconnus. Jouer avec des amis se fait, comme pour la plupart des jeux en ligne, en rejoignant une salle dont notre ami nous à transférer le code.
 # Classes testées et commentées 
 - ## Documentation et commentaires:
-    Nos deux applications, client comme serveur, sont quasi-entièrement documentée via la documentation docstring selon la [convention pep257](https://www.python.org/dev/peps/pep-0257/). Pour l'application client, les classes métiers et services sont commentées, tandis que pour l'applciation serveur, les classes serveur, DAO, services et métier sont commentées. De plus, lorsque nécessaire, certaines autres fonctions sont documentées. Enfin, en plus d'être documentées, les fonctions sont commentées au maximum, notamment les fonctions API qui régissent le serveur, pour comprendre au maximum comment se déroulent les actions. On notera également que, dans un soucis de clarté, le serveur effectue de nombreux *print* dans la console pour expliquer les différentes actions qu'il vient d'effectuer.
+    Nos deux applications, client comme serveur, sont quasi-entièrement documentées via la documentation docstring selon la [convention pep257](https://www.python.org/dev/peps/pep-0257/), au [format numpy](https://numpydoc.readthedocs.io/en/latest/). Pour l'application client, les classes métiers et services sont commentées, tandis que pour l'application serveur, les classes serveur, DAO, services et métier sont commentées. De plus, lorsque nécessaire, certaines autres fonctions sont documentées. Enfin, en plus d'être documentées, les fonctions sont commentées au maximum, notamment les fonctions API qui régissent le serveur, pour comprendre au maximum comment se déroulent les actions. On notera également que, dans un soucis de clarté, le serveur effectue de nombreux *print* dans la console pour expliquer les différentes actions qu'il vient d'effectuer.
 - ## Classes testées:
     Malheuresement, du fait de contraintes de temps assez élevées, nous n'avons pas vraiment respecté les règles qui veulent que nous rédigions d'abord les test unitaires puis les fonctions pour pouvoir directement tester les tests dessus. Ici, nous avons d'abord codé l'application et n'avons pu rédiger des test que sur la partie DAO de l'application.
+    
+    ICI, FAIRE UN BLABLA SUR LES TESTS DE MAEL!!
 
 # Comment installer APIjeux
 - ## Télécharger le code :
@@ -19,9 +21,10 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
     ```sh
     $ git clone https://github.com/clementgabas/Projet-Info
     ```
-    Vous téléchargerez alors un dossier nommé **Projet-Info** contenant deux sous-dossiers :
-    - AppClient : dossier contenant le code de l'application cliente
-    - AppServeur : dossier contenant le code de l'application serveur API
+    Vous téléchargerez alors un dossier nommé **Projet-Info** contenant :
+    - un dossier AppClient : dossier contenant le code de l'application cliente
+    - un dossier AppServeur : dossier contenant le code de l'application serveur API
+    - un fichier init_db.sql : fichier sql contennant le code sql permettant d'initialiser la base de données (cf [base de données](#base_de_données))
  
  - ## Packages python nécessaires :
    
@@ -47,7 +50,7 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
     $ python -m pip install Werkzeug==0.16.1
     ```
     
-- ## Base de données:
+- [Base de données](#Base_de_données)  ## Base de données:
     Le fichier *db_init.sql* contient le code SQL permettant d'initialiser la base de données. Nous avons décidé de nommer notre base de données **apijeux.db**. De plus, pour des raions techniques liée au fait qu'il était plus simple de coder depuis chez soi sans devoir se connecter au serveur SQL de l'école, nous avons opté pour une base de donnée en local, au moins le temps de la programmation. De ce fait, chacun avait sa version de la base et toutes ces versions étaient désynchronisées, mais cela n'était pas génant.
     La base de donnée est stockée dans le fichier AppServeur/database.
     Si vous voulez modifier le nom de la base de données ou son emplacement, il faudra modifier le fichier *AppServeur/DAO/gestion.py* qui contient une fonction permettant aux différentes DAO de se connecter à la base de données :
