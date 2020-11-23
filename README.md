@@ -50,7 +50,7 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
     $ python -m pip install Werkzeug==0.16.1
     ```
     
-- [Base de données](#Base_de_données)  ## Base de données:
+- [##Base de données](#Base_de_données):
     Le fichier *db_init.sql* contient le code SQL permettant d'initialiser la base de données. Nous avons décidé de nommer notre base de données **apijeux.db**. De plus, pour des raions techniques liée au fait qu'il était plus simple de coder depuis chez soi sans devoir se connecter au serveur SQL de l'école, nous avons opté pour une base de donnée en local, au moins le temps de la programmation. De ce fait, chacun avait sa version de la base et toutes ces versions étaient désynchronisées, mais cela n'était pas génant.
     La base de donnée est stockée dans le fichier AppServeur/database.
     Si vous voulez modifier le nom de la base de données ou son emplacement, il faudra modifier le fichier *AppServeur/DAO/gestion.py* qui contient une fonction permettant aux différentes DAO de se connecter à la base de données :
