@@ -1,29 +1,10 @@
-import os
-import traceback
-import csv
-import random
-import json
-import hashlib
-
-from api.codeList import _codes
-
-from flask import Flask, jsonify, request, Blueprint
-from flask_cors import CORS
-from flask_restplus import Api, Resource
-from flask_restplus import abort
-from flask_caching import Cache
-from loguru import logger
+from flask import request
 from requests import codes as http_codes
-from api.commons import configuration
-
-import sqlite3
-import requests
-from datetime import datetime
 
 import DAO.gestionUser as DAOuser
 import DAO.gestionParties as DAOparties
 
-from api.Travail.Base import *
+from api.Travail.Base import make_reponse
 
 
 #----------------------------- home/game -------------------------------------------
@@ -50,11 +31,11 @@ def creer_salle():
 
     #-- fonction qui créé la partie dans la table et qui renvoit son id
     id_partie = DAOparties.add_partie(pseudo_chef, game, total_places, ami_anonyme)
-    print(f"création de la salle {id_partie} pour la partie de {pseudo_chef} sur le jeu : {game}")
+    print(f"création de la salle {id_partie} pour la partie de {pseudo_chef} sur le jeu : {game}. Salle pour jouer contre {ami_anonyme}")
     #-- on ajoute le joueur directement à sa salle dans la table participation
     nb_places_libres = DAOparties.check_cb_places_libres(id_partie)
     DAOparties.add_to_participation(id_partie, pseudo_chef, nb_places_libres)
-    print(f"Il y a {nb_places_libres} place.s libre.s dans la salle {id_partie}")
+    print(f"Il y a {nb_places_libres-1} place.s libre.s dans la salle {id_partie}")
     #-- on update le statut du joueur en_partie a True dans la table Utilisateur
     DAOuser.update_en_partie_pseudo(pseudo_chef, "True")
     print(f"Mise a jours du status de {pseudo_chef}")
@@ -174,5 +155,19 @@ def voir_membres_salle():
     response = {"status_code": http_codes.ok, "message": "Liste des membres de la salle.",
                 "liste_membres": membres}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200
+
+#@app.route('/home/game/room/anonyme', methods=['GET'])
+def is_salle_anonyme_dispo():
+    request.get_json(force=True)
+    pseudo, jeu = request.json.get("pseudo"), request.json.get("game")
+
+    id_salle = DAOparties.is_salle_anonyme_dispo(jeu.lower())
+    if id_salle == None: #aucune salle de dispo
+        response = {"status_code": http_codes.not_found, "message": "Aucune salle ne correspond à la demande."}  # code 404
+        return make_reponse(response, http_codes.not_found)  # code 404
+    else:
+        response = {"status_code": http_codes.ok, "message": "AUne salle est disponible.", "id_salle": id_salle[0]}  # code 200
+        return make_reponse(response, http_codes.ok)  # code 200
+
 
 #----------------------------- home/game -------------------------------------------

@@ -1,7 +1,4 @@
-import math
-
 from flask import request
-
 from requests import codes as http_codes
 
 import DAO.gestionParties as DAOparties
@@ -14,6 +11,8 @@ from jeuxservice.plateau.oiegrid import Dice, Tray
 from jeuxservice.jeux.p4game import GameP4
 
 from api.Travail.Base import make_reponse
+import math
+
 
 
 #@app.route('/home/game/room/turns', methods=['GET']) #dsavoir si c'est son tour de jouer
@@ -44,9 +43,9 @@ def est_ce_mon_tour():
             print(f"L'utilisateur {pseudo} peut jouer son tour dans la salle {id_partie}")
             response = {"status_code": http_codes.ok, "message": "C'est ton tour"}  # code 200
             return make_reponse(response, http_codes.ok)  # code 200
-        else :
-            print(f"L'utilisateur {pseudo} n'a pas le droit de jouer son tour dans la salle {id_partie} et doit donc passer son tour.")
-            DAOcoups.add_new_coup(id_partie, last_coup+1 , pseudo, old_coup[3], old_coup[4]+1)
+        elif old_coup[4] >1:
+            print(f"L'utilisateur doit passer son tour encore {old_coup[4]-1} fois. Il passe donc automatiquement son tour ici. ")
+            DAOcoups.add_new_coup(id_partie, last_coup+1 , pseudo, old_coup[3], old_coup[4]-1)
             response = {"status_code": http_codes.forbidden,
                         "message": "C'est votre tour, mais vous ne pouvez pas jouer"}  # code 403
             return make_reponse(response, http_codes.forbidden)   # code 403
@@ -99,8 +98,7 @@ def get_grille():
         grille = plateau.getGrid()
     elif jeu.lower() == 'oie':
         plateau = Tray(numofdice=2, numoffaces=6, nbBox=63, id_partie=id_partie) #pour le moment, on ne joue qu'avec des valeurs standards
-        plateau.simulation(liste_coups)
-        grille = plateau.getGrid()
+        grille = plateau.simulation(liste_coups)
         print(f"grille oie : {grille}")
 
     print(f"La grille a été simulée dans la salle {id_partie}")
@@ -111,7 +109,7 @@ def get_grille():
     print(f"La liste des couleurs ordonnee fournit {liste_couleur}")
 
     response = {"status_code": http_codes.ok, "message": "Grille simulée", 'grid': grille, 'liste_couleur_ordonnee': liste_couleur}  # code 200
-    return make_reponse(response, http_codes.ok)  # code 200
+    return make_reponse(dict(response), http_codes.ok)  # code 200
 
 #@app.route("/home/game/room/grid", methods=["POST"]) #requetage pour jouer son coup
 def jouer_son_tour():
@@ -133,7 +131,7 @@ def jouer_son_tour():
     position = request.json.get('position')
 
     if type(position) == float:
-        dice1, dice2 = math.floor(position), math.ceil((position%1)*10)
+        dice1, dice2 = math.floor(position), round((position%1)*10)
         position2 = [dice1, dice2]
 
     print(f"L'utilisateur {pseudo} joue la position {position} pour le jeu {jeu}")
@@ -197,8 +195,11 @@ def demander_si_vainqueur():
         Bool = plateau.TestIfWin()
 
     elif jeu.lower()=='oie':
-        Bool = False
-        pass
+        plateau = Tray(numofdice=2, numoffaces=6, nbBox=63, id_partie=id_partie)  # pour l'instant, on ne travaille que avec des parties par default
+        plateau.simulatation(DAOcoups.get_all_coups(id_partie))
+
+        Bool = plateau.TestIfWin()
+
 
     if Bool:
         print(f"La partie {id_partie} est gagnante")
@@ -221,10 +222,10 @@ def gestion_fin_partie():
     """
 
     request.get_json(force=True)
-    id_partie, jeu, pseudo, win_bool = request.json.get('id_partie'), request.json.get('jeu').upper(), request.json.get('pseudo'), request.json.get('win_bool')
+    id_partie, jeu, pseudo, win_bool, ami_anonyme = request.json.get('id_partie'), request.json.get('jeu').upper(), request.json.get('pseudo'), request.json.get('win_bool'), request.json.get('ami_anonyme')
 
     #-- on retire le joueur de la table participation
-    #en fait, on ne le retire pas de la table participation sinon les fin de parties vont bug chez les autres vu que les imulations ne pourront plus marcher.
+    #en fait, on ne le retire pas de la table participation sinon les fin de parties vont bug chez les autres vu que les simulations ne pourront plus marcher.
     #du coup, on met a jour le nb_de_place dans la table partie mais on ne retire pas de la table participation
     #et seulement quand on supprime la table partie, on supprime toutes les occurances dans la table participatipon
 
@@ -233,7 +234,7 @@ def gestion_fin_partie():
 
     print(f"L'utilisateur {pseudo} a bien été retiré de la salle {id_partie}")
     nbr_places_restantes = DAOparties.check_cb_places_libres(id_partie)
-    print(f"La salle {id_partie} a dorenavant {nbr_places_restantes} de libres.")
+    print(f"La salle {id_partie} a dorénavant {nbr_places_restantes} de libres.")
     if DAOparties.get_nbr_participants(id_partie)==0: #si c'était le dernier joueur dans la salle, on supprime la salle
         #avant de supprimer la salle, on récupère la liste de tous les joueurs de la salle
         liste_players = DAOparticipation.get_all_players(id_partie)
@@ -250,6 +251,9 @@ def gestion_fin_partie():
         nb_parties_gagnnes = DAOscores.get_nb_parties_gagnees(pseudo, jeu)
         DAOscores.update_nb_parties_gagnees(pseudo, jeu, nb_parties_gagnnes+1)
         print(f"L'utilisateur {pseudo} a dorenavant gagné {nb_parties_gagnnes+1} dans le jeu {jeu}")
+
+    #-- on update les points
+    DAOscores.update_score(pseudo, jeu, win_bool)
 
     response = {"status_code": http_codes.ok, "message": ""}  # code 200
     return make_reponse(response, http_codes.ok)  # code 200

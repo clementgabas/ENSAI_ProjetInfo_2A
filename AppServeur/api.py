@@ -1,20 +1,13 @@
 import os
 
-
-
-from flask import Flask, jsonify, request, Blueprint
-from flask_cors import CORS
-from flask_restplus import Api, Resource
-from flask_restplus import abort
+from flask import Flask, request, Blueprint
+from flask_restplus import Api
 from flask_caching import Cache
 from loguru import logger
 from requests import codes as http_codes
 from api.commons import configuration
 
-
-
 import DAO.gestionUser as DAOuser
-
 
 import api.Travail.API_Accueil as APIhome
 import api.Travail.API_Amis as APIfriend
@@ -156,6 +149,9 @@ def quitter_salle():
 def voir_membres_salle():
     return APIsalle.voir_membres_salle()
 
+@app.route('/home/game/room/anonyme', methods=['GET'])
+def is_salle_anonyme_dispo():
+    return APIsalle.is_salle_anonyme_dispo()
 
 #----------------------------- APIsalle -------------------------------------------
 #----------------------------- APIsalon -------------------------------------------
@@ -241,11 +237,11 @@ def set_response_headers(response):
     return response
 
 if __name__ == "__main__":
-    DAOuser.put_all_users_disconnected()
+    DAOuser.put_all_users_disconnected() #déconnecte tous les perso encore connectés dans la DB pour éviter les confltis
     #cf_port = os.getenv("PORT")
     cf_port = conf["port"]
     if cf_port is None:
-        app.run(host="localhost", port=5001, debug=True)
+        app.run(host="localhost", port=5001, debug=True) #adresse et port modifiables ici
     else:
         app.run(host="localhost", port=int(cf_port), debug=True)
 

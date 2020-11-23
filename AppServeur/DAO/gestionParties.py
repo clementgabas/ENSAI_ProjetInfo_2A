@@ -490,3 +490,16 @@ def update_aquiltour(id_salle):
         raise ConnectionAbortedError
     finally:
         con.close()
+
+def is_salle_anonyme_dispo(jeu):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT id_partie FROM Parties WHERE places_dispo > 0 AND statut <> 'en cours' AND ami_anonyme = 'anonyme' AND jeu = ? ORDER BY date_debut DESC", (jeu,))
+        id = cursor.fetchone()
+    except:
+        print("erreur dans is_salle_anonyme_dispo")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return id

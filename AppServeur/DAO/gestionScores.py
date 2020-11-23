@@ -140,3 +140,36 @@ def update_nb_parties_gagnees(pseudo, jeu, new_value):
         raise ConnectionAbortedError
     finally:
         con.close()
+
+def get_current_score(pseudo, jeu):
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("SELECT nb_points FROM Scores where pseudo = ? AND jeu = ?", (pseudo, jeu,))
+        value = cursor.fetchone()[0]
+    except:
+        print("erreur in get_current_score")
+        raise ConnectionAbortedError
+    finally:
+        con.close()
+    return value
+
+def update_score(pseudo, jeu, self_win):
+    current_score = get_current_score(pseudo, jeu)
+    if self_win:
+        new_score = current_score +20
+    else:
+        new_score = current_score -10
+
+    try:
+        con = sqlite3.connect(db_address)
+        cursor = con.cursor()
+        cursor.execute("UPDATE Scores SET nb_points = ? WHERE pseudo = ? AND jeu = ?",
+                       (new_score, pseudo, jeu,))
+        con.commit()
+    except:
+        print("erreur in update_score")
+        con.rollback()
+        raise ConnectionAbortedError
+    finally:
+        con.close()

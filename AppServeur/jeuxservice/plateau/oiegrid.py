@@ -37,16 +37,14 @@ class Dice:
     def get_dices(self, coup):
         #coup = 1.2 ou coup = 6.3 ou coup = 4.4
         dice1 = math.floor(coup)
-        dice2 = math.ceil(coup%1)
+        dice2 = round(coup%1*10)
         return (dice1, dice2)
-
 
     def dicevalue(self, num):
         """
         Demande le résultat d'un lancer de dé en donnant l'id du dé (_dicevalue[0] donne le premier dé)
         """
         return self._diceresult[num]
-
 
     def sumofdices(self):
         """
@@ -89,9 +87,6 @@ class Tray(AbstractGrid, Dice):
         """
         self._nbBox = nbBox
         Dice.__init__(self, numofdice, numoffaces)
-        self._gridList = []
-        for k in range(self._nbBox):
-            self._gridList.append([0])
 
         # Dimensione le tableau _boxList en fonction de _nbBox
         for i in range(self._nbBox + 1):
@@ -99,6 +94,7 @@ class Tray(AbstractGrid, Dice):
             self._boxList.append(box)  # Qui est ajoutée au tableau _boxList
 
         self.listOfPlayers = []
+        self.nbOfPlayer = len(self.listOfPlayers)
         self.id_partie = id_partie
 
     def make_liste_of_players(self):
@@ -107,47 +103,48 @@ class Tray(AbstractGrid, Dice):
         L = []
         for i in range(len(liste_couleur_ordonnee)):
             L.append([liste_players_ordonnee[i], liste_couleur_ordonnee[i]])
-        print(f"Liste des joueurs avant de les passer en playerObject : {L}")
         L2 = []
         for k in range(len(L)):
-            name, color, ordre = L[k][0], L[k][1], k
+            name, color, ordre = L[k][0][0], L[k][1][0], k
             joueur = PlayerOie(name, color, ordre)
             L2.append(joueur)
-
-        print(f"Liste des joueurs finaux playerClass : {str(L2)}")
         self.listOfPlayers = L2
         print(f"Liste des joueurs : {self.listOfPlayers}")
 
-
     def simulation(self, liste_coups):
         self.make_liste_of_players()
+        self.Set_GameByDefault()
         for coup in liste_coups:
             colonne_jouee = coup[3]
             dice1, dice2 = self.get_dices(colonne_jouee)
             ordre_joueur = DAOparticipation.get_position_ordre(pseudo=coup[2], id_partie=coup[0])
             self.Throw(dice1, dice2, ordre_joueur)
-
-    def change_player_box(self, old, new, playerClass):
-        self._gridList[old] = 0
-        self._gridList[new] = playerClass._color
+        dico = {}
+        for player in self.listOfPlayers:
+            dico[f"{player._name}"] = player.get_dico()
+        return dico
 
     def Throw(self, dice1, dice2, ordre):
-        currentplayer = self.listOfPlayers[ordre]  # récupère le joueur actuel (celui qui joue)
+        currentplayer = self.listOfPlayers[ordre-1]  # récupère le joueur actuel (celui qui joue)
 
         if currentplayer.test_waitingturn() == 1:  # test si le joueur ne doit pas passer son tour
+            currentplayer.set_previousbox(currentplayer.get_actualbox())
             actualBox = currentplayer.get_actualbox()  # récupère sa case actuelle
             self.throw(dice1, dice2) #on récupère ces dés
             currentplayer.add_dice(self.sumofdices())  # on ajoute dés à case actuelle
             currentplayer.set_actualbox(self.compute_lastbox(currentplayer.get_actualbox()))  # on déplace le joeur sur new case & on vérifie qu'il ne dépasse pas la dernière case
 
+            print(f"{currentplayer._name} est en sur la case {currentplayer._actualbox} et était juste avant sur la case {currentplayer._previousbox}")
 
             # Teste victoire joueur ?
             if self.test_If_Win(currentplayer.get_actualbox()) == 1: #victoire du joueur
+                print("partie finie")
                 endOfGame = 1
                 return endOfGame
 
             # Si pas victoire, renvoie résultat du test combinaison spéciale de dés
             resultDiceRules = self.compute_dice()
+            print(f"resultDiceRules : {resultDiceRules}")
 
             # On regarde s'il a fait une combinaison spéciale de dés (par exemple doubles)
             if resultDiceRules[1] == 1:
@@ -174,36 +171,26 @@ class Tray(AbstractGrid, Dice):
                         currentplayer.freeze_waiting()
 
                         for k in range(self.numberOfPlayer):
-                            if k != j:  # il ne s'agit pas du joueur en cours
-                                player = self.listOfPlayers[k]
+                            player = self.listOfPlayers[k]
 
-                                if player.get_actualbox() == currentplayer.get_actualbox():
-                                    # il s'agit du joueur sur la meme case
-                                    # on lui applique les regle de la case liberee
-                                    player.set_actualbox(
-                                        resultBoxRules[3])  # on affecte l'ancienne case du joueur actif
-                                    player.set_waitingturn(resultBoxRules[4])  # le joueur redemarre
-                                    break
+                            if player.get_actualbox() == currentplayer.get_actualbox():
+                                # il s'agit du joueur sur la meme case
+                                # on lui applique les regle de la case liberee
+                                player.set_actualbox(resultBoxRules[3])  # on affecte l'ancienne case du joueur actif
+                                player.set_waitingturn(resultBoxRules[4])  # le joueur redemarre
+                                break
 
             if self.test_If_Win(currentplayer.get_actualbox()) == 1:
                 endOfGame = 1
                 return endOfGame
 
-        else:
-            if currentplayer.get_waitingturn() == -1:
-                print("    pas de lancer - attente de délivrance")
-
-            else:
-                print("    pas de lancer - attente:", currentplayer.get_waitingturn() - 1, "tours")
-
-        print("        Termine le tour sur la case: ", currentplayer.get_actualbox())
 
     def Set_GameByDefault(self):
         """
         On definit les regles par defaut du jeu de l'oie
         """
         self.set_rules(6, "Bridge")
-        self.set_rules(9, "Goose")
+        self.set_rules(9, "Goose")# on sort cette règle si
         self.set_rules(12, "Bridge")
         self.set_rules(14, "Goose")
         self.set_rules(18, "Goose")
@@ -246,6 +233,7 @@ class Tray(AbstractGrid, Dice):
         for i in range(start, end):
             # recherche la première case (suivante) qui a la règle 'test'
             if self.get_type(i) == test:
+                print(f"case trouvée : {i} pour la règle {test}")
                 return i
         return -1
 
@@ -264,6 +252,7 @@ class Tray(AbstractGrid, Dice):
                 dice2 = 1
 
         if dice1 == 1 and dice2 == 1:
+            print("Vous avez fait un 6 et un 3. Vous allez donc sur la case la plus proche pour la règle Dice63")
             # on recherche la case Dice63
             foundbox = self.search_box(0, self._nbBox, "Dice63")
             if foundbox != -1:
@@ -279,6 +268,8 @@ class Tray(AbstractGrid, Dice):
                 dice2 = 1
 
         if dice1 == 1 and dice2 == 1:
+            print("Vous avez fait un 4 et un 5. Vous allez donc sur la case la plus proche pour la règle Dice54")
+
             # on recherche la case Dice54
             foundbox = self.search_box(0, self._nbBox, "Dice54")
             if foundbox != -1:
@@ -294,27 +285,38 @@ class Tray(AbstractGrid, Dice):
         box = self._boxList[boxnumber]
 
         if box._boxType == "Goose":
+            print("Vous êtes sur une oie, avancez à nouveau du nombre de points réalisés.")
             return 1, boxnumber + self.sumofdices(), 1
         elif box._boxType == "Bridge":
-
+            print("case pont. Si vous êtes en case 6, allez en case 12. Si vous êtes en case 12, allez en case 6.")
             foundbox = self.search_box(boxnumber + 1, self._nbBox, "Bridge")
             if foundbox != -1:
                 return 1, foundbox, 1;
             return boxnumber, 1
 
         elif box._boxType == "Hotel":
+            print("Vous êtes tombés sur la case Hotel et devrez donc passer 2 fois votre tour.")
             return 1, boxnumber, 4
 
         elif box._boxType == "Jail":
+            print(
+                "Case prison. Vous ne pourrez sortir et rejouer que lorsqu'un autre joueur tombera sur cette case. En attendant, passez votre tour.")
+
             return 2, boxnumber, 0, previousbox, 1
 
         elif box._boxType == "Well":
-            return 2, boxnumber, 0, boxnumber, 1
+            if self.nbOfPlayer >2:
+                print("Case puit. Vous ne pourrez sortir et rejouer que lorsqu'un autre joueur tombera sur cette case. En attendant, passez votre tour.")
+                return 2, boxnumber, 0, boxnumber, 1
+            else: #a 2 joueurs, on ne peut pas joue ravec le puit ET la prison sinon on peut bloquer la partie.
+                pass
 
         elif box._boxType == "Labyrinth":
+            print("Vous êtes sur la case labyrinth. Reculez de 12 cases.")
             return 1, boxnumber - 12, 1
 
         elif box._boxType == "Skull":
+            print("Vous êtes sur la case tête de mort. Recommencez depuis le début!!!")
             return 1, 0, 1
 
         return 0, boxnumber, 1

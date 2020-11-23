@@ -1,28 +1,9 @@
-import os
-import traceback
-import csv
-import random
-import json
-import hashlib
-
-from api.codeList import _codes
-
-from flask import Flask, jsonify, request, Blueprint
-from flask_cors import CORS
-from flask_restplus import Api, Resource
-from flask_restplus import abort
-from flask_caching import Cache
-from loguru import logger
+from flask import request
 from requests import codes as http_codes
-from api.commons import configuration
-
-import sqlite3
-import requests
-from datetime import datetime
 
 import DAO.gestionClassement as DAOclassement
 
-from api.Travail.Base import *
+from api.Travail.Base import make_reponse
 
 
 #----------------------------- Classement ------------------------------------------

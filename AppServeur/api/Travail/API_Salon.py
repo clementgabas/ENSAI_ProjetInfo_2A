@@ -1,7 +1,4 @@
-
-
 from flask import request
-
 from requests import codes as http_codes
 
 
