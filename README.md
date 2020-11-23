@@ -28,30 +28,34 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
     Les packages nécessaires au bon fonctionnement de chaque application (client et serveur) sont précisées dans les fichiers **AppClient/requirements.txt** et **AppServeur/requirements.txt**
     Pour les intaller, le plus simple est d'utiliser pip et de lancer la commande suivante 
     ```sh
-    python -m pip install -r requirements.txt
+    $ python -m pip install -r requirements.txt
     ```
-    **Attention : Si lors du lancement de l'application serveur, un message d'erreur concernant le package werkzeug apparait, il faut rétrograder werkzeug à la version Werkzeug       == 0.16.1** via la commande
+   
+    Nous listons ci-dessous cet ensemble de packages nécessaires : 
+    > requests==2.24.0;
+    flask_restplus==0.13.0;
+    loguru==0.5.3;
+    Flask_Caching==1.9.0;
+    Flask==1.1.2;
+    colorama==0.4.4;
+    tabulate==0.8.7;
+    PyInquirer==1.0.3;
+    PyYAML==5.3.1;
+    
+     **Attention : Si lors du lancement de l'application serveur, un message d'erreur concernant le package werkzeug apparait, il faut rétrograder werkzeug à la version Werkzeug       == 0.16.1** via la commande
     ```sh
-    python -m pip install Werkzeug==0.16.1
+    $ python -m pip install Werkzeug==0.16.1
     ```
+    
+- ## Base de données:
+    Le fichier *db_init.sql* contient le code SQL permettant d'initialiser la base de données. Nous avons décidé de nommer notre base de données **apijeux.db**. De plus, pour des raions techniques liée au fait qu'il était plus simple de coder depuis chez soi sans devoir se connecter au serveur SQL de l'école, nous avons opté pour une base de donnée en local, au moins le temps de la programmation. De ce fait, chacun avait sa version de la base et toutes ces versions étaient désynchronisées, mais cela n'était pas génant.
+    La base de donnée est stockée dans le fichier AppServeur/database.
+    Si vous voulez modifier le nom de la base de données ou son emplacement, il faudra modifier le fichier *AppServeur/DAO/gestion.py* qui contient une fonction permettant aux différentes DAO de se connecter à la base de données :
+    ```sh
+    def get_db_address():
+        return "database/apijeux.db" #chemin de la base de données, relatif depuis AppServeur/api.py
 
-    Ici, nous listons ci-dessous l'ensemble des packages python nécessaires pour les deux application confondues et expliquons en quelques lignes leur intérêt.
-    > Application Cliente : 
-    > colorama == 0.4.4 --> pour l'affichage des couleurs (pour les jetons) en ascii
-    > tabulate == 0.8.7 --> pour l'affichage de tableaux propres et simples à construire
-    > requests == 2.24.0 --> pour communiquer avec le serveur API
-    > PyInquirer == 1.0.3 --> pour pouvoir se déplacer dans les menus avec les flèches directionnelles
-
-    > Applcation Serveur API :
-    > Flask == 1.1.2
-    > flask_restplus == 0.13.0
-    > Flask_Cors == 3.0.9
-    > Flask_Caching == 1.9.0
-    > loguru == 0.5.3
-    > requests == 2.24.0
-    > PyYAML == 5.3.1
-
-    Tous ces packages servent au bon fonctionnement du serveur API.
+    ```
 
 # Comment démarrer APIjeux pour pouvoir jouer
 - ## Démarrer et paramétrer le serveur API : 
