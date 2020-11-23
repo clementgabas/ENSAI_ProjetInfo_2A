@@ -28,7 +28,7 @@ class User(AbstractUser):
         -------
         Resultat: dict
             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
-                Si l'utilisateur c'est déconnecté normalement, le statut sera le booléen True.
+                Si l'utilisateur s'est déconnecté normalement, le statut sera le booléen True.
 
                 Sinon, le statut sera le booléen False, avec la raison de cette echec dans le message associé.
 
