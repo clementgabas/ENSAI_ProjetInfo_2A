@@ -1,8 +1,17 @@
 # APIjeux -- Descriptif rapide l'application
-blabla
-
+- ## Qu'est-ce qu'APIjeux, description du projet:
+    APIjeux est le nom que nous avons choisi de donner à notre projet informatique du 1er semestre de 2ème année à l'ENSAI. L'objectif du projet est le développement d'une **RESTful API python permettant de jouer, via une application cliente, à des jeux de plateau en ligne**.
+    L'un des principaux objectifs est que l'**application soit suffisament flexible pour supporter des jeux suffisamment variés sans trop de changements au niveau son code**.
+- ## Notre réalisation du projet:
+    Pour réaliser notre projet informatique, nous avons choisi de développer deux jeux, à savoir le **Puissance4** et le **jeu de l'Oie**. En effet, nous avons estimé que ces deux jeux étaient suffisamment différents l'un de l'autre pour prouver la fléxibiliter de notre application.
+    Ainsi, dans toute la suite, APIjeux désigne l'ensemble des applications client et serveur.
+    En plus des fonctionnalités demandées (pourvoir jouer à des jeux), nous avons réalisé toute une partie **gestion de compte**, avec notamment la gestion d'amis, de scores et de classements.
+De plus, nous avons intégré la possibilité de jouer avec des amis ou contre des inconnus. Jouer avec des amis se fait, comme pour la plupart des jeux en ligne, en rejoignant une salle dont notre ami nous à transférer le code.
 # Classes testées et commentées 
-blabla
+- ## Documentation et commentaires:
+    Nos deux applications, client comme serveur, sont quasi-entièrement documentée via la documentation docstring selon la [convention pep257](https://www.python.org/dev/peps/pep-0257/). Pour l'application client, les classes métiers et services sont commentées, tandis que pour l'applciation serveur, les classes serveur, DAO, services et métier sont commentées. De plus, lorsque nécessaire, certaines autres fonctions sont documentées. Enfin, en plus d'être documentées, les fonctions sont commentées au maximum, notamment les fonctions API qui régissent le serveur, pour comprendre au maximum comment se déroulent les actions. On notera également que, dans un soucis de clarté, le serveur effectue de nombreux *print* dans la console pour expliquer les différentes actions qu'il vient d'effectuer.
+- ## Classes testées:
+    Malheuresement, du fait de contraintes de temps assez élevées, nous n'avons pas vraiment respecté les règles qui veulent que nous rédigions d'abord les test unitaires puis les fonctions pour pouvoir directement tester les tests dessus. Ici, nous avons d'abord codé l'application et n'avons pu rédiger des test que sur la partie DAO de l'application.
 
 # Comment installer APIjeux
 - ## Télécharger le code :
