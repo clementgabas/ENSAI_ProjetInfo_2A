@@ -2,7 +2,7 @@ import PyInquirer as inquirer
 from Vues.abstractView import AbstractView
 import Vues.menu_Jouer as Play
 
-from printFunctions import timePrint as print
+from Vues.usefulfonctions.printFunctions import timePrint as print
 
 
 from tabulate import tabulate
@@ -46,7 +46,7 @@ class Salon(AbstractView):
                 import Vues.menu_Parametres as MPara
                 MParametre1 = MPara.Menu_Parametre(self.pseudo, self.id_salle, self.game,  self.est_chef)
                 return MParametre1.make_choice()
-            elif self.reponse["Salon_acceuil"] == 'Lire les règles':
+            elif self.reponse["Salon_accueil"] == 'Lire les règles':
                 if self.game.lower() == 'p4':
                     with open("Vues/règles/p4_rules.txt", "r") as rules:
                         print(rules.read())
