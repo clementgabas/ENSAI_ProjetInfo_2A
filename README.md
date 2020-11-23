@@ -1,6 +1,12 @@
 # APIjeux -- Descriptif rapide l'application
-blabla
-
+- ## Qu'est-ce qu'APIjeux, description du projet
+    APIjeux est le nom que nous avons choisi de donner à notre projet informatique du 1er semestre de 2ème année à l'ENSAI. L'objectif du projet est le développement d'une **RESTful API permettant de jouer, via une application cliente, à des jeux de plateau en ligne**.
+    L'un des principaux objectifs est que l'**application soit suffisament flexible pour supporter des jeux suffisamment variés sans trop de changements au niveau son code**.
+- ## Notre réalisation du projet
+    Pour réaliser notre projet informatique, nous avons choisi de développer deux jeux, à savoir le **Puissance4** et le **jeu de l'Oie**. En effet, nous avons estimé que ces deux jeux étaient suffisamment différents l'un de l'autre pour prouver la fléxibiliter de notre application.
+    Ainsi, dans toute la suite, APIjeux désigne l'ensemble des applications client et serveur.
+    En plus des fonctionnalités demandées (pourvoir jouer à des jeux), nous avons réalisé toute une partie **gestion de compte**, avec notamment la gestion d'amis, de scores et de classements.
+De plus, nous avons intégré la possibilité de jouer avec des amis ou contre des inconnus. Jouer avec des amis se fait, comme pour la plupart des jeux en ligne, en rejoignant une salle dont notre ami nous à transférer le code.
 # Classes testées et commentées 
 blabla
 
