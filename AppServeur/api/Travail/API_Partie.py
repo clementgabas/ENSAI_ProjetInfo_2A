@@ -44,9 +44,9 @@ def est_ce_mon_tour():
             print(f"L'utilisateur {pseudo} peut jouer son tour dans la salle {id_partie}")
             response = {"status_code": http_codes.ok, "message": "C'est ton tour"}  # code 200
             return make_reponse(response, http_codes.ok)  # code 200
-        else :
-            print(f"L'utilisateur {pseudo} n'a pas le droit de jouer son tour dans la salle {id_partie} et doit donc passer son tour.")
-            DAOcoups.add_new_coup(id_partie, last_coup+1 , pseudo, old_coup[3], old_coup[4]+1)
+        elif old_coup[4] >1:
+            print(f"L'utilisateur doit passer son tour encore {old_coup[4]-1} fois. Il passe donc automatiquement son tour ici. ")
+            DAOcoups.add_new_coup(id_partie, last_coup+1 , pseudo, old_coup[3], old_coup[4]-1)
             response = {"status_code": http_codes.forbidden,
                         "message": "C'est votre tour, mais vous ne pouvez pas jouer"}  # code 403
             return make_reponse(response, http_codes.forbidden)   # code 403

@@ -3,7 +3,7 @@ import DAO.gestion as DBgestion
 import DAO.gestionParticipation as DBparticipation
 db_address = DBgestion.get_db_address()
 
-#foncr
+
 def add_new_coup(id_partie, num_coup , pseudo_joueur, new_position, prochain_tour): #post
     """
         Procédure qui enregistre un nouveau coup
@@ -47,7 +47,7 @@ def add_new_coup(id_partie, num_coup , pseudo_joueur, new_position, prochain_tou
 
 def get_last_coup(id_partie): #get
     """
-        Fonction qui retourne le dérnier coup joué dans la partie
+        Fonction qui retourne le numéro du dernier coup joué dans la partie
 
         :parameter
         ----------
@@ -84,7 +84,7 @@ def get_last_coup(id_partie): #get
 
 def get_old_coup(id_partie, pseudo_joueur):
     """
-        Fonction qui retourne le dérnier coup joué dans la partie
+        Fonction qui retourne le dernier coup joué dans la partie pour un joueur en particulier
 
         :parameter
         ----------
@@ -97,8 +97,6 @@ def get_old_coup(id_partie, pseudo_joueur):
         ------
         ConnectionAbortedError
             Si une erreur a lieu au cours de la communication avec la DB, l'erreur est levée.
-        ValueError
-            Si une erreur a lieu dans la valeur prochain_tour est superieure à 1 lors de la requète SQL
 
         :return
         -------
@@ -122,9 +120,6 @@ def get_old_coup(id_partie, pseudo_joueur):
         #si ca renvoit None, c'est que c'est le premier tour du joueur. On ajotue donc le coup 0
         add_coup_zero(id_partie, pseudo_joueur)
         return get_old_coup(id_partie, pseudo_joueur)
-    elif old_coup[4] > 1 :
-        print("erreur dans get_old_coup")
-        raise ValueError
     return old_coup
 
 def add_coup_zero(id_partie, pseudo):
