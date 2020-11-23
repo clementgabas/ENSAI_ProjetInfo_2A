@@ -237,11 +237,11 @@ def set_response_headers(response):
     return response
 
 if __name__ == "__main__":
-    DAOuser.put_all_users_disconnected()
+    DAOuser.put_all_users_disconnected() #déconnecte tous les perso encore connectés dans la DB pour éviter les confltis
     #cf_port = os.getenv("PORT")
     cf_port = conf["port"]
     if cf_port is None:
-        app.run(host="localhost", port=5001, debug=True)
+        app.run(host="localhost", port=5001, debug=True) #adresse et port modifiables ici
     else:
         app.run(host="localhost", port=int(cf_port), debug=True)
 
