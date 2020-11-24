@@ -20,10 +20,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2999eade-5bcf-4553-816f-9142225f814e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/AppClient/Player/UserClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppClient/Player/UserClass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AppServeur/jeuxservice/player/abstractplayer.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppServeur/jeuxservice/player/abstractplayer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AppServeur/jeuxservice/player/oieplayer.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppServeur/jeuxservice/player/oieplayer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AppServeur/jeuxservice/player/p4player.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppServeur/jeuxservice/player/p4player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppClient/Affichagetxt/parchemin_Accueil.txt" beforeDir="false" afterPath="$PROJECT_DIR$/AppClient/Affichagetxt/parchemin_Accueil.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppClient/Player/abstractUser.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppClient/Player/abstractUser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppServeur/jeuxservice/jeux/abstractjeux.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppServeur/jeuxservice/jeux/abstractjeux.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppServeur/jeuxservice/jeux/oiegame.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppServeur/jeuxservice/jeux/oiegame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppServeur/jeuxservice/jeux/p4game.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppServeur/jeuxservice/jeux/p4game.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
