@@ -8,7 +8,7 @@ class AbstractUser(ABC):
 
     def create_resultat(self):
         """
-        Procédure qui permet de crée un dictionnaire composé d'un statut et d'un message associée a ce status.
+        Procédure qui permet de crée un dictionnaire composé d'un statut et d'un message associée a ce statut.
         """
         return {"Statut": "", "Message": ""}
 
