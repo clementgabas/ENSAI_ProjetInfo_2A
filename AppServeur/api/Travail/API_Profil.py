@@ -1,7 +1,7 @@
 from flask import request
 from requests import codes as http_codes
 
-import travailMDP.testmdp as MDPgestion
+import api.travailMDP.testmdp as MDPgestion
 import DAO.gestionUser as DAOuser
 
 from api.Travail.Base import make_reponse
