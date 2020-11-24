@@ -47,7 +47,7 @@ class GameP4(AbstractJeu):
         """
         Méthode qui va gérer la séquence où un joueur joue son tour.
 
-        :param
+        Parameters
         ------
         Coup : dict
             Dictionnaire contenant le nom du joueur, la partie dans laquelle il se trouve, et la colonne dans laquelle
@@ -55,7 +55,7 @@ class GameP4(AbstractJeu):
         gridClass : Objet de la classe GridP4
             Grille de jeu en cours, avec tous les coups déja joués.
 
-        :return
+        Returns
         -------
         type = list
             Liste representant la grille contenant les coups joués.
@@ -77,7 +77,7 @@ class GameP4(AbstractJeu):
         """
         Méthode qui vérifie si le coup joué par un joueur est valide.
 
-        :param
+        Parameters
         ------
         Coup : dict
             Dictionnaire contenant le nom du joueur, la partie dans laquelle il se trouve, et la colonne dans laquelle
@@ -85,7 +85,7 @@ class GameP4(AbstractJeu):
         gridClass : Objet de la classe GridP4
             Grille de jeu en cours, avec tous les coups déja joués.
 
-        :return
+        Returns
         -------
         Resultat: dict
             Dictionnaire contenant la réussite, ou non, cette vérifiaction et le message associé.
@@ -122,7 +122,7 @@ class GameP4(AbstractJeu):
         """
         Méthode qui enregistre le coup joué.
 
-        :param
+        Parameters
         ------
         Coup : dict
             Dictionnaire contenant le nom du joueur, la partie dans laquelle il se trouve, et la colonne dans laquelle

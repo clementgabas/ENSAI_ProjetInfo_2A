@@ -22,7 +22,7 @@ class User(AbstractUser):
         """
         Foction qui gère la déconnexion d'un utilisateur.
 
-        :return
+        Returns
         -------
         Resultat: dict
             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -54,11 +54,12 @@ class User(AbstractUser):
         """
          Foction qui gère l'ajout d'un autre utilisateur dans la liste d'amis.
 
-        :param
+        Parameters
         -----
          pseudo_ami: str
             Pseudo de l'utilisateur à ajouter en ami.
-        :return
+
+        Returns
         -----
         Resultat: dict
              Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -98,11 +99,11 @@ class User(AbstractUser):
         """
          Foction qui gère la suppression d'un autre utilisateur dans la liste d'amis.
 
-        :param
+        Parameters
         -----
          pseudo_ami: str
             Pseudo de l'utilisateur à spprimer de la liste d'amis.
-        :return
+        Returns
         -----
         Resultat: dict
              Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -142,7 +143,7 @@ class User(AbstractUser):
         """
         Fonction qui gère la demande d'affichage de la liste d'amis de l'utilisateur.
 
-        :return
+        Returns
         ------
         Resultat: dict
              Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -173,7 +174,7 @@ class User(AbstractUser):
         """
         Fonction qui gère la modification du mot de passe d'un utilisateur
 
-        :param
+        Parameters
         ------
         old_mdp: str
             Ancien mot de passe que l'utilisateur souhaite modifier.
@@ -181,7 +182,7 @@ class User(AbstractUser):
             Mot de passe qu'il veut avoir
         new_mdp2: str
             confirmation de ce mot de passe
-        :return
+        Returns
         ------
         Resultat: dict
              Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -230,11 +231,11 @@ class User(AbstractUser):
         """
         Fonction qui gère la modification du pseudo d'un utilisateur
 
-        :param
+        Parameters
         ------
         new_pseudo: str
             Nouveau pseudo que l'utilisateur veut avoir
-        :return
+        Returns
         ------
         Resultat: dict
              Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -274,7 +275,7 @@ class User(AbstractUser):
         """
             Fonction qui gère la demande d'affichage des statistiques de l'utilisateur.
 
-            :return
+            Returns
             ------
             Resultat: dict
                 Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -311,7 +312,7 @@ class User(AbstractUser):
         """
         Fonction qui gère la demande de réinitialisation des statistiques de l'utilisateur.
 
-        :return
+        Returns
         ------
         Resultat: dict
             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -338,7 +339,7 @@ class User(AbstractUser):
         """
         Fonction qui gère la demande d'affichage du classement général de l'utilisateur.
 
-        :return
+        Returns
         ------
         Resultat: dict
             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -370,7 +371,7 @@ class User(AbstractUser):
         """
         Fonction qui gère la demande d'affichage du classement du jeu de l'oie de l'utilisateur.
 
-        :return
+        Returns
         ------
         Resultat: dict
             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -402,7 +403,7 @@ class User(AbstractUser):
         """
         Fonction qui gère la demande d'affichage du classement du puissance 4 de l'utilisateur.
 
-        :return
+        Returns
         ------
         Resultat: dict
             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé

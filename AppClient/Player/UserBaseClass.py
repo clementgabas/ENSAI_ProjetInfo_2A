@@ -16,7 +16,7 @@ class UserBase(AbstractUser):
         """
         Fonction qui a pour but de créer un compte pour un nouvel utilisateur.
 
-        :param
+        Parameters
         ------
         identifiant : str
             identifiant entré par le nouvel utilisateur.
@@ -27,7 +27,7 @@ class UserBase(AbstractUser):
         pseudo : str
             Pseudo entré par le nouvel utilisateur.
 
-        :return
+        Returns
         ------
         Resultat: dict
             Dictionnaire contenant la réussite ou non de création d'un utilisateur et le message associé
@@ -85,14 +85,14 @@ class UserBase(AbstractUser):
         """
         Fonction qui gère la connexion d'un utilisateur.
 
-        :param
+        Parameters
         ------
         identifiant : str
             identifiant entré par l'utilisateur
         mdp : str
             mot de passe entré par l'utilisateur
 
-        :return
+        Returns
         -------
         Resultat: dict
             Dictionnaire contenant la réussite ou non de connexion d'un utilisateur et le message associé.

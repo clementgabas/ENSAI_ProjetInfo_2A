@@ -35,7 +35,7 @@ class Player(User):
         """
         Procédure qui vérifie si il existe une salle ouverte aux anonymes est encore disponible.
 
-        :return
+        Returns
         -------
         Resultat : dict
             Dictionnaire contenant la réussite ou non de cette vérification et le message associé.
@@ -69,7 +69,7 @@ class Player(User):
         """
         Fonction qui assure la création d'une salle pour jouer un un jeu.
 
-        :return
+        Returns
         ------
         Resultat : dict
             Dictionnaire contenant la réussite ou non de la création d'une salle et le message associé
@@ -108,12 +108,12 @@ class Player(User):
         """
         Fonction qui gère le fait qu'un utilisateur rejoint une salle d'un amis.
 
-        :param
+        Parameters
         -------
         id_salle: int
              identifiant de la salle que veut rejoindre l'utilisateur.
 
-        :return
+        Returns
         -------
         Resultat : dict
             Dictionnaire contenant la réussite ou non que l'utilisateur ai rejoint la partie , et le message associé.
@@ -147,7 +147,7 @@ class Player(User):
         """
         Fonction qui gère le fait qu'un utilisateur rejoint une salle d'anonyme.
 
-        :return
+        Returns
         -------
         Resultat : dict
             Dictionnaire contenant la réussite ou non que l'utilisateur ai rejoint une partie , et le message associé.
@@ -181,7 +181,7 @@ class Player(User):
         """
         Fonction qui permet de renvoyer les memebres présents dans une même salle.
 
-        :return
+        Returns
         -------
         Resultats : dict
             Dictionnaire contenant la réussite ou non d'affichage des membres et le message associé.
@@ -208,7 +208,7 @@ class Player(User):
         """
         Fonction qui permet à un utilisateur de quitter une salle.
 
-        :return
+        Returns
         -------
         Resultat : dict
             Dictionnaire contenant la réussite ou non d'abandon de la salle et le message associé
@@ -232,7 +232,7 @@ class Player(User):
         """
         Fonction qui gère l'affichage de la liste des couleurs disponibles.
 
-        :return
+        Returns
         -------
         Resultat: dict
             Dictionnaire contenant la réussite ou non d'affichage de cette liste et le message associé
@@ -262,12 +262,12 @@ class Player(User):
         """
         Fonction qui gère le choix de la couleur séléctionnée par un utilisateur.
 
-        :param
+        Parameters
         ------
         couleur_choisie: str
             Couleur choisie par l'utilisateur
 
-        :return
+        Returns
         ------
         Resultat: dict
             Dictionnaire contenant la réussite ou non de cette sélection, et le message associé
@@ -294,7 +294,7 @@ class Player(User):
         """
          Fonction qui permet à un utilisateur se mettre prêt à débuter une partie.
 
-         :return
+         Returns
          ------
          Resultat: dict
              Dictionnaire contenant la réussite ou non de l'actualisation du statut de l'utilisateur et le message associé
@@ -319,7 +319,7 @@ class Player(User):
         Fonction qui gère la verification du status de tous les utilisateurs. Ansi elle s'assure que tous les utilisateurs
         sont prêts à jouer
 
-        :return
+        Returns
         -------
         Resultat: dict
             Dictionnaire contenant la réussite ou non de la véfication i.e si tout le monde est prêt et le message associé
@@ -343,7 +343,7 @@ class Player(User):
         """
         Fonction qui gère le lancement d'une partie.
 
-        :return
+        Returns
         -------
         Resultat: dict
             Dictionnaire contenant la réussite ou non de ce lancement et le message associé.
@@ -367,7 +367,7 @@ class Player(User):
         """
         Fonction qui gère le passage de tour d'un utilisateur.
 
-        :return
+        Returns
         ------
         Resultat: dict
             Dictionnaire contenant la réussite ou non de ce passage de tour et le message associé
@@ -390,7 +390,7 @@ class Player(User):
         """
          Fonction qui gère la demande de tour, ainsi l'interrogateur va savoir si c'est à lui de jouer ou non.
 
-         :return
+         Returns
          -------
          Resultat: dict
              Dictionnaire contenant la réponse, positive ou non, de cette demande, et le message associé.
@@ -423,7 +423,7 @@ class Player(User):
         """
         Fonction qui gère une demande d'affichage de la grille de jeu.
 
-        :return
+        Returns
         -------
         Resultat: dict
             Dictionnaire contenant la réponse, positive ou non, d'affichage de cette grille ainsi que le message associé
@@ -450,12 +450,12 @@ class Player(User):
         """
         Fonction qui gère la demande de jouer son tour, avec une action particuliere, pour un utilisateur
 
-        :param
+        Parameters
         ------
         action :
          action en entrée, lancé de dé pour le jeu de l'oie et choix de colonne pour le P4.
 
-        :return
+        Returns
         -------
         Resultat: dict
             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé
@@ -481,7 +481,7 @@ class Player(User):
         """
         Fonction qui vérifie si l'utilisateur remporte la partie.
 
-        :return
+        Returns
         -------
         Resultat: dict
             Dictionnaire contenant la réponse, positive ou non, d'execution de cette vérification ainsi que le message associé.
@@ -512,12 +512,12 @@ class Player(User):
         """
         Fonction qui gère la fin de la partie ou ce trouve l'utilisateur, i.e qui mais à jour ses statistiques personnelles
 
-        :param
+        Parameters
         ------
         self_win: bool
             Parametre qui défini si l'utilisateur est le vainqueur de la partie.
 
-        :return
+        Returns
         -------
         Resultat: dict
             Dictionnaire contenant la réponse, positive ou non, d'execution de cette commande ainsi que le message associé

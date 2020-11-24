@@ -34,7 +34,7 @@ class PlayerOie(AbstractPlayer):
         """
         Fontion qui gère la demande d'affichage des informations sur l'utilisateur.
 
-        :return
+        Returns
         -----
         type : dict
             Dictionnaire contenant nom, couleur, ordre de jeu, nombre de tour d'attente, position actuelle et position précédente deu joueur.
@@ -45,7 +45,7 @@ class PlayerOie(AbstractPlayer):
         """
         Procédure qui gere la modification du nombre de tours d'attentes.
 
-        :param
+        Parameters
         -----
         nbwaitingturn : int
             nouvelle valeur du nombre de tours d'attente.
@@ -56,7 +56,7 @@ class PlayerOie(AbstractPlayer):
         """
         Fonction qui permet d'afficher le nombre de tours d'attentes d'un utilisateur
 
-        :return
+        Returns
         ------
         nbwaitingturn :int
             Nombre de tours d'attentes.
@@ -67,7 +67,7 @@ class PlayerOie(AbstractPlayer):
         """
         Fonction teste le nombre de tours d'attentes d'un utilisateur.
 
-        :return
+        Returns
         -------
         type : bool
             Si le joueur peut jouer au prochain tour, le booleen sera True.
@@ -89,7 +89,7 @@ class PlayerOie(AbstractPlayer):
         """
         Fonction qui permet d'afficher la postition actuelle d'un utilisateur
 
-        :return
+        Returns
         ------
         actualbox :int
              Postition actuelle de l'utilisateur.
@@ -100,7 +100,7 @@ class PlayerOie(AbstractPlayer):
         """
         Procédure qui gere la modification de la nouvelle position du joueur.
 
-        :param
+        Parameters
         -----
         box : int
             nouvelle valeur de la position du joueur.
@@ -111,7 +111,7 @@ class PlayerOie(AbstractPlayer):
         """
         Procédure qui gere la modification de l'oncienne position du joueur.
 
-        :param
+        Parameters
         -----
         box : int
             nouvelle valeur de la position du joueur.
@@ -122,7 +122,7 @@ class PlayerOie(AbstractPlayer):
         """
         Procédure qui gere la modification de la nouvelle position du joueur en ajoutant la some des dés.
 
-        :param
+        Parameters
         -----
         value : int
             valeur du dé

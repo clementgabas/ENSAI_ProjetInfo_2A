@@ -22,14 +22,14 @@ class AbstractGrid(ABC):
         """
         Fontion qui permet de mettre a jour un dictionnaire, en modifiant le statut et le message associé
 
-        :param
+        Parameters
         -----
-        statut: Bool
+        statut: bool
             statut de la réponse
         message: str
             message associé, ce paramètre étant optionnel, si rien n'est rentré, on le suppose vide
 
-        :return
+        Returns
         ------
         Resultat : dict
             Dictionnaire mis à jour

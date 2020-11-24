@@ -30,7 +30,7 @@ class GridP4(AbstractGrid):
     def simulatation(self, liste_coups):
         """
         Méthode qui simule un coup joué par un joueur.
-        :param
+        Parameters
         ------
         liste_coups : list
             liste des coup qui ont eu lieu dans la partie, ces coups sont eux même des dictionnaires.
@@ -44,14 +44,14 @@ class GridP4(AbstractGrid):
         """
         Méthode qui gére j'ajout d'un jeton et qui verifie si le nombre de jeutons de meme couleur qui sont alignés.
 
-        :param
+        Parameters
         ------
         x: int
             numéro de colonne ou joue le joueur.
         tokenColor : int
             numéro associé à la couleur du joueur.
 
-        :return
+        Returns
         ------
         resultat : dict
             Dictionnaire contenant la réussite ou non que l'utilisateur ait aligné un nombre de jetons suffisant une partie, et le message associé.
@@ -158,12 +158,12 @@ class GridP4(AbstractGrid):
         """
         Méthode qui test si une colonne est pleine.
 
-        :param
+        Parameters
         ------
         column : int
             Numéro de la colonne à tester
 
-        :return
+        Returns
         ------
         type : Bool
             True : si la colonne est pleine.
@@ -182,7 +182,7 @@ class GridP4(AbstractGrid):
         """
         Méthode qui affiche la grille du jeu.
 
-        :return
+        Returns
         ------
         gridList : Liste
             grille sous forme de liste.
@@ -193,12 +193,12 @@ class GridP4(AbstractGrid):
         """
         Méthode qui somme les élement d'une liste
 
-        :param
+        Parameters
         ------
         arr : list
             liste d'entier.
 
-        :return
+        Returns
         -------
         sum :int
         somme des éléments

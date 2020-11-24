@@ -24,7 +24,7 @@ class PlayerP4(AbstractPlayer):
         """
         Procédure qui attribue a un joueur un numéro qui est soit 1 soit 2 en fonction de la couleur du joueur
 
-        :param
+        Parameters
         ------
         name: str
             nom du joueur
@@ -43,7 +43,7 @@ class PlayerP4(AbstractPlayer):
         """
         Fonction qui renvoie le numéro du joueur comme défini dans la fonction initiatrice
 
-        :return
+        Returns
         -------
         token : str
             numéro du joueur, ce numéro defini le joueur dans la gille du puissance 4

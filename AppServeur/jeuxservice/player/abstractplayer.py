@@ -24,7 +24,7 @@ class AbstractPlayer(ABC):
         """
         Fonction qui retourne l'ordre de passage du joueur.
 
-        :return
+        Returns
         ------
         _order : float
             ordre de passage

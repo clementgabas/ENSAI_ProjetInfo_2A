@@ -20,7 +20,8 @@ class GameOie(AbstractJeu):
     def set_Players(self, playerClass):
         """
         Procédure qui ajoute un joueur à la liste des membre de la partie.
-        :param
+        
+        Parameters
         ------
         playerClass : objet de la classe playerClass
             information sur le joueur a ajouter.

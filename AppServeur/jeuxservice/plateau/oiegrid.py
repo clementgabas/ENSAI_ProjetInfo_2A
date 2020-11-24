@@ -14,12 +14,12 @@ class Dice:
         """
         Méthode qui initialise la classe dé
 
-        :param
+        Parameters
         -------
         numofdice : int
             nombre de dé
         numoffaces : int
-            nombre de dé
+            nombre de faces
 
         En fonction du nombre de dés, on définit la dimension du tableau _diceresult
         """
@@ -42,7 +42,7 @@ class Dice:
         """
         Méthode qui ajoute le résultat du lancé de des a la table _diceresult.
 
-        :param
+        Parameters
         -------
         dice1 : int
             valeur du premier dé
@@ -51,13 +51,19 @@ class Dice:
         """
         self._diceresult[0], self._diceresult[1] = dice1, dice2
 
-    def get_dices(self, coup): #################################################################################################################
+    def get_dices(self, coup):
         """
         Méthode qui atribue une valeur à chaque dé
 
-        :param
+        Parameters
+        -------
         coup : float
             valeure a donnée au dé.
+
+        Returns
+        -------
+        type = tuple
+            valeur des dés
         """
 
         #coup = 1.2 ou coup = 6.3 ou coup = 4.4
@@ -67,7 +73,17 @@ class Dice:
 
     def dicevalue(self, num):
         """
-        Demande le résultat d'un lancer de dé en donnant l'id du dé (_dicevalue[0] donne le premier dé)
+        Méthode qui demande le résultat d'un lancé de dé
+        
+        Parameters
+        ------
+        num: int
+            id du dé
+
+        Returns
+        ------
+        type = int
+            resultat du lancé
         """
         return self._diceresult[num]
 
@@ -82,25 +98,35 @@ class Dice:
 
 class Box:
     """
-    Définit une case par sa règle
+    Classe qui définie une case par sa règle
     """
 
     def __init__(self, boxType):
         """
-        Initialise en mettant la règle de la case
+        Méthode qui initialise en mettant la règle de la case
+
+        Parameters
+        ------
+        boxType : str
+            regle de la case
         """
         self._boxType = boxType
 
 
     def setType(self, boxType):
         """
-        Affecter une règle
+        Méthode qui affecte une règle
+
+        Parameters
+        ------
+        boxType : str
+            regle à affecter
         """
         self._boxType = boxType
 
 class Tray(AbstractGrid, Dice):
     """
-    Plateau qui hérité de la classe dé
+    Classe qui représent le plateau qui hérité de la classe dé
     Sert à définir le nombre de cases, les particularités des cases
     """
     _nbBox = 1  # nb de cases
@@ -108,7 +134,24 @@ class Tray(AbstractGrid, Dice):
 
     def __init__(self, numofdice, numoffaces, nbBox, id_partie):
         """
-        Initialisation nb dés, nb faces et le nb de cases
+        Méthode qui initialise la classe Tray
+
+        Parameters
+        -------
+        numofdice : int
+            nombre de dé
+        numoffaces : int
+            nombre de faces
+        nbBox : int
+            nombre de cases
+        id_partie : int
+            identifiant de la partie
+
+        et definie :
+        listOfPlayers : list
+            la liste des joueurs initialement vide
+        nbOfPlayer : int
+            nombre de joueurs dans la partie
         """
         self._nbBox = nbBox
         Dice.__init__(self, numofdice, numoffaces)
@@ -122,7 +165,14 @@ class Tray(AbstractGrid, Dice):
         self.nbOfPlayer = len(self.listOfPlayers)
         self.id_partie = id_partie
 
-    def make_liste_of_players(self):
+    def make_liste_of_players(self): ######
+        """
+        Méthode qui
+
+        Returns
+        -------
+
+        """
         liste_players_ordonnee = DAOparticipation.get_all_players2(self.id_partie)
         liste_couleur_ordonnee = DAOparticipation.get_liste_couleur(self.id_partie)
         L = []

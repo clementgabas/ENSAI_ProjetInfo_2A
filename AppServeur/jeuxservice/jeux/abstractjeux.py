@@ -24,7 +24,7 @@ class AbstractJeu(ABC):
     def set_Players(self, playerClass):
         """
         Procédure qui ajoute un joueur à la liste des membre de la partie.
-        :param
+        Parameters
         ------
         playerClass : objet
             information sur le joueur a ajouter.
@@ -53,14 +53,14 @@ class AbstractJeu(ABC):
         """
         Fontion qui permet de mettre a jour un dictionnaire, en modifiant le statut et le message associé
 
-        :param
+        Parameters
         -----
         statut: str
             statut de la réponse
         message: str
             message associé, ce paramètre étant optionnel, si rien n'est rentré, on le suppose vide
 
-        :return
+        Returns
         ------
         Resultat : dict
             Dictionnaire mis à jour
