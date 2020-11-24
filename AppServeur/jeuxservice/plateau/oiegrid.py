@@ -6,15 +6,22 @@ import DAO.gestionParticipation as DAOparticipation
 
 class Dice:
     """
-    Permet de gérer les dés : le lancer, le nb de dés, le nombre de valeurs (faces)
+    Classe qui permet de gérer les dés : le lancer, le nb de dés, le nombre de valeurs (faces)
     """
 
 
     def __init__(self, numofdice, numoffaces):
         """
-        Initialisation de la classe dé
-        Définir nb dés et nb faces
-        En fct nb dés, on définit la dimension du tableau _diceresult
+        Méthode qui initialise la classe dé
+
+        :param
+        -------
+        numofdice : int
+            nombre de dé
+        numoffaces : int
+            nombre de dé
+
+        En fonction du nombre de dés, on définit la dimension du tableau _diceresult
         """
         self._numofdice = numofdice
         self._numoffaces = numoffaces
@@ -32,9 +39,27 @@ class Dice:
     #        self._diceresult[i] = random.randint(1, self._numoffaces)
 
     def throw(self, dice1, dice2):
+        """
+        Méthode qui ajoute le résultat du lancé de des a la table _diceresult.
+
+        :param
+        -------
+        dice1 : int
+            valeur du premier dé
+        dice2 : int
+            valeur du deuxieme dé
+        """
         self._diceresult[0], self._diceresult[1] = dice1, dice2
 
-    def get_dices(self, coup):
+    def get_dices(self, coup): #################################################################################################################
+        """
+        Méthode qui atribue une valeur à chaque dé
+
+        :param
+        coup : float
+            valeure a donnée au dé.
+        """
+
         #coup = 1.2 ou coup = 6.3 ou coup = 4.4
         dice1 = math.floor(coup)
         dice2 = round(coup%1*10)
