@@ -13,15 +13,15 @@ class Player(User):
 
     def __init__(self, pseudo, jeu, id_salle, chef_salle, ami_anonyme="ami"):
         """
-        Fonction init qui définie:
+        Fonction init qui définit:
             pseudo : str
                 Le pseudo de l'utilisateur
             id_salle : int
                 identifiant de la salle qui est aussi celui de la partie.
             est_chef : bool
-                Booléen qui définie si oui ou non l'utilisateur est chef de partie
+                Booléen qui définit si oui ou non l'utilisateur est chef de partie
             ami_anonyme :str
-                attribut qui défini si la partie créée est pour jouer uniquement entre amis ou non.
+                attribut qui définit si la partie créée est pour jouer uniquement entre amis ou non.
 
         """
         self.pseudo = pseudo
@@ -116,7 +116,7 @@ class Player(User):
         Returns
         -------
         Resultat : dict
-            Dictionnaire contenant la réussite ou non que l'utilisateur ai rejoint la partie , et le message associé.
+            Dictionnaire contenant la réussite ou non que l'utilisateur ait rejoint la partie , et le message associé.
                 Si l'utilisateur a réussi a rejoindre la salle, le statut sera le booléen True et
                 le dictionnaire renverra aussi l'identifiant de la salle.
 
@@ -150,7 +150,7 @@ class Player(User):
         Returns
         -------
         Resultat : dict
-            Dictionnaire contenant la réussite ou non que l'utilisateur ai rejoint une partie , et le message associé.
+            Dictionnaire contenant la réussite ou non que l'utilisateur ait rejoint une partie , et le message associé.
                 Si l'utilisateur a réussi a rejoindre une salle, le statut sera le booléen True.
 
                 Si l'utilisateur ne peut rejoindre la salle le statut sera le booléen False et le message associé
@@ -515,7 +515,7 @@ class Player(User):
         Parameters
         ------
         self_win: bool
-            Parametre qui défini si l'utilisateur est le vainqueur de la partie.
+            Parametre qui définit si l'utilisateur est le vainqueur de la partie.
 
         Returns
         -------

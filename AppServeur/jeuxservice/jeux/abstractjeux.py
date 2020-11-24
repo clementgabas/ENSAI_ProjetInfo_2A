@@ -2,12 +2,12 @@ from abc import ABC
 
 class AbstractJeu(ABC):
     """
-    Classe abstraite qui défini la partie action du jeu
+    Classe abstraite qui définit la partie action du jeu
     """
 
     def __init__(self, id_partie):
         """
-        Fonction initiatrice qui définie :
+        Fonction initiatrice qui définit :
             id_partie : int
                 l'identifiant de la partie
         et qui initie :

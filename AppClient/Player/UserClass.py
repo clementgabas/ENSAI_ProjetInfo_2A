@@ -12,7 +12,7 @@ class User(AbstractUser):
 
     def __init__(self, pseudo):
         """
-        Fonction init qui définie:
+        Fonction init qui définit:
             pseudo : str
                 Le pseudo de l'utilisateur
         """

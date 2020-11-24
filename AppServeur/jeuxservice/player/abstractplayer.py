@@ -7,7 +7,7 @@ class AbstractPlayer(ABC):
 
     def __init__(self, name, color, ordre):
         """
-        Fonction init qui définie:
+        Fonction init qui définit:
             name : str
                 Le pseudo de l'utilisateur
             color : str

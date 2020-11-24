@@ -42,7 +42,7 @@ class GridP4(AbstractGrid):
 
     def Throw(self, x, tokenColor):
         """
-        Méthode qui gére j'ajout d'un jeton et qui verifie si le nombre de jeutons de meme couleur qui sont alignés.
+        Méthode qui gére l'ajout d'un jeton et qui verifie si le nombre de jeutons de meme couleur qui sont alignés.
 
         Parameters
         ------

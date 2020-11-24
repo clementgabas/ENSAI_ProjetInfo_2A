@@ -4,7 +4,7 @@ from jeuxservice.plateau.oiegrid import Tray
 
 class GameOie(AbstractJeu):
     """
-    Classe qui hérite de la classe AbstractJeu et qui définie la partie de jeu de l'oie.
+    Classe qui hérite de la classe AbstractJeu et qui définit la partie de jeu de l'oie.
 
     """
     def __init__(self, id_partie):

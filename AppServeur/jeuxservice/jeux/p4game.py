@@ -7,11 +7,11 @@ import DAO.gestionParticipation as DAOparticipation
 
 class GameP4(AbstractJeu):
     """
-    Classe qui hérite de la classe AbstractJeu et qui défini la partie d'un Puissance 4
+    Classe qui hérite de la classe AbstractJeu et qui définit la partie d'un Puissance 4
     """
     def __init__(self, id_partie):
         """
-        Fonction init qui définie :
+        Fonction init qui définit :
             id_partie : int
                 l'identifiant de la partie
         et qui initie :

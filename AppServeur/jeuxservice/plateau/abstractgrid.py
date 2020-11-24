@@ -2,7 +2,7 @@ from abc import ABC
 
 class AbstractGrid(ABC):
     """
-    Classe abstraite qui définie le plateau d'un jeu
+    Classe abstraite qui définit le plateau d'un jeu
     """
     def __init__(self):
         """Méthode init"""

@@ -2,11 +2,11 @@ from jeuxservice.player.abstractplayer import AbstractPlayer
 
 class PlayerP4(AbstractPlayer):
     """
-    Classe qui définie la partie joueur de puissance 4, cette classe hérite de la classe AbstractPlayer
+    Classe qui définit la partie joueur de puissance 4, cette classe hérite de la classe AbstractPlayer
     """
     def __init__(self, name, color, ordre):
         """
-        Fonction init qui définie:
+        Fonction init qui définit:
             name : str
                 Le pseudo de l'utilisateur
             color : str

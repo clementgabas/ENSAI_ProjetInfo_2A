@@ -98,7 +98,7 @@ class Dice:
 
 class Box:
     """
-    Classe qui définie une case par sa règle
+    Classe qui définit une case par sa règle
     """
 
     def __init__(self, boxType):
@@ -167,11 +167,7 @@ class Tray(AbstractGrid, Dice):
 
     def make_liste_of_players(self): ######
         """
-        Méthode qui
-
-        Returns
-        -------
-
+        Méthode qui rajoute tous les participants à la liste des joueurs.
         """
         liste_players_ordonnee = DAOparticipation.get_all_players2(self.id_partie)
         liste_couleur_ordonnee = DAOparticipation.get_liste_couleur(self.id_partie)
@@ -187,6 +183,20 @@ class Tray(AbstractGrid, Dice):
         print(f"Liste des joueurs : {self.listOfPlayers}")
 
     def simulation(self, liste_coups):
+        """
+        Méthode qui simule un coup joué par un joueur.
+
+        Parameters
+        ------
+        liste_coups : list
+            liste des coup qui ont eu lieu dans la partie, ces coups sont eux même des dictionnaires.
+
+        Returns
+        -------
+        dico : dict
+            Dictionnaire contenant tous les participants. Et aqqui a chaque joueur associe un dictionnaire contenant
+             nom, couleur, ordre de jeu, nombre de tour d'attente, position actuelle et position précédente deu joueur.
+        """
         self.make_liste_of_players()
         self.Set_GameByDefault()
         for coup in liste_coups:
@@ -200,6 +210,24 @@ class Tray(AbstractGrid, Dice):
         return dico
 
     def Throw(self, dice1, dice2, ordre):
+        """
+        Méthode qui gére le fait qu'un joueur joue son coup et qui véfie si il y a victoire.
+
+        Parameters
+        ----------
+        dice1 : int
+            premier dé.
+        dice2 : int
+            Deuxième dé.
+        ordre : int
+            Ordre de passage.
+
+        Returns
+        -------
+        endOfGame : 1
+            est retourné si et seulement si le joueur gagne la partie.
+
+        """
         currentplayer = self.listOfPlayers[ordre-1]  # récupère le joueur actuel (celui qui joue)
 
         if currentplayer.test_waitingturn() == 1:  # test si le joueur ne doit pas passer son tour
@@ -255,14 +283,10 @@ class Tray(AbstractGrid, Dice):
                                 player.set_waitingturn(resultBoxRules[4])  # le joueur redemarre
                                 break
 
-            if self.test_If_Win(currentplayer.get_actualbox()) == 1:
-                endOfGame = 1
-                return endOfGame
-
 
     def Set_GameByDefault(self):
         """
-        On definit les regles par defaut du jeu de l'oie
+        Méthode qui définit les regles par defaut du jeu de l'oie
         """
         self.set_rules(6, "Bridge")
         self.set_rules(9, "Goose")# on sort cette règle si
@@ -288,22 +312,54 @@ class Tray(AbstractGrid, Dice):
 
     def set_rules(self, boxnumber, boxtype):
         """
-        Affecte une règle à une case
-        Prend num case et sa règle
+        Méthode qui affecte une règle à une case
+
+        Parameters
+        ------
+        boxnumber : int
+            Numéro de la case
+        boxtype : str
+            règle à affecter
+
         """
         box = self._boxList[boxnumber]  # Récupère l'instance de la box dans le tableau
         box.setType(boxtype)  # Et on lui affecte la règle
 
     def get_type(self, boxnumber):
         """
-        Obtenir la règle d'une case en donnant son numéro
+        Methode qui permet d'obtenir la règle d'une case.
+
+        Parameters
+        ---------
+        boxnumber : int
+            Numéro de la case.
+
+        Returns
+        -------
+        type : str
+            Regle de la case.
         """
         box = self._boxList[boxnumber]
         return box._boxType
 
     def search_box(self, start, end, test):
         """
-        Cherche la prochaine case ayant pour règle la valeur de test (par rapport au start et au end)
+        Méthode qui cherche la prochaine case ayant pour règle la valeur de test.
+
+        Parameters
+        ----------
+        start : int
+            Départ
+        end : int
+            Fin
+        test : str
+            regle à rechercher.
+
+        Returns
+        -------
+        type : int
+            Egale au numéro de la case si elle existe, à -1 sinon.
+
         """
         for i in range(start, end):
             # recherche la première case (suivante) qui a la règle 'test'
@@ -314,7 +370,15 @@ class Tray(AbstractGrid, Dice):
 
     def compute_dice(self):
         """
-        recherche de combinaison de dés
+        Méthode qui recherche si il y a une combinaison de dés qui envoie sur une case spéciale.
+
+        Returns
+        -------
+        foundbox : int
+            Case ou doit être envoyé le joueur du à cette combinaison de dés. Est égale a -1 si il n'y a aucune conbinaison
+
+        type : int
+            Egale à 1 si une combinaison a été trouvée. 0 sinon
         """
         dice1 = 0
         dice2 = 0
@@ -354,7 +418,21 @@ class Tray(AbstractGrid, Dice):
 
     def compute_rule(self, boxnumber, previousbox):
         """
-        Recherche de cases speciales
+        Méthode qui recherche si il y a des cases speciales
+
+        Parameters
+        ----------
+        boxnumber : int
+            Numéro de la case
+        previousbox : int
+            Numéro de la case précédente.
+
+        Returns
+        -------
+        type : int
+            différent entier deffinissant entre autre si le joueur peut jouer ou non et la case sur laquelle
+            il sera au prochain tour.
+
         """
         # return tuple type/box/nextturn
         box = self._boxList[boxnumber]
@@ -398,7 +476,17 @@ class Tray(AbstractGrid, Dice):
 
     def compute_lastbox(self, boxnumber):
         """
-        Gérer fin du plateau pour qu'un dé trop grand revienne en arrière
+        Méthode qui permet de gérer fin du plateau pour qu'un dé trop grand revienne en arrière.
+
+        Parameters
+        ----------
+        boxnumber : int
+            Numero de la case
+
+        Returns
+        -------
+        boxnumber : int
+            Nouvelle case
         """
         if boxnumber > self._nbBox:
             boxnumber = self._nbBox - (boxnumber - self._nbBox)
@@ -406,7 +494,17 @@ class Tray(AbstractGrid, Dice):
 
     def test_If_Win(self, boxnumber):
         """
-        Tester case finale pour voir si victoire
+        Méthode qui va tester la case finale pour voir si victoire
+
+        Parameters
+        ----------
+        boxnumber : Numero de la case
+
+        Returns
+        -------
+        type : bool
+            True si le joueur est bien sur la derniere case, False sinon.
+
         """
         return boxnumber == self._nbBox
 
