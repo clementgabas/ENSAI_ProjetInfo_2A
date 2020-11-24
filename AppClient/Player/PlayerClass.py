@@ -1,10 +1,7 @@
 import requests
 import json
-from tabulate import tabulate
 from Player.UserClass import User
-from RequestsTools.AddressTools import get_absolute_address, make_address
-
-
+from Player.RequestsTools.AddressTools import get_absolute_address, make_address
 absolute_address = get_absolute_address()
 
 

@@ -1,10 +1,8 @@
 import requests
 import json
-from travailMDP.testmdp import anti_SQl_injection
-from RequestsTools.AddressTools import get_absolute_address, make_address
-
 from Player.abstractUser import AbstractUser
-
+from Player.travailMDP.testmdp import anti_SQl_injection
+from Player.RequestsTools.AddressTools import get_absolute_address, make_address
 absolute_address = get_absolute_address()
 
 class User(AbstractUser):

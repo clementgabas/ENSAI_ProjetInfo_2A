@@ -48,10 +48,10 @@ class Salon(AbstractView):
                 return MParametre1.make_choice()
             elif self.reponse["Salon_accueil"] == 'Lire les règles':
                 if self.game.lower() == 'p4':
-                    with open("Vues/règles/p4_rules.txt", "r") as rules:
+                    with open("Vues/Affichagetxt/règles/p4_rules.txt", "r") as rules:
                         print(rules.read())
                 elif self.game.lower() == 'oie':
-                    with open("Vues/règles/oie_rules.txt", "r") as rules:
+                    with open("Vues/Affichagetxt/règles/oie_rules.txt", "r") as rules:
                         print(rules.read())
                 return self.make_choice()
             elif self.reponse["Salon_accueil"] == "Être prêt":
