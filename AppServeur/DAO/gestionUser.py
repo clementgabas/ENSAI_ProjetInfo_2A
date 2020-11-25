@@ -697,7 +697,7 @@ def get_stat(pseudo):
     try:  # on récupère les info interessante
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
-        cursor.execute("SELECT nb_parties_jouees, nb_parties_gagnees FROM Scores WHERE pseudo = ?", (pseudo,))
+        cursor.execute("SELECT SUM(nb_parties_jouees), SUM(nb_parties_gagnees) FROM Scores WHERE pseudo = ?", (pseudo,))
         stat_perso = cursor.fetchall()
     except:
         print("ERROR : API.afficher stat perso :")
@@ -727,7 +727,7 @@ def update_stat(pseudo):
     try:  # on update le mdp dans la table utilisateur
         con = sqlite3.connect(db_address)
         cursor = con.cursor()
-        cursor.execute("UPDATE Scores SET nb_parties_jouees = 0, nb_parties_gagnees = 0 WHERE pseudo = ?", (pseudo,))
+        cursor.execute("UPDATE Scores SET nb_points = 1000, nb_parties_jouees = 0, nb_parties_gagnees = 0 WHERE pseudo = ?", (pseudo,))
         con.commit()
     except:
         print("erreur dans update_stat")

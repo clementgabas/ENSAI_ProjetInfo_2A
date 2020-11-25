@@ -78,8 +78,8 @@ class Menu_Classement(AbstractView):
         Resultat = User1.aff_classement_general()
         self.print_message(Resultat)
         if Resultat["Statut"] == True:
-            self.print_classement(Resultat["classement_general"])
-            self.print_classement(Resultat["classement_general_amis"])
+            self.print_classement(Resultat["classement_general"], "mondial")
+            self.print_classement(Resultat["classement_general_amis"],"entre amis")
             return(self.make_choice())
         elif Resultat["Statut"] == False:
             return(self.make_choice_retour())
@@ -94,8 +94,8 @@ class Menu_Classement(AbstractView):
         Resultat = User1.aff_classement_jeu_oie()
         self.print_message(Resultat)
         if Resultat["Statut"] == True:
-            self.print_classement(Resultat["classement_jeu"])
-            self.print_classement(Resultat["classement_jeu_amis"])
+            self.print_classement(Resultat["classement_jeu"], "mondial")
+            self.print_classement(Resultat["classement_jeu_amis"], "entre amis")
             return (self.make_choice())
         elif Resultat["Statut"] == False:
             return (self.make_choice_retour())
@@ -111,8 +111,8 @@ class Menu_Classement(AbstractView):
         Resultat = User1.aff_classement_P4()
         self.print_message(Resultat)
         if Resultat["Statut"] == True:
-            self.print_classement(Resultat["classement_jeu"])
-            self.print_classement(Resultat["classement_jeu_amis"])
+            self.print_classement(Resultat["classement_jeu"], "mondial")
+            self.print_classement(Resultat["classement_jeu_amis"], "entre amis")
             return (self.make_choice())
         elif Resultat["Statut"] == False:
             return (self.make_choice_retour())
@@ -120,8 +120,8 @@ class Menu_Classement(AbstractView):
             print("Erreur non prévue")
             return (self.make_choice_retour())
 
-    def print_classement(self, classement):
-        return print("Classement mondial \n" + tabulate(classement,
+    def print_classement(self, classement,ami_mond):
+        return print(f"Classement {ami_mond} \n" + tabulate(classement,
                                                  headers=["Classement", "Pseudo", "nombre de point",
                                                           "Nombre de parties jouées",
                                                           "Nombre de parties gagnées"],

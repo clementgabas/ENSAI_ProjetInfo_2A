@@ -59,7 +59,7 @@ class Menu_Ami(AbstractView):
         ]
         while True:
             self.ajoutAmiR = inquirer.prompt(self.ajoutAmiQ)
-            pseudo_ami = self.ajoutAmiR["pseudo_ami"]
+            pseudo_ami = self.ajoutAmiR["pseudo_ami"].lower()
             from Player.UserClass import User
             User1 = User(self.pseudo)
             Resultat = User1.ajout_ami(pseudo_ami)
@@ -104,7 +104,7 @@ class Menu_Ami(AbstractView):
         ]
         while True:
             self.suppAmiR = inquirer.prompt(self.suppAmiQ)
-            pseudo_ami = self.suppAmiR["ami_supp"]
+            pseudo_ami = self.suppAmiR["ami_supp"].lower()
 
             from Player.UserClass import User
             User1 = User(self.pseudo)

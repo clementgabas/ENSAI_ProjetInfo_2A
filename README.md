@@ -7,7 +7,7 @@
 - ### Notre réalisation du projet: :computer:
     Pour réaliser notre projet informatique, nous avons choisi de développer deux jeux, à savoir le **Puissance4** et le **jeu de l'Oie** . En effet, nous avons estimé que ces deux jeux étaient suffisamment différents l'un de l'autre pour prouver la fléxibiliter de notre application.
     Ainsi, dans toute la suite, SteamEnsai désigne l'ensemble des applications client et serveur.
-    En plus des fonctionnalités demandées (pourvoir jouer à des jeux), nous avons réalisé toute une partie **gestion de compte**, avec notamment la gestion d'amis, de scores et de classements.
+    En plus des fonctionnalités demandées (pouvoir jouer à des jeux), nous avons réalisé toute une partie **gestion de compte**, avec notamment la gestion d'amis, de scores et de classements.
 De plus, nous avons intégré la possibilité de jouer avec des amis ou contre des inconnus. Jouer avec des amis se fait, comme pour la plupart des jeux en ligne, en rejoignant une salle dont notre ami nous à transférer le code.
 
 ## Classes testées et commentées 
