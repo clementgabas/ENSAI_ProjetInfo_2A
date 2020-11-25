@@ -1,6 +1,5 @@
 # SteamEnsai - README
-![logo ensai](https://lh3.googleusercontent.com/proxy/uI7gsm-zed1te_ntUKZXBK-g_0GiL2bao1RIcuS8ZUxO1_bSxCLy2AvRY3cyHZi_Y8lZaWJvOPELnnLm8ZTsu3OpENMrkesC4AbDNd63CyUF0vPqDtrErFw)
-
+![logo steamensai](https://github.com/clementgabas/Projet-Info/blob/master/steamensai.png?raw=true)
 ## SteamEnsai -- Descriptif rapide l'application
 - ### Qu'est-ce que SteamEnsai, description du projet: :video_game:
     SteamEnsai est le nom que nous avons choisi de donner à notre projet informatique du 1er semestre de 2ème année à l'ENSAI. L'objectif du projet est le développement d'une **RESTful API python permettant de jouer, via une application cliente, à des jeux de plateau en ligne**.
