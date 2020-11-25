@@ -1,13 +1,13 @@
-# APIjeux - README
+# SteamEnsai - README
 ![logo ensai](https://lh3.googleusercontent.com/proxy/uI7gsm-zed1te_ntUKZXBK-g_0GiL2bao1RIcuS8ZUxO1_bSxCLy2AvRY3cyHZi_Y8lZaWJvOPELnnLm8ZTsu3OpENMrkesC4AbDNd63CyUF0vPqDtrErFw)
 
-## APIjeux -- Descriptif rapide l'application
-- ### Qu'est-ce qu'APIjeux, description du projet: :video_game:
-    APIjeux est le nom que nous avons choisi de donner à notre projet informatique du 1er semestre de 2ème année à l'ENSAI. L'objectif du projet est le développement d'une **RESTful API python permettant de jouer, via une application cliente, à des jeux de plateau en ligne**.
+## SteamEnsai -- Descriptif rapide l'application
+- ### Qu'est-ce que SteamEnsai, description du projet: :video_game:
+    SteamEnsai est le nom que nous avons choisi de donner à notre projet informatique du 1er semestre de 2ème année à l'ENSAI. L'objectif du projet est le développement d'une **RESTful API python permettant de jouer, via une application cliente, à des jeux de plateau en ligne**.
     L'un des principaux objectifs est que l'**application soit suffisament flexible pour supporter des jeux suffisamment variés sans trop de changements au niveau son code**.
 - ### Notre réalisation du projet: :computer:
     Pour réaliser notre projet informatique, nous avons choisi de développer deux jeux, à savoir le **Puissance4** et le **jeu de l'Oie** . En effet, nous avons estimé que ces deux jeux étaient suffisamment différents l'un de l'autre pour prouver la fléxibiliter de notre application.
-    Ainsi, dans toute la suite, APIjeux désigne l'ensemble des applications client et serveur.
+    Ainsi, dans toute la suite, SteamEnsai désigne l'ensemble des applications client et serveur.
     En plus des fonctionnalités demandées (pourvoir jouer à des jeux), nous avons réalisé toute une partie **gestion de compte**, avec notamment la gestion d'amis, de scores et de classements.
 De plus, nous avons intégré la possibilité de jouer avec des amis ou contre des inconnus. Jouer avec des amis se fait, comme pour la plupart des jeux en ligne, en rejoignant une salle dont notre ami nous à transférer le code.
 
@@ -19,9 +19,9 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
     
     Des tests unitaires ont étés réalisés pour les classes DAO. Ils sont stockés dans *Appserveur/test*. Pour des raisons d'importations et de chemins relatifs (certaines DAO s'importent entre elles et ont des chemins d'importations relatifs rédigés pour l'api), pour tester les tests, il faut les copier-coller à la racine de AppServeur, au même niveau que api.py.
 
-## Comment installer APIjeux
+## Comment installer SteamEnsai
 - ### Télécharger le code: :octocat:
-    Pour récupérer le code du serveur APIjeux et le code du Client APIjeux, le plus simple est de clonner le [dépot github](https://github.com/clementgabas/Projet-Info) comme si dessous :
+    Pour récupérer le code du serveur SteamEnsai et le code du Client SteamEnsai, le plus simple est de clonner le [dépot github](https://github.com/clementgabas/Projet-Info) comme si dessous :
     ```sh
     $ git clone https://github.com/clementgabas/Projet-Info
     ```
@@ -66,9 +66,9 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
 
     ```
 
-## Comment démarrer APIjeux pour pouvoir jouer
+## Comment démarrer SteamEnsai pour pouvoir jouer
 - ### Démarrer et paramétrer le serveur API: :game_die:
-    Pour fonctionner, APIjeux requiert que l'API soit opérationnelle, c'est-à-dire que le serveur API tourne. Evidemment, nous faisons tourner ce serveur API en local (localhost, l'adresse et le port sont modifiables dans le fichier AppServeur/api.py).
+    Pour fonctionner, SteamEnsai requiert que l'API soit opérationnelle, c'est-à-dire que le serveur API tourne. Evidemment, nous faisons tourner ce serveur API en local (localhost, l'adresse et le port sont modifiables dans le fichier AppServeur/api.py).
     ```sh
     if __name__ == "__main__":
         DAOuser.put_all_users_disconnected()
