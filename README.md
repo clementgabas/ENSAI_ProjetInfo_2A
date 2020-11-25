@@ -17,7 +17,7 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
 - ### Classes testées: :hourglass_flowing_sand:
     Malheuresement, du fait de contraintes de temps assez élevées, nous n'avons pas vraiment respecté les règles qui veulent que nous rédigions d'abord les test unitaires puis les fonctions pour pouvoir directement tester les tests dessus. Ici, nous avons d'abord codé l'application et n'avons pu rédiger des test que sur la partie DAO de l'application.
     
-    ICI, FAIRE UN BLABLA SUR LES TESTS DE MAEL!!
+    Des tests unitaires ont étés réalisés pour les classes DAO. Ils sont stockés dans *Appserveur/test*. Pour des raisons d'importations et de chemins relatifs (certaines DAO s'importent entre elles et ont des chemins d'importations relatifs rédigés pour l'api), pour tester les tests, il faut les copier-coller à la racine de AppServeur, au même niveau que api.py.
 
 ## Comment installer APIjeux
 - ### Télécharger le code: :octocat:
