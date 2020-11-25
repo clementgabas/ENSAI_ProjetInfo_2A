@@ -115,7 +115,7 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
 - Si l'application serveur et l'application client sont lancées, vous pourrez jouer sans difficultés! Bien sur, pour ce projet, il est nécessaire de lancer au moins 2 applications clients (et pourquoi pas plus) afin de pouvoir jouer en local.
      
 ## Autres informations importantes :
-- ### Liste des membres du groupes:
+- ### Liste des membres du groupes: :blush:
     Notre groupe de projet informatique était consituté de :
     - Zacharie BOUHIN
     - Hugo BERNARD 
@@ -123,7 +123,7 @@ De plus, nous avons intégré la possibilité de jouer avec des amis ou contre d
     - Mael GUIVARCH 
     - Romane PARÈS
 
-- ### Remerciements:
+- ### Remerciements: :+1:
 Nous remercions notre tuteur Monsieur Thierry MATHE pour l'aide, conseils, remarques et réponses qu'il nous aura apporté au cours du projet.
 Nous remercions également notre camarade Elouen Ginat qui nous à aider au début du projet pour bien comprendre le fonctionnement d'une API et pour bien cadrer les attendus du projet.
 Enfin, nous remercions notre enseignant Monsieur Rémi PEPIN pour les rapports et messages qu'il a transmit au cours du projet et pour son enseignement, et plus particulièrement pour ces [corrections de TP](https://github.com/HealerMikado/Ensai_projetInfo_2A_RSS) dont nous avons pu, parfois, nous inspirer et qui ont su, souvent, nous aider à comprendre.
