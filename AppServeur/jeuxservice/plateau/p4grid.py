@@ -141,18 +141,18 @@ class GridP4(AbstractGrid):
                     break
         return resultat
 
-    # def TestIfWin(self): #on l'utilise jamais?
-    #     """
-    #     Methode qui vérifie si il y a une victoire
-    #     """
-    #     print(str(self._gridList))
-    #     return (self._win == 1)
+    def TestIfWin(self):
+        """
+        Methode qui vérifie si il y a une victoire
+        """
+        print(str(self._gridList))
+        return (self._win == 1)
 
-    # def TestEndOfGame(self):#on l'utilise jamais?
-    #     result = True
-    #     for i in range(self._numWidth):
-    #         result = result and self._gridList[i][self._numHeight - 1] != 0
-    #     return result
+    def TestEndOfGame(self):
+        result = True
+        for i in range(self._numWidth):
+            result = result and self._gridList[i][self._numHeight - 1] != 0
+        return result
 
     def TestEndColumn(self, column):
         """
