@@ -1,13 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov  4 10:43:26 2020
-
-@author: Maël
-"""
-
-import AppServeur.DAO.gestionUser as DAOuser
 import unittest
 import secrets
+import AppServeur.DAO.gestionUser as DAOuser
+
 
 
 class Test_gestionUser(unittest.TestCase):

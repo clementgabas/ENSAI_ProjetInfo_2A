@@ -1,7 +1,7 @@
 import requests
 import json
 from Player.abstractUser import AbstractUser
-from Player.travailMDP.testmdp import anti_SQl_injection, hacherMotDePasse
+from Player.travailMDP.testmdp import anti_SQl_injection, hacherMotDePasse, is_mdp_legal
 from Player.RequestsTools.AddressTools import get_absolute_address, make_address
 absolute_address = get_absolute_address()
 
@@ -55,8 +55,9 @@ class UserBase(AbstractUser):
         if not anti_SQl_injection(identifiant) or not anti_SQl_injection(mdp) or not anti_SQl_injection(pseudo):
             Resultat = self.update_resultat(False, "Pour des raisons de sécurité, votre demande ne peut aboutir.")
             return (Resultat)
-            # if not is_mdp_legal(mdp):
-            # return self.make_choice_retour()
+        if not is_mdp_legal(mdp):
+            Resultat = self.update_resultat(False)
+            return (Resultat)
         hmdp = hacherMotDePasse(mdp)
 
             # création du data pour le corps du post de l'api
