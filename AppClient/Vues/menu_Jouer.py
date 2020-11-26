@@ -141,7 +141,7 @@ class Jouer(AbstractView):
             def set_boxList():
                 boxList = []
                 for i in range(nbBox + 1):
-                    if i in (12, ): #on a sorti la case 6
+                    if i in (12, 6): #on a sorti la case 6
                         box = "Bridge"
                     elif i in (23,):
                         box = "Hotel"
@@ -157,7 +157,7 @@ class Jouer(AbstractView):
                         box = "Dice54"
                     elif i in (58,):
                         box = "skull"
-                    elif i in (9, 14, 18, 23, 27, 32, 36, 41, 45, 50, 54, 59):
+                    elif i in (14, 18, 23, 27, 32, 36, 41, 45, 50, 54, 59):
                         box = "Goose"
                     else:
                         box = "None"

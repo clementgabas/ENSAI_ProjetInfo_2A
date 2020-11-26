@@ -196,10 +196,11 @@ def demander_si_vainqueur():
 
     elif jeu.lower()=='oie':
         plateau = Tray(numofdice=2, numoffaces=6, nbBox=63, id_partie=id_partie)  # pour l'instant, on ne travaille que avec des parties par default
-        plateau.simulatation(DAOcoups.get_all_coups(id_partie))
-
-        Bool = plateau.TestIfWin()
-
+        dico = plateau.simulatation(DAOcoups.get_all_coups(id_partie))
+        for player in dico:
+            Bool = plateau.TestIfWin(player._actualbox)
+            if Bool:
+                break
 
     if Bool:
         print(f"La partie {id_partie} est gagnante")
