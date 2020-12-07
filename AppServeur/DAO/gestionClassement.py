@@ -193,7 +193,7 @@ def afficher_classement_general_friends(pseudo):
     try:
         con = sqlite3.connect(db_address)
         cursor= con.cursor()
-        cursor.execute("SELECT RANK () OVER ( ORDER BY nb_points DESC ) AS rang, pseudo, SUM(nb_points) AS nb_tot,"
+        cursor.execute("SELECT RANK () OVER ( ORDER BY SUM(nb_points) DESC ) AS rang, pseudo, SUM(nb_points) AS nb_tot,"
                        " nb_parties_jouees ,nb_parties_gagnees FROM "
                        "(SELECT Scores.jeu ,Scores.pseudo, Scores.nb_points, Scores.nb_parties_jouees,"
                        "Scores.nb_parties_gagnees FROM Scores, Liste_Amis "
